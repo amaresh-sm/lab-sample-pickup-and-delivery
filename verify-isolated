@@ -1,0 +1,342 @@
+#!/usr/bin/env bash
+# verify-isolated -- score a candidate with a PRISTINE app per capability group.
+#
+# WHY. `./verify` boots the app once and runs all 52 capabilities against that
+# single instance, so state piles up: by the ~40th capability, dozens of field
+# workers created by earlier capabilities are still available. The app offers
+# each assignment to the longest-waiting eligible worker app-wide, so those
+# leftovers win the offer instead of the worker the current capability just
+# seeded -- the capability then cannot find its own assignment and scores 0,
+# taking every downstream capability with it.
+#
+# `park_field_workers()` was supposed to prevent that by disabling leftovers,
+# but it looks them up with `search_audit_trail action="user_created"` -- which
+# is golden-mongo's audit-naming convention and is pinned NOWHERE in the
+# contract. Candidates that name audit actions after the operationId
+# (`create_user`) match nothing, so it silently parked ZERO workers on 8 of 8
+# candidates measured. Only golden was ever parked correctly, which means golden
+# has been measured in clean conditions while every candidate ran in dirty ones.
+#
+# MEASURED (fresh container per run, 3 runs each, lifecycle group):
+#   pristine app                     -> opus 0.857, terra 0.714, luna-xhigh 0.857,
+#                                       golden 1.000   -- all spread 0.0000
+#   same + 20 leftover field workers -> opus 0.000 x3  -- mechanism confirmed
+#   Real defects SURVIVED isolation (record_handling_checkpoint stayed 0), so
+#   this removes measurement noise, not evidence.
+#
+# HOW. Ask the engine for its isolation grouping (`run.py list-groups`), then for
+# each group: stop the app, reset the datastores, start it again, and score only
+# that group. Groups are independent; the one genuinely coupled group (the 8
+# lifecycle capabilities sharing `_drive_happy_path`) runs together on one
+# instance, because resetting between them would destroy the journey they grade.
+# Partial results are merged into a single reward.json.
+#
+# Usage: ./verify-isolated --workspace runs/<id>/solution/workspace [--logs-dir DIR]
+set -Eeuo pipefail
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"; cd "$root"
+
+workspace=""; logs_dir=""
+image="${IMAGE_TAG:-lab-sample-pickup-delivery-gym:local}"
+admin_user="${ADMIN_USERNAME:-admin}"; admin_pass="${ADMIN_PASSWORD:-admin123}"
+contract="tasks/lab-sample-pickup-and-delivery/openapi.contract.json"
+engine="verifier/qc-pinned-contracts/engine/run.py"
+ready_timeout="${READY_TIMEOUT_SECONDS:-180}"
+
+while (($#)); do
+  case "$1" in
+    --workspace) workspace="${2:-}"; shift 2 ;;
+    --logs-dir)  logs_dir="${2:-}"; shift 2 ;;
+    --image)     image="${2:-}"; shift 2 ;;
+    --help|-h)   sed -n '2,40p' "$0"; exit 0 ;;
+    *) echo "unknown argument: $1" >&2; exit 2 ;;
+  esac
+done
+[[ -n "$workspace" ]] || { echo "--workspace is required" >&2; exit 2; }
+[[ -d "$workspace" ]] || { echo "workspace not found: $workspace" >&2; exit 2; }
+manifest="$workspace/verification/manifest.json"
+[[ -f "$manifest" ]] || { echo "no built solution: $manifest missing" >&2; exit 2; }
+[[ -n "$logs_dir" ]] || logs_dir="$root/verifier-logs-isolated"
+mkdir -p "$logs_dir"; logs_dir="$(cd "$logs_dir" && pwd -P)"
+
+api_url="$(jq -r '.urls.api' "$manifest")"
+ready_url="$(jq -r '.urls.ready' "$manifest")"
+port="$(printf '%s' "$api_url" | sed -E 's#.*:([0-9]+)/.*#\1#')"
+base_origin="$(printf '%s' "$api_url" | sed -E 's#^(https?://[^/]+).*#\1#')"
+
+# Provenance resolved HERE, on the host: inside the container /opt/gym is a
+# read-only mount and a worktree's `.git` is a pointer file to an unmounted
+# path, so the engine's own git lookup yields nothing (it silently produced
+# engineCommit=null on the first isolated run).
+engine_commit="$(git -C "$root" rev-parse HEAD 2>/dev/null || echo unknown)"
+if [[ -n "$(git -C "$root" status --porcelain -- verifier/qc-pinned-contracts/engine 2>/dev/null)" ]]; then
+  engine_dirty=1
+else
+  engine_dirty=0
+fi
+
+container="verify-iso-$(date -u +%Y%m%dT%H%M%SZ)-$$"
+cleanup() { docker rm --force "$container" >/dev/null 2>&1 || true; }
+trap cleanup EXIT
+
+echo "[iso] image     = $image"
+echo "[iso] workspace = $workspace"
+echo "[iso] api       = $api_url"
+
+docker run --detach --name "$container" \
+  --env "ADMIN_USERNAME=$admin_user" --env "ADMIN_PASSWORD=$admin_pass" \
+  --env "UNASSIGNED_SEARCH_TIMEOUT_SECONDS=${UNASSIGNED_SEARCH_TIMEOUT_SECONDS:-60}" \
+  --env "ASSIGNMENT_OFFER_TTL_SECONDS=${ASSIGNMENT_OFFER_TTL_SECONDS:-120}" \
+  --env "MAINTENANCE_INTERVAL_MILLISECONDS=${MAINTENANCE_INTERVAL_MILLISECONDS:-1000}" \
+  --mount "type=bind,src=$(cd "$workspace" && pwd -P),dst=/workspace" \
+  --mount "type=bind,src=$root,dst=/opt/gym,readonly" \
+  --mount "type=bind,src=$logs_dir,dst=/logs" \
+  "$image" sleep infinity >/dev/null
+
+echo "[iso] waiting for datastores..."
+dl=$(( $(date +%s) + 90 ))
+until docker exec "$container" /opt/arena/bin/healthcheck.sh >/dev/null 2>&1; do
+  (( $(date +%s) >= dl )) && { echo "datastores never healthy" >&2; exit 1; }; sleep 2; done
+
+echo "[iso] build (once)..."
+# SKIP_GO_TESTS forwards to build.sh unchanged (defaults to 0, tests still
+# run) -- only gate-isolated.sh's mutant loop sets it, since a behavioural
+# mutant correctly breaking golden's OWN Go tests is not a build failure,
+# and this gate needs the app to boot to find out whether the
+# HTTP-observable capability checks ALSO catch it.
+docker exec -e "SKIP_GO_TESTS=${SKIP_GO_TESTS:-0}" --workdir /workspace "$container" bash verification/build.sh > "$logs_dir/build.log" 2>&1 \
+  || { echo "build failed; see $logs_dir/build.log" >&2; exit 1; }
+
+# The grouping comes from the engine, never hardcoded here -- a hand-written
+# list in this file was the first thing tried and it immediately rotted (missed
+# edit_active_plan and confirm_laboratory_receipt).
+# bash 3.2-safe (macOS ships 3.2; no `mapfile`) -- same read-loop idiom ./verify uses
+groups=(); while IFS= read -r l; do groups+=("$l"); done < <(
+  python3 "$engine" --base-url http://unused list-groups \
+    | python3 -c 'import json,sys; [print(",".join(v)) for v in json.load(sys.stdin).values()]')
+total_capabilities="$(printf '%s\n' "${groups[@]}" | tr ',' '\n' | grep -c .)"
+echo "[iso] ${#groups[@]} isolation groups covering $total_capabilities capabilities"
+
+stop_app() {
+  # Both known start.sh scripts end in `exec`, so the recorded PID IS the server.
+  # setsid + process-group kill also covers a future candidate that backgrounds
+  # its server instead. This replaces pkill-by-process-name, which silently
+  # missed golden's binary and left the port held -- that killed 2 of 3 runs in
+  # an earlier prototype and is exactly the failure this must not repeat.
+  docker exec "$container" bash -lc '
+    if [[ -f /tmp/app.pgid ]]; then kill -TERM -- "-$(cat /tmp/app.pgid)" 2>/dev/null || true; fi
+    sleep 1
+    if [[ -f /tmp/app.pgid ]]; then kill -KILL -- "-$(cat /tmp/app.pgid)" 2>/dev/null || true; fi
+    rm -f /tmp/app.pgid' >/dev/null 2>&1 || true
+}
+start_app() {
+  docker exec --detach "$container" bash -lc \
+    'setsid bash -c "echo \$\$ > /tmp/app.pgid; cd /workspace && exec bash verification/start.sh" >>/logs/app-start.log 2>&1'
+  local d=$(( $(date +%s) + ready_timeout ))
+  while (( $(date +%s) < d )); do
+    docker exec "$container" curl -fsS -m 3 "$ready_url" 2>/dev/null | grep -q ready && return 0
+    sleep 2
+  done
+  return 1
+}
+
+idx=0; failed_groups=0
+: > "$logs_dir/process-health.tsv"
+for grp in "${groups[@]}"; do
+  idx=$((idx+1))
+  stop_app
+  reset_ok=1
+  docker exec --workdir /workspace "$container" bash verification/reset.sh >>"$logs_dir/reset.log" 2>&1 || reset_ok=0
+  # `reset.sh` failing used to be silently swallowed (`|| true`, no record kept)
+  # -- a candidate whose reset is flaky/broken looked identical to one whose
+  # reset always works, as long as the app still came up afterward. Recorded
+  # per-group here so the Contract bucket can grade reset/start health instead
+  # of only gating on it.
+  if start_app; then
+    start_ok=1
+  else
+    start_ok=0
+    echo "[iso] group $idx/${#groups[@]} ($grp): app never became ready -- SKIPPED (capabilities will be absent from the merge)" >&2
+    failed_groups=$((failed_groups+1))
+  fi
+  printf '%s\t%s\t%s\t%s\n' "$idx" "$grp" "$reset_ok" "$start_ok" >> "$logs_dir/process-health.tsv"
+  if [[ "$start_ok" == "0" ]]; then continue; fi
+  docker exec -e VERIFIER_ISOLATED=1 \
+    -e "VERIFIER_ENGINE_COMMIT=$engine_commit" -e "VERIFIER_ENGINE_DIRTY=$engine_dirty" \
+    --workdir /opt/gym "$container" \
+    python3 "$engine" --base-url "http://127.0.0.1:$port" --contract "$contract" \
+      --admin-user "$admin_user" --admin-pass "$admin_pass" \
+      score --only "$grp" --json-out "/logs/part-$idx.json" \
+    >>"$logs_dir/engine.log" 2>&1 || true
+
+  # Durability, same pristine app, same idx: write sentinels for whichever of
+  # THIS group's capabilities have one wired, restart (no reset -- durability
+  # means surviving a restart, not surviving a wipe), then verify. Skipped
+  # entirely when the statefile comes back empty (`{}`), which is most groups
+  # today -- durability is wired for `create_collection_request` only so far
+  # (see engine/README.md); this scales to however many are wired later
+  # without any further changes here.
+  docker exec -e VERIFIER_ISOLATED=1 --workdir /opt/gym "$container" \
+    python3 "$engine" --base-url "http://127.0.0.1:$port" --contract "$contract" \
+      --admin-user "$admin_user" --admin-pass "$admin_pass" \
+      durability-write --only "$grp" --statefile "/logs/dur-$idx.json" \
+    >>"$logs_dir/engine.log" 2>&1 || true
+  has_sentinels="$(docker exec "$container" python3 -c '
+import json
+print(1 if json.load(open("/logs/dur-'"$idx"'.json")) else 0)' 2>/dev/null || echo 0)"
+  if [[ "$has_sentinels" == "1" ]]; then
+    stop_app
+    if start_app; then
+      docker exec -e VERIFIER_ISOLATED=1 --workdir /opt/gym "$container" \
+        python3 "$engine" --base-url "http://127.0.0.1:$port" --contract "$contract" \
+          --admin-user "$admin_user" --admin-pass "$admin_pass" \
+          durability-verify --statefile "/logs/dur-$idx.json" --json-out "/logs/dur-part-$idx.json" \
+        >>"$logs_dir/engine.log" 2>&1 || true
+    else
+      echo "[iso] group $idx/${#groups[@]} ($grp): app never came back up after the durability restart -- durability SKIPPED for this group" >&2
+    fi
+  fi
+  printf '[iso] %2d/%d  %s\n' "$idx" "${#groups[@]}" "$grp"
+done
+
+echo "[iso] merging ${idx} partial results..."
+python3 - "$logs_dir" "$idx" "$total_capabilities" <<'PY'
+import json, sys, pathlib
+logs, n, expected_total = pathlib.Path(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3])
+
+# Contract bucket, process-health slice: build/reset/start as a GRADED signal
+# instead of a binary gate. build.sh failing already aborts this whole script
+# before this point (there is no partial credit for an app that never boots
+# at all), so buildOk is always true here -- a failed build is represented by
+# this reward.json simply not existing, which the caller already treats as 0.
+# reset.sh and start.sh run once per isolation group (45x), so THEIR health is
+# a real fraction, not a coin flip -- e.g. a candidate whose reset.sh is
+# flaky under repeated invocation, or whose start.sh sometimes wins a port
+# race, should score lower on this axis than one that is rock solid, rather
+# than the two looking identical because both eventually passed once.
+reset_passed = reset_total = start_passed = start_total = 0
+for line in (logs / "process-health.tsv").read_text().splitlines():
+    if not line.strip():
+        continue
+    _idx, _grp, reset_ok, start_ok = line.split("\t")
+    reset_total += 1
+    reset_passed += int(reset_ok)
+    start_total += 1
+    start_passed += int(start_ok)
+# Final "contract" score (build/reset/start/api-structure, the 4 things the
+# Contract bucket is meant to cover) is assembled once contract_report is
+# complete, below -- api conformance isn't known until every group's traffic
+# has been merged.
+
+
+def credit_from_oks(oks):
+    """MUST match oracle.credit_from_oks exactly -- this script runs on the
+    host, outside the container, so it cannot import the engine's own module;
+    duplicated here deliberately rather than reaching across that boundary."""
+    if not oks:
+        return 0.0
+    return round(sum(1 for ok in oks if ok) / len(oks), 4)
+
+
+caps, prov, missing = [], None, []
+contract_report: dict = {}  # operationId -> {"calls": int, "conformant": bool, "violations": [...]}
+for i in range(1, n + 1):
+    p = logs / f"part-{i}.json"
+    if not p.exists():
+        missing.append(i); continue
+    d = json.loads(p.read_text())
+    part_caps = d.get("capabilities") or []
+
+    # Merge THIS group's contract-conformance evidence into the whole-suite
+    # sweep. Each isolation group only exercises a slice of the 45 pinned
+    # operations (whatever that group's own capabilities happen to call,
+    # including incidental ones like authenticate_user) -- summing calls and
+    # concatenating violations across every group is what turns 45 partial
+    # slices into one real answer to "does this candidate conform, across
+    # its entire behaviour, not just one group's".
+    for op_id, entry in (d.get("contractReport") or {}).items():
+        acc = contract_report.setdefault(op_id, {"calls": 0, "conformant": True, "violations": []})
+        acc["calls"] += entry.get("calls", 0)
+        acc["violations"].extend(entry.get("violations") or [])
+        acc["conformant"] = acc["conformant"] and entry.get("conformant", True)
+
+    # Fold in this group's durability Verdicts, if any were written. A
+    # capability absent from dur-part-i.json (durability not wired for it, or
+    # the group's durability restart never ran/failed) is left exactly as
+    # `score` produced it -- durability stays an OPTIONAL 4th dimension, same
+    # as negative/idempotency, never penalising a capability nothing wired
+    # for it.
+    dur_p = logs / f"dur-part-{i}.json"
+    dur_by_id = {}
+    if dur_p.exists():
+        dur_by_id = {c["id"]: c for c in (json.loads(dur_p.read_text()).get("capabilities") or [])}
+    for c in part_caps:
+        dur = dur_by_id.get(c["id"])
+        if dur is None:
+            continue
+        oks = [c.get("positiveOk")]
+        for key in ("negativeOk", "idempotencyOk"):
+            if c.get(key) is not None:
+                oks.append(c[key])
+        if any(ok is None for ok in oks):
+            # positiveOk missing means this capability crashed in `score`
+            # (report is None) -- durability on a capability that never even
+            # produced a base Verdict is meaningless, so leave credit as the
+            # existing 0.0/unassessable rather than inventing a partial one.
+            continue
+        oks.append(dur["durabilityOk"])
+        c["credit"] = credit_from_oks(oks)
+        c["durability"] = dur["durability"]
+        c["durabilityOk"] = dur["durabilityOk"]
+
+    caps.extend(part_caps)
+    prov = prov or d.get("provenance")
+caps.sort(key=lambda c: c["id"])
+overall = round(sum(c.get("credit") or 0 for c in caps) / len(caps), 6) if caps else 0.0
+if prov:                      # subset flags belong to the PARTS, not the merged whole
+    prov = {k: v for k, v in prov.items() if k not in ("subset", "subsetNote")}
+    prov["isolationGroups"] = n
+    if missing:
+        prov["groupsMissing"] = missing
+conformant_ops = sum(1 for e in contract_report.values() if e["conformant"])
+total_ops = len(contract_report)
+# api_fraction defaults to 1.0 (not 0.0) when a run exercises zero pinned
+# operations -- that would mean every capability crashed before making a
+# single HTTP call, which the capability/overall score already reflects as
+# 0.0 everywhere; api_fraction has nothing informative to add on top, and
+# 0.0 here would double-penalise a candidate that is already scored 0 for
+# the actual, unrelated reason.
+api_fraction = (conformant_ops / total_ops) if total_ops else 1.0
+reset_fraction = (reset_passed / reset_total) if reset_total else 0.0
+start_fraction = (start_passed / start_total) if start_total else 0.0
+# The Contract bucket = build + reset + start + api-structure, each an equal
+# 1/4 share -- the 4 things "did this candidate speak the pinned contract"
+# actually means, per the bucket's own definition. build is binary (a failed
+# build never reaches this script at all, see the comment above); the other
+# three are real fractions over 45 isolation groups / N exercised operations.
+contract = {
+    "buildOk": True,
+    "resetOk": f"{reset_passed}/{reset_total}",
+    "startOk": f"{start_passed}/{start_total}",
+    "apiConformance": f"{conformant_ops}/{total_ops}",
+    "score": round((1.0 + reset_fraction + start_fraction + api_fraction) / 4, 4),
+}
+out = {
+    "overall": overall,
+    "provenance": prov,
+    "capabilities": caps,
+    "contractReport": contract_report,
+    "contract": contract,
+}
+(logs / "reward.json").write_text(json.dumps(out, indent=2, default=str))
+print(f"  contract score: build ok, reset {contract['resetOk']}, start {contract['startOk']}, "
+      f"api {contract['apiConformance']} -> {contract['score']:.4f}")
+print(f"  merged {len(caps)} capabilities -> overall {overall:.4f}")
+print(f"  contract conformance: {conformant_ops}/{len(contract_report)} operations exercised this run were schema-conformant")
+if len(caps) != expected_total:
+    print(f"  !! WARNING: {len(caps)} capabilities, expected {expected_total} -- score is NOT comparable to a full run", file=sys.stderr)
+PY
+
+echo "[iso] done"
+echo "  reward.json : $logs_dir/reward.json"
+[[ "$failed_groups" -gt 0 ]] && echo "  !! $failed_groups group(s) failed to start -- see above" >&2
+exit 0

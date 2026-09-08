@@ -1,0 +1,365 @@
+{
+  "overall": 0.4444444444444444,
+  "capabilities": [
+    {
+      "id": "accept_assignment",
+      "kind": "lifecycle",
+      "credit": 0.0,
+      "positive": null,
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "authenticate_user",
+      "kind": "write",
+      "credit": 0.5,
+      "positive": "status=200 roles=['requester'] activeRole=''",
+      "negative": "status=401 code='unauthorized'",
+      "idempotency": null
+    },
+    {
+      "id": "cancel_journey",
+      "kind": "write",
+      "credit": 0.0,
+      "positive": null,
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "check_serviceability",
+      "kind": "write",
+      "credit": 0.5,
+      "positive": "5.0km serviceable=False; 5.05km reason=insufficient_capacity; dry_run sample_count 0->0; tight-window-tight-deadline reason=deadline_unreachable",
+      "negative": "inverted window -> status=400 code='invalid_collection_window'",
+      "idempotency": null
+    },
+    {
+      "id": "collect_and_seal_sample",
+      "kind": "lifecycle",
+      "credit": 0.0,
+      "positive": null,
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "configure_capacity",
+      "kind": "write",
+      "credit": 1.0,
+      "positive": "response capacityUnits=37 cooled=11; ops-state reflects=True",
+      "negative": "negative capacityUnits -> status=400 code='invalid_capacity'; requester read_operations_state -> 403 (RBAC-gated capacity view)",
+      "idempotency": null
+    },
+    {
+      "id": "configure_laboratory_acceptance",
+      "kind": "write",
+      "credit": 1.0,
+      "positive": "accepts-on -> serviceable=True; accepts-off -> serviceable=False reason=no_accepting_laboratory",
+      "negative": "unknown laboratoryId -> status=400 code='invalid_acceptance'",
+      "idempotency": null
+    },
+    {
+      "id": "confirm_handoff",
+      "kind": "lifecycle",
+      "credit": 0,
+      "positive": "one-sided: status=None sender=None receiver=None; both-sided: status=None holder_flip_ok=False; replay_no_dup=True",
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "confirm_laboratory_receipt",
+      "kind": "lifecycle",
+      "credit": 0,
+      "positive": "step never attempted (upstream planning did not produce a driveable journey)",
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "create_collection_request",
+      "kind": "write",
+      "credit": 0.0,
+      "positive": null,
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "create_connection",
+      "kind": "write",
+      "credit": 1.0,
+      "positive": "cooled=True via=audit-trail",
+      "negative": "status=400 code='invalid_connection'",
+      "idempotency": null
+    },
+    {
+      "id": "create_location",
+      "kind": "write",
+      "credit": 0.5,
+      "positive": "functions={'collection_point': False, 'hub': True, 'laboratory': True, 'transfer_point': False} found_in_ops_state=True via=audit-trail",
+      "negative": "status=400 code='invalid_location_function'",
+      "idempotency": null
+    },
+    {
+      "id": "create_sample_type",
+      "kind": "write",
+      "credit": 0.0,
+      "positive": null,
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "create_user",
+      "kind": "write",
+      "credit": 1.0,
+      "positive": "observed via direct-read",
+      "negative": "status=409 code='username_exists'",
+      "idempotency": null
+    },
+    {
+      "id": "decline_assignment",
+      "kind": "write",
+      "credit": 0.0,
+      "positive": null,
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "edit_active_plan",
+      "kind": "lifecycle",
+      "credit": 0.0,
+      "positive": null,
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "ingest_presealed_sample",
+      "kind": "write",
+      "credit": 0.5,
+      "positive": "status=201 alreadySealed=True activeAssignmentIds=['f0a40246-00b8-4265-a707-6ce6cb6dc55f', 'ed59c5b8-ad95-4aac-badb-4da92ef09c55'] no_collector_offer=True",
+      "negative": "unknown initialHolderId -> status=201 code=''",
+      "idempotency": null
+    },
+    {
+      "id": "initiate_handoff",
+      "kind": "lifecycle",
+      "credit": 0,
+      "positive": "step never attempted (upstream planning did not produce a driveable journey)",
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "list_role_work",
+      "kind": "read",
+      "credit": 0.5,
+      "positive": "status=200 buckets=['completed', 'inProgress', 'pending']; deadline_expiry_orphan_probe: planning did not produce a driveable journey for the deadline-expiry probe -- status=403 payload={'error': 'The selected role cannot perform this action', 'code': 'forbidden'}",
+      "negative": "requesting a role you don't hold -> status=403 code='forbidden'",
+      "idempotency": null
+    },
+    {
+      "id": "merge_journeys",
+      "kind": "write",
+      "credit": 0.0,
+      "positive": null,
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "read_journey_plan",
+      "kind": "read",
+      "credit": 0.0,
+      "positive": null,
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "read_operations_state",
+      "kind": "read",
+      "credit": 1.0,
+      "positive": "status=200 keys_present=['samples', 'workers', 'locations', 'connections', 'routes', 'handoffs', 'delays', 'exceptions']",
+      "negative": "requester -> status=403",
+      "idempotency": null
+    },
+    {
+      "id": "read_sample_lifecycle",
+      "kind": "read",
+      "credit": 1.0,
+      "positive": "status=200 sealed=False timeline_len=1 ordered=True",
+      "negative": "status=404 code='not_found'",
+      "idempotency": null
+    },
+    {
+      "id": "read_sample_state",
+      "kind": "read",
+      "credit": 1.0,
+      "positive": "status=200 state={'status': 'requested'} locationStale=False",
+      "negative": "AC-2: another requester reading it -> status=403 code='forbidden'",
+      "idempotency": null
+    },
+    {
+      "id": "read_serviceability_snapshot",
+      "kind": "read",
+      "credit": 1.0,
+      "positive": "status=200 version=140 activeCollectionPointCount=22",
+      "negative": "requester role -> status=403 code='forbidden'",
+      "idempotency": null
+    },
+    {
+      "id": "read_ui_bootstrap",
+      "kind": "read",
+      "credit": 1.0,
+      "positive": "status=200 keys=['operations', 'serverTime', 'user']",
+      "negative": "anonymous -> status=401 code='unauthorized'",
+      "idempotency": null
+    },
+    {
+      "id": "read_user",
+      "kind": "read",
+      "credit": 1.0,
+      "positive": "status=200 userId=eae7a077-3b2b-46b1-8ff9-3ba00f3a7c7e",
+      "negative": "cross-account read_user -> status=403 code='forbidden'",
+      "idempotency": null
+    },
+    {
+      "id": "record_handling_checkpoint",
+      "kind": "lifecycle",
+      "credit": 0,
+      "positive": "step never attempted (upstream planning did not produce a driveable journey)",
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "record_laboratory_exception",
+      "kind": "write",
+      "credit": 0.0,
+      "positive": null,
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "record_worker_location",
+      "kind": "lifecycle",
+      "credit": 0,
+      "positive": "step never attempted (upstream planning did not produce a driveable journey)",
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "report_disruption",
+      "kind": "write",
+      "credit": 0.0,
+      "positive": null,
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "reroute_journey",
+      "kind": "write",
+      "credit": 0.0,
+      "positive": null,
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "search_audit_trail",
+      "kind": "read",
+      "credit": 0.0,
+      "positive": null,
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "select_active_role",
+      "kind": "write",
+      "credit": 0.5,
+      "positive": "select requester->200 select dispatcher->200 denied_as_requester=True allowed_as_dispatcher=True roles unchanged=True",
+      "negative": "status=403 code='forbidden'",
+      "idempotency": null
+    },
+    {
+      "id": "set_connection_status",
+      "kind": "write",
+      "credit": 1.0,
+      "positive": "active=False",
+      "negative": "status=404",
+      "idempotency": null
+    },
+    {
+      "id": "set_location_function_status",
+      "kind": "write",
+      "credit": 0.5,
+      "positive": "disabled collection_point, remaining functions={'collection_point': False, 'hub': False, 'laboratory': True, 'transfer_point': False}",
+      "negative": "unknown-function->400 (invalid_location_function); function-not-held(hub)->200 ()",
+      "idempotency": null
+    },
+    {
+      "id": "set_location_status",
+      "kind": "write",
+      "credit": 1.0,
+      "positive": "active=False (AC-24: no restart required)",
+      "negative": "status=404",
+      "idempotency": null
+    },
+    {
+      "id": "set_worker_availability",
+      "kind": "write",
+      "credit": 1.0,
+      "positive": "available=True capacityUnits=77 via=audit-trail",
+      "negative": "status=400 code='invalid_capacity'",
+      "idempotency": null
+    },
+    {
+      "id": "split_journey",
+      "kind": "write",
+      "credit": 0.0,
+      "positive": null,
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "stream_realtime_events",
+      "kind": "read",
+      "credit": 1.0,
+      "positive": "status=200 events=138",
+      "negative": "anonymous -> status=401 code='unauthorized'",
+      "idempotency": null
+    },
+    {
+      "id": "system_readiness",
+      "kind": "read",
+      "credit": 1.0,
+      "positive": "status=200 payload={'status': 'ready'}",
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "update_assignment_progress",
+      "kind": "lifecycle",
+      "credit": 0,
+      "positive": "step never attempted (upstream planning did not produce a driveable journey)",
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "update_location",
+      "kind": "write",
+      "credit": 0.5,
+      "positive": "name=9xc8z0036-uloc-renamed-1 via=audit-trail",
+      "negative": "status=400 code='invalid_coordinate'",
+      "idempotency": null
+    },
+    {
+      "id": "update_sample_type",
+      "kind": "write",
+      "credit": 0.0,
+      "positive": null,
+      "negative": null,
+      "idempotency": null
+    },
+    {
+      "id": "update_user_access",
+      "kind": "write",
+      "credit": 1.0,
+      "positive": "observed via direct-read; roles now ['dispatcher']",
+      "negative": "status=403 code='forbidden'",
+      "idempotency": null
+    }
+  ]
+}

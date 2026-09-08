@@ -1,0 +1,495 @@
+#!/usr/bin/env python3
+"""benchmark — one leaderboard table across all scored candidates in runs/.
+
+For every runs/<id>/ that has BOTH a generation metadata file and a verifier
+score, emit a single row: model, effort, generation time, tokens, backend
+score (pass/partial/fail split), UI score (if scored), and notes. Sorted by
+backend score, written to benchmark.md and printed.
+
+Score source per run (first that exists):
+  runs/<id>/verifier-logs-bench/reward.json   (authoritative / pinned by hand)
+  else the NEWEST reward.json anywhere under runs/<id>/   (latest scoring)
+UI score: newest ui-reward.json anywhere under runs/<id>/ (optional).
+
+Usage:
+  ./benchmark                 # every scored run
+  ./benchmark 'v3-*'          # only runs whose folder matches the glob
+"""
+from __future__ import annotations
+import json, os, sys, datetime
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+RUNS = ROOT / "runs"
+# One or more folder globs. Default = the current candidate cohort; pass
+# explicit globs (or '*') to widen. e.g. ./benchmark '*'
+PATTERNS = sys.argv[1:] or ["v3-*", "pk-*", "luna-xhigh-fresh*", "oc-glm52-v2*"]
+
+# Which RUN MODE to report. Scores are NOT comparable across modes:
+#   "isolated" -- each capability group scored against a pristine app
+#                 (verify-isolated). The default, and the only trustworthy mode.
+#   "shared"   -- all 52 capabilities against ONE accumulating instance
+#                 (./verify). Every such run also predates the
+#                 park_field_workers fix, which parked ZERO workers on 8 of 8
+#                 candidates while parking golden correctly -- so those runs
+#                 compared golden-under-clean-conditions against
+#                 candidates-under-dirty-conditions.
+#   "all"      -- mix both. Only for archaeology; the mean is meaningless.
+# Runs predating the provenance stamp have no mode recorded and are treated as
+# "shared", which is what they were.
+MODE = os.environ.get("BENCH_MODE", "isolated")
+
+
+def run_mode(reward: dict) -> str:
+    return ((reward.get("provenance") or {}).get("mode")) or "shared"
+
+# Domain weighting: CORE (80%) is the core transactional flow -- lifecycle &
+# admin, routing/serviceability, handoff & fairness, disruption & replanning.
+# SUPPORTING (20%) is peripheral to that flow -- observability reads/exception
+# visibility, realtime/audit/UI-support, and contract/operability compliance.
+# Any capability not in either set (there should be none) falls back to CORE.
+CORE = frozenset({
+    "create_collection_request", "accept_assignment", "decline_assignment",
+    "collect_and_seal_sample", "record_handling_checkpoint",
+    "confirm_laboratory_receipt", "record_worker_location",
+    "update_assignment_progress", "edit_active_plan", "ingest_presealed_sample",
+    "authenticate_user", "create_user", "read_user", "select_active_role",
+    "update_user_access", "create_location", "update_location",
+    "create_connection", "set_location_status", "set_location_function_status",
+    "set_connection_status", "create_sample_type", "update_sample_type",
+    "configure_laboratory_acceptance", "configure_capacity",
+    "set_worker_availability", "check_serviceability",
+    "read_serviceability_snapshot", "frost_cooled_route_enforcement",
+    "merge_journeys", "split_journey", "initiate_handoff", "confirm_handoff",
+    "fairness_offer_distribution", "fairness_recency_disparity",
+    "fairness_workload_disparity", "report_disruption", "reroute_journey",
+    "cancel_journey",
+})
+SUPPORTING = frozenset({
+    "stream_realtime_events", "search_audit_trail", "read_ui_bootstrap",
+    "read_operations_state", "openapi_json_well_formed", "system_readiness",
+    "named_sample_types_present_after_reset", "read_sample_state",
+    "read_sample_lifecycle", "read_journey_plan", "list_role_work",
+    "qualified_collector_exhaustion_exception", "record_laboratory_exception",
+})
+# The 3 concurrency capabilities live ENTIRELY in the NFR bucket now, not in
+# Core/Supporting -- they must be excluded from the Functional mean below, or
+# they'd be double-counted (once in Functional, again in NFR).
+CONCURRENCY_CAPS = frozenset({
+    "concurrent_assignment_race_safety",
+    "concurrent_plan_mutation_race_safety",
+    "concurrent_capacity_exhaustion_race_safety",
+})
+CORE_WEIGHT, SUPPORTING_WEIGHT = 0.8, 0.2
+
+# Three-bucket score, per the user's own original proposal: Contract (process/
+# spec conformance) / Functional (does it work) / NFR (non-functional --
+# durability, idempotency, concurrency-safety). Each bucket's internal split
+# is unchanged by this restructuring -- Core/Supporting still describes the
+# relative weight WITHIN Functional, and NFR's own 3 sub-scores are equal-
+# weighted below, same convention as Contract's 4 equal-weighted sub-scores.
+CONTRACT_WEIGHT, FUNCTIONAL_WEIGHT, NFR_WEIGHT = 0.10, 0.70, 0.20
+
+
+def load(p: Path):
+    try:
+        return json.loads(p.read_text())
+    except Exception:
+        return None
+
+
+def cr(c: dict) -> float:
+    return c.get("credit") or 0
+
+
+def crashed(c: dict) -> bool:
+    return c.get("positive") is None  # setup failed -> unassessable, not an assessed fail
+
+
+def functional_credit(c: dict) -> float:
+    """A capability's credit counting ONLY positiveOk/negativeOk -- idempotency
+    and durability are deliberately excluded here, because they now have their
+    OWN weighted share in the NFR bucket; leaving them folded into THIS number
+    too would double-count them. `positiveOk` missing means the capability
+    crashed before producing a Verdict at all -- unassessable, scored 0, same
+    convention `crashed()` already uses elsewhere."""
+    positive_ok = c.get("positiveOk")
+    if positive_ok is None:
+        return 0.0
+    oks = [positive_ok]
+    if c.get("negativeOk") is not None:
+        oks.append(c["negativeOk"])
+    return round(sum(1 for ok in oks if ok) / len(oks), 4)
+
+
+# Total durability-wired capabilities in the current suite (see
+# engine/DURABILITY.md) -- a FIXED denominator, deliberately never the count
+# of what happened to be checkABLE for one candidate. A capability that
+# could not be checked (e.g. its own setup crashed, or it never produced a
+# sentinel) is NOT excluded from this count -- it counts exactly like a
+# confirmed failure. Any other convention would either throw away a genuine
+# failure (if a candidate's extra checkability happens to expose one, as
+# happened for gpt-5.6-terra) or reward opacity (a candidate that leaves the
+# LEAST evidence would otherwise get the SMALLEST, and therefore easiest,
+# denominator).
+DURABILITY_TOTAL = 32
+
+# Idempotency is genuinely wired for 17 capabilities (every write op in the
+# pinned contract that carries an idempotencyKey field, except
+# record_worker_location, which the contract doesn't give one -- see
+# requests.py, custody_lifecycle.py, disruption.py). NOT 18:
+# frost_cooled_route_enforcement's `idempotency` field is NOT an idempotency
+# check at all -- its own detail string says so outright
+# ("AC-17 cooled reservations (NOT the idempotency check -- this slot carries
+# the third dimension)"), a pre-existing repurposing of CapabilityReport's
+# 4th slot to carry an unrelated cooled-reservation check (CapabilityReport
+# has no 5th slot to give it its own). Counting it here would silently fold
+# an unrelated AC-17 finding into the Idempotency sub-score AND miscount the
+# denominator -- confirmed live: luna-xhigh and sol-xhigh's only "idempotency
+# miss" was exactly this capability, which had nothing to do with replay
+# safety. IDEMPOTENCY_CAPS is the explicit allow-list this excludes it via.
+# Same fixed-denominator philosophy as durability otherwise: a candidate
+# whose OWN setup bug blocks the check (idempotencyOk absent) is NOT
+# excluded, it counts as a miss.
+IDEMPOTENCY_CAPS = frozenset({
+    "accept_assignment", "decline_assignment", "cancel_journey", "reroute_journey",
+    "split_journey", "merge_journeys", "confirm_handoff", "collect_and_seal_sample",
+    "record_handling_checkpoint", "initiate_handoff", "update_assignment_progress",
+    "confirm_laboratory_receipt", "edit_active_plan", "report_disruption",
+    "ingest_presealed_sample", "record_laboratory_exception", "create_collection_request",
+})
+IDEMPOTENCY_TOTAL = len(IDEMPOTENCY_CAPS)
+
+
+def durability_cell(caps: list[dict]) -> tuple[int, str]:
+    """Returns (passed, display) -- passed/DURABILITY_TOTAL as a number for
+    scoring, and the same thing pre-formatted as "X/32" for the table."""
+    passed = sum(1 for c in caps if c.get("durabilityOk") is True)
+    return passed, f"{passed}/{DURABILITY_TOTAL}"
+
+
+def idempotency_cell(caps: list[dict]) -> tuple[int, str]:
+    passed = sum(1 for c in caps if c["id"] in IDEMPOTENCY_CAPS and c.get("idempotencyOk") is True)
+    return passed, f"{passed}/{IDEMPOTENCY_TOTAL}"
+
+
+def concurrency_cell(caps: list[dict]) -> tuple[float, str]:
+    """Mean of the 3 standalone concurrency-safety capabilities' own credit
+    (they carry positive/negative, no idempotency/durability of their own).
+    A candidate never scored against these (pre-existing this restructuring)
+    shows 0/3 -- absence counts as a miss, same fixed-denominator rule as
+    durability/idempotency, not an exclusion."""
+    found = {c["id"]: cr(c) for c in caps if c["id"] in CONCURRENCY_CAPS}
+    total = len(CONCURRENCY_CAPS)
+    passed = sum(found.values())
+    mean = passed / total if total else 0.0
+    return mean, f"{len(found)}/{total} run, mean {mean:.3f}"
+
+
+def has_durability_data(caps: list[dict]) -> bool:
+    return any("durabilityOk" in c for c in caps)
+
+
+def has_concurrency_data(caps: list[dict]) -> bool:
+    return any(c["id"] in CONCURRENCY_CAPS for c in caps)
+
+
+def weighted_score(reward: dict) -> dict:
+    """0.10*Contract + 0.70*Functional + 0.20*NFR for one reward.json.
+    Functional = 0.8*core_mean + 0.2*supporting_mean, computed from
+    functional_credit (positive/negative only). NFR = equal-weighted mean of
+    durability/idempotency/concurrency sub-scores. Returns a dict of
+    everything the table/footnotes need, plus the CORE-only and FULL
+    capability lists (P/Part/F is computed over Core, since it carries the
+    largest single share and is the most informative split)."""
+    caps = reward["capabilities"]
+    core = [c for c in caps if c["id"] not in CONCURRENCY_CAPS and (c["id"] in CORE or c["id"] not in SUPPORTING)]
+    support = [c for c in caps if c["id"] not in CONCURRENCY_CAPS and c["id"] in SUPPORTING]
+    core_mean = sum(functional_credit(c) for c in core) / len(core) if core else 0.0
+    support_mean = sum(functional_credit(c) for c in support) / len(support) if support else 0.0
+    functional_score = CORE_WEIGHT * core_mean + SUPPORTING_WEIGHT * support_mean
+
+    dur_passed, dur_cell = durability_cell(caps)
+    idem_passed, idem_cell = idempotency_cell(caps)
+    conc_mean, conc_cell = concurrency_cell(caps)
+    nfr_score = round((dur_passed / DURABILITY_TOTAL + idem_passed / IDEMPOTENCY_TOTAL + conc_mean) / 3, 4)
+
+    contract_score = (reward.get("contract") or {}).get("score")
+    if contract_score is None:
+        # legacy run, pre-Contract-bucket: not comparable, caller filters it out
+        score = round(functional_score, 4)
+    else:
+        score = round(CONTRACT_WEIGHT * contract_score + FUNCTIONAL_WEIGHT * functional_score + NFR_WEIGHT * nfr_score, 4)
+    return {
+        "score": score, "core": core, "caps": caps, "contract_score": contract_score,
+        "functional_score": round(functional_score, 4), "nfr_score": nfr_score,
+        "durability_cell": dur_cell, "idempotency_cell": idem_cell, "concurrency_cell": conc_cell,
+    }
+
+
+def all_runs(run_dir: Path) -> list[dict]:
+    """Every individual run's weighted_score() dict under this candidate,
+    oldest->newest, so a flaky candidate is read as a spread of runs rather
+    than a single point.
+
+    Pre-durability, pre-Contract-bucket, and pre-concurrency-capabilities runs
+    are each NOT comparable to a run that has that dimension -- each is a
+    real scoring-formula change, not a cosmetic addition, so a run without it
+    isn't measuring the same thing as one with it. Once ANY run for this
+    candidate has a given dimension, runs without it are dropped entirely
+    rather than left to silently win a max-score comparison against a
+    methodology they never went through (which is exactly what picking the
+    historical MAX across mixed methodologies would otherwise do -- an old
+    high score would "win" and get reported with a misleading empty cell)."""
+    out = []
+    for p in sorted(run_dir.glob("**/reward.json"), key=lambda q: q.stat().st_mtime):
+        d = load(p)
+        if d and d.get("overall") is not None and d.get("capabilities"):
+            if MODE != "all" and run_mode(d) != MODE:
+                continue  # mixing modes in one row would average incomparable runs
+            out.append(weighted_score(d))
+    if any(has_durability_data(r["caps"]) for r in out):
+        out = [r for r in out if has_durability_data(r["caps"])]
+    if any(r["contract_score"] is not None for r in out):
+        out = [r for r in out if r["contract_score"] is not None]
+    if any(has_concurrency_data(r["caps"]) for r in out):
+        out = [r for r in out if has_concurrency_data(r["caps"])]
+    return out
+
+
+rows = []
+_seen = set()
+run_dirs = []
+for pat in PATTERNS:
+    for rd in sorted(RUNS.glob(pat + "/")):
+        if rd not in _seen:
+            _seen.add(rd)
+            run_dirs.append(rd)
+for run_dir in sorted(run_dirs):
+    if not run_dir.is_dir():
+        continue
+    meta = load(run_dir / "solution" / "run-metadata.json")
+    if not meta:
+        continue  # only harness-tracked runs
+    runs = all_runs(run_dir)
+    valid = bool(runs)
+    built = (run_dir / "solution" / "workspace" / "verification" / "manifest.json").exists()
+    # Show a non-scorable row when the run produced an app (built + clean gen
+    # exit) but has no usable score -- the app ran yet the verifier couldn't
+    # exercise it (e.g. every endpoint returns 501 not_implemented). Failed
+    # generations with no app are omitted. Scope is controlled by PATTERNS.
+    if not valid and not (built and meta.get("exitCode") in (0, None)):
+        continue
+
+    notes = []
+    if meta.get("benchNote"):
+        notes.append(meta["benchNote"])
+
+    if valid:
+        # Headline score = the BEST run (max), so a candidate is judged on its
+        # ceiling; per_run_cell (below) still shows every run so a flaky
+        # candidate's spread is visible, not hidden behind the single number.
+        best = max(runs, key=lambda r: r["score"])
+        backend, core, contract_score = best["score"], best["core"], best["contract_score"]
+        durability, idempotency, concurrency = best["durability_cell"], best["idempotency_cell"], best["concurrency_cell"]
+        functional_cell = f"{best['functional_score']:.4f}"
+        nfr_cell = f"{best['nfr_score']:.4f}"
+        contract_cell = f"{contract_score:.4f}" if contract_score is not None else "—"
+        p_ = sum(1 for c in core if functional_credit(c) >= 1)
+        pa = sum(1 for c in core if 0 < functional_credit(c) < 1)
+        cx = sum(1 for c in core if crashed(c))
+        z = sum(1 for c in core if functional_credit(c) == 0 and not crashed(c))
+        # `cx` (crashed -- setup raised an exception, from a narrow unverifiable-
+        # policy guard OR a cascading crash caused by real candidate breakage --
+        # this count does not distinguish the two) already contributes 0 credit
+        # to the score above, same as `z` (a Verdict that ran cleanly and
+        # genuinely failed). The F count must match that: folding cx into F
+        # keeps the table's count consistent with the number it's next to,
+        # instead of silently dropping capabilities that are still dragging the
+        # score down. The Notes disclosure flags that some portion of F was
+        # never cleanly assessed, without claiming to know whether it hides a
+        # real bug or a verifier evidentiary gap -- that requires reading the
+        # specific capability's raised exception, which this table does not do.
+        ppf = f"{p_}/{pa}/{z + cx}"
+        if cx >= max(3, len(core) // 2):
+            notes.append(f"SETUP-FAIL: {cx}/{len(core)} core caps unassessable (score NOT comparable)")
+        elif cx:
+            notes.append(f"F includes {cx} unassessed via exception (setup could not be fully exercised)")
+    else:
+        # generated an app, but it could not be scored (e.g. endpoints return
+        # 501 not_implemented / never authenticates) -> honest n/a row.
+        backend = None
+        ppf = "—"
+        durability = idempotency = concurrency = "—"
+        functional_cell = nfr_cell = contract_cell = "—"
+        if not meta.get("benchNote"):
+            notes.append("NOT SCORABLE — app non-functional (verifier could not exercise it)")
+
+    if meta.get("tamperCheck") and meta["tamperCheck"] != "clean":
+        notes.append("TAMPER:" + str(meta["tamperCheck"]))
+    if meta.get("exitCode") not in (0, None) and not meta.get("benchNote"):
+        notes.append(f"gen-exit={meta['exitCode']}")
+    requested = meta.get("model") or "—"
+    served = meta.get("servedModel")
+    # The Model column shows the ACTUAL model that ran. When Portkey remapped a
+    # requested name to a different served model, show the served (real) one and
+    # (unless a benchNote already explains it) note what was requested.
+    model_disp = requested
+    if served and served != requested:
+        model_disp = served
+        if not meta.get("benchNote") and requested not in served and served not in requested:
+            notes.append(f"actual model {served}; requested {requested} (remapped by Portkey config)")
+    tok = meta["tokens"].get("total") if isinstance(meta.get("tokens"), dict) else None
+    rows.append({
+        "label": meta.get("label") or run_dir.name,
+        "model": model_disp,
+        "effort": meta.get("reasoning") or "—",
+        "gen_s": meta.get("durationSeconds"),
+        "tokens": tok,
+        "backend": backend,
+        "ppf": ppf,
+        "functional": functional_cell,
+        "nfr": nfr_cell,
+        "durability": durability,
+        "idempotency": idempotency,
+        "concurrency": concurrency,
+        "contract": contract_cell,
+        "runs": len(runs),
+        "per_run": [round(r["score"], 4) for r in runs],
+        "notes": ", ".join(notes),
+    })
+
+# scored rows first (by score desc); not-scorable rows last
+rows.sort(key=lambda r: (r["backend"] is not None, r["backend"] if r["backend"] is not None else -1), reverse=True)
+
+
+def cell(v, na="—"):
+    return na if v is None else v
+
+
+# Throughput (tokens/sec) inferred from the runs that DID record real token
+# totals, used only to ESTIMATE tokens for runs whose provider emitted none (the
+# claude CLI in text mode). This is a labelled estimate -- never presented as a
+# measurement -- so the Tokens column is complete without fabricating a precise
+# figure. Median keeps one slow/fast outlier from skewing it; 180 tok/s is a
+# safe fallback if no metered run is present.
+_rates = [r["tokens"] / r["gen_s"] for r in rows
+          if isinstance(r.get("tokens"), (int, float)) and r.get("gen_s")]
+_rates.sort()
+RATE = _rates[len(_rates) // 2] if _rates else 180.0
+
+
+def tok_cell(r):
+    if isinstance(r.get("tokens"), (int, float)):
+        return str(r["tokens"])            # provider-measured
+    if r.get("gen_s"):
+        return str(round(r["gen_s"] * RATE))  # estimated from runtime (see footnote)
+    return "n/a"
+
+
+def per_run_cell(r):
+    s = r.get("per_run") or []
+    if not s:
+        return "—"
+    return " / ".join(f"{x:.3f}" for x in s)
+
+
+hdr = ("| Model | Effort | Gen (s) | Tokens | Score (max) | P/Part/F (core) | Functional | NFR | Durability | "
+       "Idempotency | Concurrency | Contract | Runs | Per-run scores | Notes |")
+sep = "|---|---|--:|--:|--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|---|---|"
+lines = [hdr, sep]
+for r in rows:
+    backend = f"{r['backend']:.4f}" if r["backend"] is not None else "n/a"
+    lines.append(
+        f"| {r['model']} | {r['effort']} | {cell(r['gen_s'])} | {tok_cell(r)} | "
+        f"{backend} | {r['ppf']} | {r['functional']} | {r['nfr']} | {r['durability']} | {r['idempotency']} | "
+        f"{r['concurrency']} | {r['contract']} | {r['runs']} | {per_run_cell(r)} | {cell(r['notes'], '')} |"
+    )
+table = "\n".join(lines)
+now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+out = (
+    f"# Candidate benchmark\n\n"
+    f"_Scored on the pinned-contract verifier, **`{MODE}` mode**, "
+    f"{CONTRACT_WEIGHT:.0%} Contract / {FUNCTIONAL_WEIGHT:.0%} Functional / {NFR_WEIGHT:.0%} NFR "
+    f"(Functional domain-weighted {CORE_WEIGHT:.0%} Core / {SUPPORTING_WEIGHT:.0%} Supporting; NFR equal-weighted "
+    f"across Durability / Idempotency / Concurrency-safety). "
+    f"Generated {now}._\n\n"
+    f"> **`isolated` mode** gives every capability group a PRISTINE app (stop → reset → start →\n"
+    f"> score that group only), instead of running all 52 against one accumulating instance.\n"
+    f"> Under the old `shared` mode, field workers left behind by earlier capabilities won the\n"
+    f"> offers a later capability's own worker needed, so it scored 0 on a correct app — and which\n"
+    f"> leftovers were waiting depended on timing, which is what made scores irreproducible.\n"
+    f"> Those runs also predate the `park_field_workers` fix, which selected workers by\n"
+    f"> `action=\"user_created\"` — golden's audit-naming convention, pinned nowhere in the\n"
+    f"> contract — and therefore parked ZERO workers on 8 of 8 candidates while parking golden\n"
+    f"> correctly. **Shared-mode scores are NOT comparable to these** and are excluded; set\n"
+    f"> `BENCH_MODE=shared` (or `all`) to see them.\n\n"
+    f"{table}\n\n"
+    f"- **Score** = `{CONTRACT_WEIGHT:.0%} x Contract + {FUNCTIONAL_WEIGHT:.0%} x Functional + {NFR_WEIGHT:.0%} x "
+    f"NFR`, then the BEST (max) run is shown as the headline number — a candidate is judged on its ceiling,\n"
+    f"  not diluted by an unlucky run. A pre-restructuring run is missing one of Contract/Durability/\n"
+    f"  Concurrency-capability data and is dropped once any run for that candidate has it — each is a real\n"
+    f"  formula change, not a cosmetic addition, so mixing methodologies would average incomparable runs.\n"
+    f"- **Functional** = `{CORE_WEIGHT:.0%} x Core_mean + {SUPPORTING_WEIGHT:.0%} x Supporting_mean`, computed from\n"
+    f"  ONLY positive/negative probes (idempotency and durability are excluded here — they now have their\n"
+    f"  own share in NFR below, so folding them in here too would double-count them). **Core** = the core\n"
+    f"  transactional flow (lifecycle & admin, routing/serviceability, handoff & fairness, disruption &\n"
+    f"  replanning). **Supporting** = observability reads/exception-visibility, realtime/audit/UI-support.\n"
+    f"- **P/Part/F** = fully passed / partial / assessed-zero, counted over the CORE capabilities of the run\n"
+    f"  that produced the max score, using the SAME functional-only credit Functional is built from (Core\n"
+    f"  carries 80% of Functional's weight, so it's the more informative split). Capabilities whose SETUP\n"
+    f"  could not be exercised are NOT counted as fails — flagged in **Notes** (`SETUP-FAIL`) instead.\n"
+    f"- **NFR** = equal-weighted mean of Durability / Idempotency / Concurrency-safety (each 1/3, same\n"
+    f"  equal-share convention Contract's own 4 sub-scores already use). Idempotency is wired for\n"
+    f"  {IDEMPOTENCY_TOTAL} capabilities (every write op in the pinned contract with an idempotencyKey field, bar\n"
+    f"  record_worker_location) — comparable evidence to Durability's ~{DURABILITY_TOTAL}, no longer the thin\n"
+    f"  ~2-capability base an earlier pass of this table flagged. `frost_cooled_route_enforcement` is\n"
+    f"  deliberately excluded despite carrying an `idempotencyOk` field -- its own detail string says that\n"
+    f"  slot is repurposed for an unrelated AC-17 check, not idempotency at all.\n"
+    f"- **Durability** = how many of the {DURABILITY_TOTAL} durability-wired capabilities (see\n"
+    f"  `engine/DURABILITY.md`) came back `durabilityOk: true` after a real app restart, independently\n"
+    f"  re-verified over HTTP. The denominator is ALWAYS {DURABILITY_TOTAL} for every candidate — never the\n"
+    f"  count of what happened to be checkable for that specific one. A capability that could not be\n"
+    f"  checked (its own setup crashed, or it never produced a durable artifact to restart-test) counts\n"
+    f"  exactly like a confirmed failure, not an exclusion. The alternative — a denominator that shrinks to\n"
+    f"  whatever a candidate happens to leave assessable — would reward the candidates that leave the LEAST\n"
+    f"  evidence with the smallest, easiest denominator, and would have hidden a real failure this exact\n"
+    f"  convention caught: gpt-5.6-terra is the only candidate whose canonical sample-type seeding leaves an\n"
+    f"  audit trail, so it is the only one actually tested on `qualified_collector_exhaustion_exception` — and\n"
+    f"  it fails that check outright, credit 0.0.\n"
+    f"- **Idempotency** = how many of the {IDEMPOTENCY_TOTAL} idempotency-wired capabilities came back\n"
+    f"  `idempotencyOk: true` -- each replays the SAME idempotencyKey+body as its own successful call and\n"
+    f"  requires a byte-identical response (or, where a second side effect is independently checkable, that\n"
+    f"  it didn't happen twice), never a fresh key/body re-derived per call (that would silently test two\n"
+    f"  DIFFERENT requests, not a true replay -- a real bug this pass found and fixed in confirm_handoff's\n"
+    f"  own pre-existing replay probe). Same fixed-denominator, not-checkable-counts-as-a-miss convention as\n"
+    f"  Durability.\n"
+    f"- **Concurrency** = mean credit of the 3 standalone concurrency-safety capabilities\n"
+    f"  (`concurrent_assignment_race_safety`, `concurrent_plan_mutation_race_safety`,\n"
+    f"  `concurrent_capacity_exhaustion_race_safety`) -- each fires two genuinely concurrent requests\n"
+    f"  (a real thread pool, not sequential replay) at a shared resource and checks exactly one wins\n"
+    f"  cleanly. A candidate never scored against these shows `0/3 run` -- absence is a miss, not an\n"
+    f"  exclusion, same convention as Durability/Idempotency.\n"
+    f"- **Contract** = the run's raw `contract` score (build ok + reset/start health over the 45 isolation\n"
+    f"  groups + response schema-conformance over the pinned operations exercised) — its {CONTRACT_WEIGHT:.0%}\n"
+    f"  share of the blend above, shown separately so a low Contract score is visible even though it's a\n"
+    f"  small enough share of Score (max) to otherwise hide there. `—` for a pre-Contract-bucket run.\n"
+    f"- **Notes** also record: served model when it differs from requested, a non-zero generation exit\n"
+    f"  code, and tamper-check hits. Rows carrying `SETUP-FAIL` or a partial-app note are kept in the\n"
+    f"  table but their score is **not comparable** to fully-assessed rows.\n"
+    f"- **Runs** = how many times this candidate was scored in `{MODE}` mode; **Per-run scores** shows every\n"
+    f"  run's weighted score, oldest→newest — read a flaky candidate as that whole spread, not just the max\n"
+    f"  headline. All 9 candidates are now bit-for-bit identical across 3 runs (spread 0.0000), so **1 run\n"
+    f"  is sufficient** for any of them going forward. Under the old `shared` mode the spreads were as high\n"
+    f"  as 0.13. claude-opus-4-8 was the last holdout: `configure_laboratory_acceptance` read\n"
+    f"  serviceable=True on only ~13% of continuous polls against its app (47 True/False transitions in 45s,\n"
+    f"  confirmed by direct instrumentation, vs 218/218 True on golden over the identical window) — a real\n"
+    f"  app defect, not a verifier race. The capability now requires 5 consecutive confirming reads before\n"
+    f"  crediting `serviceable=True`, which a correct app (golden) passes for free and a flapping one fails\n"
+    f"  deterministically.\n"
+    f"- **Tokens** are provider-measured where available; claude/OpenCode runs report no usage totals, so\n"
+    f"  those are estimated from generation time (~{RATE:.0f} tok/s, the median of the measured runs).\n"
+)
+(ROOT / "benchmark.md").write_text(out)
+print(out)
+print(f"wrote {ROOT/'benchmark.md'}  ({len(rows)} candidates)")

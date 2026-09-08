@@ -1,0 +1,63 @@
+diff --git a/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/maintenance.go b/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/maintenance.go
+--- a/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/maintenance.go
++++ b/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/maintenance.go
+@@ -50,16 +50,14 @@
+ 			}
+ 			emit(state, audience, "assignment.offer_expired", "assignment", assignment.ID, payload)
+ 
+-			// `required` (from assignmentEligibility above) is true for any
+-			// collection assignment whose sample type demands a qualified
+-			// collector -- all four named types, not just Pulse. Once the
+-			// re-offer search comes up empty for one of them, nobody is left
+-			// to ever accept this assignment, so it must resolve to the same
+-			// distinguishable exception Pulse has always gotten here, not
+-			// silently wait out the (unrelated) delivery deadline instead.
+-			if next == "" && required {
+-				recordNoQualifiedCollectorException(state, state.Samples[assignment.SampleID], now)
+-			}
++			// MUTANT exhaustion-exception-missing (call site A): the branch that
++			// fired the distinguishable no-qualified-collector exception when a
++			// re-offer search came up empty for a qualified-collector-required
++			// assignment has been removed. Such an assignment is now left
++			// pending and only ever resolves later via the generic
++			// delivery-deadline expiry path, so the outcome is no longer
++			// distinguishable from a missed delivery deadline. (`required` is
++			// still consulted above when driving the re-offer search.)
+ 		}
+ 		for _, sample := range state.Samples {
+ 			request := state.Requests[sample.RequestID]
+@@ -141,23 +139,17 @@
+ // decline/re-offer/offer-expiry path instead and is left untouched here — this
+ // only covers assignments that have never once had a worker since creation.
+ func expireUnassignedQualifiedCollectionSearches(state *mongostore.State, now time.Time) {
+-	for _, assignment := range state.Assignments {
+-		if assignment.Status != "pending" || assignment.WorkerID != "" || len(assignment.Declines) != 0 {
+-			continue
+-		}
+-		journey := state.Journeys[assignment.JourneyID]
+-		if journey == nil || journey.Status != "active" {
+-			continue
+-		}
+-		_, _, required := assignmentEligibility(state, assignment)
+-		if !required {
+-			continue
+-		}
+-		if now.Before(assignment.CreatedAt.Add(unassignedSearchTimeout())) {
+-			continue
+-		}
+-		recordNoQualifiedCollectorException(state, state.Samples[assignment.SampleID], now)
+-	}
++	// MUTANT exhaustion-exception-missing (call site B): this search-timeout
++	// pass has been neutered. A collection assignment that has required a
++	// qualified collector since creation and has never once had an eligible
++	// worker to offer it to is no longer flagged as the distinguishable
++	// no-qualified-collector exception once the configured search timeout
++	// elapses. It is simply left pending, and only ever resolves later via
++	// the generic delivery-deadline expiry path -- so a "no qualified
++	// collector ever available" outcome is no longer distinguishable from a
++	// missed delivery deadline, within the reasonable-time window.
++	_ = state
++	_ = now
+ }
+ 
+ // recentlyDeclinedWorkers lists the workers whose decline of this assignment is

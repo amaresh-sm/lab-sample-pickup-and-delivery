@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "product": "lab-sample-pickup-and-delivery",
+  "scenarios": [
+    "login_rejects_invalid_credentials",
+    "role_switch_control_lists_and_applies_role",
+    "role_work_view_shows_current_and_past",
+    "sample_view_shows_ordered_status_history",
+    "sample_freshness_visible_to_owner",
+    "sample_view_shows_location_custodian_progress",
+    "map_renders_local_tiles_only",
+    "sample_view_surfaces_exception_flag",
+    "monitor_dashboard_renders_categories",
+    "audit_view_renders_and_searches",
+    "sign_out_ends_authenticated_session",
+    "request_form_surfaces_validation_error",
+    "serviceability_dry_run_creates_nothing",
+    "lab_worker_views_own_capacity",
+    "accept_assignment_writes_through",
+    "worker_records_location_writes_through"
+  ],
+  "hooks": {
+    "strategy": "accessible-role-label-visible-text",
+    "required": true,
+    "framework_specific_selectors": false
+  }
+}

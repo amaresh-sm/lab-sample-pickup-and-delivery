@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Labflow · Clinical logistics</title>
+  </head>
+  <body>
+    <!--
+      HOLLOW-UI ANCHOR.
+
+      A deliberately empty frontend served by golden's REAL backend (so the UI
+      verifier's HTTP seeding still succeeds) that renders NONE of the
+      real presentation behaviour the scenarios grade. It even shows a
+      login-shaped form that does nothing, to prove the verifier requires a
+      genuine authenticated session and rendered data values -- not merely the
+      presence of form controls -- before it awards any credit.
+
+      Expected UI score: ~0 (login never reaches an authenticated state, no map
+      canvas ever draws, no freshness is ever rendered).
+    -->
+    <main>
+      <h1>Welcome back</h1>
+      <form onsubmit="return false">
+        <label for="u">Username</label>
+        <input id="u" name="username" type="text" />
+        <label for="p">Password</label>
+        <input id="p" name="password" type="password" />
+        <button type="submit">Sign in</button>
+      </form>
+      <p>Operations workspace is loading…</p>
+    </main>
+  </body>
+</html>

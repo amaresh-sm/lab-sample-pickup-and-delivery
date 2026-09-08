@@ -1,0 +1,348 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+repository_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$repository_root"
+
+# Single env file (verifier.env) holds all provider settings; the GEN_PROVIDER flag is the toggle.
+# In DEFAULT mode (GEN_PROVIDER unset) the OPENAI_API_KEY in verifier.env is intentionally IGNORED for
+# generation auth (Codex uses its ChatGPT login), so the verifier's key can't hijack Codex.
+env_file="${VERIFIER_ENV_FILE:-$repository_root/verifier.env}"
+if [[ -f "$env_file" ]]; then
+  # Caller-provided overrides (env / `new-run --provider|--model`) must WIN over the file. Capture
+  # whether each is set BEFORE sourcing, then restore after. ${VAR+x} is "x" even when VAR is empty,
+  # so `--provider codex` (which sets GEN_PROVIDER="") still overrides a GEN_PROVIDER=portkey in the file.
+  _ov_gp="${GEN_PROVIDER+x}";     _ov_gp_v="${GEN_PROVIDER:-}"
+  _ov_gm="${GEN_MODEL+x}";        _ov_gm_v="${GEN_MODEL:-}"
+  _ov_cm="${CODEX_MODEL+x}";      _ov_cm_v="${CODEX_MODEL:-}"
+  _ov_cr="${CODEX_REASONING+x}";  _ov_cr_v="${CODEX_REASONING:-}"
+  set -a; source "$env_file"; set +a
+  [[ -n "$_ov_gp" ]] && GEN_PROVIDER="$_ov_gp_v"
+  [[ -n "$_ov_gm" ]] && GEN_MODEL="$_ov_gm_v"
+  [[ -n "$_ov_cm" ]] && CODEX_MODEL="$_ov_cm_v"
+  [[ -n "$_ov_cr" ]] && CODEX_REASONING="$_ov_cr_v"
+fi
+
+base_image="${BASE_IMAGE:-lab-sample-pickup-delivery-gym:local}"
+codex_image="${CODEX_IMAGE:-lab-sample-pickup-delivery-gym:codex-local}"
+codex_version="${CODEX_VERSION:-0.144.6}"
+codex_model="${CODEX_MODEL:-gpt-5.6-terra}"
+codex_reasoning="${CODEX_REASONING:-medium}"
+# Model/provider are switchable via GEN_PROVIDER. Default (unset) = Codex's built-in ChatGPT provider,
+# unchanged. GEN_PROVIDER=portkey routes generation through Portkey using the SAME verifier.env values the
+# mapper uses (OPENAI_API_KEY as the token, OPENAI_BASE_URL as the endpoint, PORTKEY_CONFIG for routing).
+# Activate by setting in verifier.env:  GEN_PROVIDER=portkey  GEN_MODEL=<model>  PORTKEY_CONFIG=pc-...
+# UNVERIFIED until a live probe with a real Portkey config id (see PORTKEY-SETUP.md).
+gen_provider="${GEN_PROVIDER:-}"
+gen_model="${GEN_MODEL:-$codex_model}"
+run_id="$(date -u +%Y%m%dT%H%M%SZ)-$$"
+container="agent-solution-${run_id}"
+
+if [[ -n "${AGENT_SOLUTION_OUTPUT_DIR:-}" ]]; then
+  run_dir="$AGENT_SOLUTION_OUTPUT_DIR"
+  if [[ -e "$run_dir" ]]; then
+    echo "AGENT_SOLUTION_OUTPUT_DIR already exists: $run_dir" >&2
+    exit 2
+  fi
+  mkdir -p "$run_dir"
+else
+  run_dir="$(mktemp -d "${TMPDIR:-/tmp}/agent-solution.XXXXXX")"
+fi
+
+workspace="$run_dir/workspace"
+mkdir -p "$workspace"
+chmod 0777 "$workspace"
+cp "${INSTRUCTION_SRC:-tasks/lab-sample-pickup-and-delivery/instruction.md}" "$workspace/instruction.md"
+chmod 0444 "$workspace/instruction.md"
+# [pinned] always drop the pinned API contract into the workspace for the model to implement exactly
+contract_src="${CONTRACT_SRC:-tasks/lab-sample-pickup-and-delivery/openapi.contract.json}"
+[[ -f "$contract_src" ]] && { cp "$contract_src" "$workspace/openapi.contract.json"; chmod 0444 "$workspace/openapi.contract.json"; }
+
+cleanup() {
+  docker rm --force "$container" >/dev/null 2>&1 || true
+}
+trap cleanup EXIT
+
+if [[ "${REBUILD_BASE:-0}" == "1" ]] || ! docker image inspect "$base_image" >/dev/null 2>&1; then
+  docker build --tag "$base_image" --file environment/Dockerfile .
+fi
+
+if [[ "${REBUILD_CODEX:-0}" == "1" ]] || ! docker image inspect "$codex_image" >/dev/null 2>&1; then
+  docker build \
+    --build-arg "BASE_IMAGE=$base_image" \
+    --build-arg "CODEX_VERSION=$codex_version" \
+    --tag "$codex_image" \
+    --file verifier/amazon-test/Dockerfile.codex \
+    .
+fi
+
+# ISOLATION: the generation container mounts ONLY the candidate workspace (which
+# holds just instruction.md + the pinned openapi.contract.json). It must NOT see
+# the verifier, the golden reference solution, the capability tests, the mutants,
+# or ACCEPTANCE.md — otherwise the coding agent could read the answer key / tests
+# and cheat, making any score meaningless. (The whole repo used to be mounted at
+# /opt/gym for the now-removed post-generation self-heal; that door is closed.)
+run=(
+  docker run --detach
+  --name "$container"
+  --mount "type=bind,src=$workspace,dst=/workspace"
+)
+# Token passthrough is driven by GEN_PROVIDER, NOT by the mere presence of OPENAI_API_KEY (so the
+# verifier's key in verifier.env never hijacks the default ChatGPT generation path).
+case "$gen_provider" in
+  portkey)
+    : "${OPENAI_API_KEY:?GEN_PROVIDER=portkey requires OPENAI_API_KEY (the Portkey token) in verifier.env}"
+    if [[ -z "${PORTKEY_CONFIG:-}" && -z "${PORTKEY_PROVIDER:-}" ]]; then
+      echo "GEN_PROVIDER=portkey requires PORTKEY_CONFIG=<config-id> or PORTKEY_PROVIDER=<slug> in verifier.env" >&2
+      exit 2
+    fi
+    run+=(--env OPENAI_API_KEY)
+    ;;
+  openai)
+    : "${OPENAI_API_KEY:?GEN_PROVIDER=openai requires OPENAI_API_KEY}"
+    run+=(--env OPENAI_API_KEY)
+    ;;
+  claude)
+    # Prefer a real ANTHROPIC_API_KEY (reliable, no OAuth expiry). If absent, we copy the host's
+    # subscription creds in the auth block below (works only opportunistically — token can expire).
+    [[ -n "${ANTHROPIC_API_KEY:-}" ]] && run+=(--env ANTHROPIC_API_KEY)
+    ;;
+esac
+run+=("$codex_image" sleep infinity)
+
+"${run[@]}" >/dev/null
+
+# Auth source per provider:
+#   claude          -> install the Claude Code CLI + copy ~/.claude/.credentials.json (mirrors codex auth)
+#   portkey/openai  -> OPENAI_API_KEY (passed above)
+#   default (codex) -> Codex ChatGPT auth file
+if [[ "$gen_provider" == "claude" ]]; then
+  echo "[claude] installing @anthropic-ai/claude-code in the container..."
+  docker exec --user root "$container" bash -lc \
+    'export npm_config_cache=/tmp/npmcache; npm i -g @anthropic-ai/claude-code >/tmp/claude-install.log 2>&1 || { echo "claude-code install failed:"; tail -5 /tmp/claude-install.log; exit 1; }'
+  if [[ -n "${ANTHROPIC_API_KEY:-}" ]]; then
+    echo "[claude] auth via ANTHROPIC_API_KEY (reliable)"      # passed as --env above
+  else
+    # Fallback: copy the host's subscription OAuth creds. WORKS ONLY OPPORTUNISTICALLY — the OAuth
+    # access token is short-lived and the container cannot reliably refresh it. Prefer ANTHROPIC_API_KEY.
+    claude_creds="${CLAUDE_CREDENTIALS_FILE:-${HOME:?HOME is required}/.claude/.credentials.json}"
+    if [[ ! -f "$claude_creds" ]]; then
+      echo "GEN_PROVIDER=claude needs ANTHROPIC_API_KEY, or $claude_creds (Claude Code login)." >&2
+      exit 2
+    fi
+    echo "[claude] auth via copied ~/.claude/.credentials.json (opportunistic — may expire mid-run)"
+    docker exec --user root "$container" bash -lc 'mkdir -p /home/agent/.claude'
+    docker cp "$claude_creds" "$container:/home/agent/.claude/.credentials.json"
+    docker exec --user root "$container" bash -lc 'chown -R agent:agent /home/agent/.claude && chmod 600 /home/agent/.claude/.credentials.json'
+  fi
+elif [[ "$gen_provider" != "portkey" && "$gen_provider" != "openai" ]]; then
+  codex_auth_file="${CODEX_AUTH_FILE:-${HOME:?HOME is required}/.codex/auth.json}"
+  if [[ ! -f "$codex_auth_file" ]]; then
+    echo "Default generation needs CODEX_AUTH_FILE (ChatGPT login). Or set GEN_PROVIDER=portkey|openai|claude." >&2
+    exit 2
+  fi
+  docker cp "$codex_auth_file" "$container:/home/agent/.codex/auth.json"
+  docker exec --user root "$container" chown agent:agent /home/agent/.codex/auth.json
+  docker exec --user root "$container" chmod 0600 /home/agent/.codex/auth.json
+fi
+
+# Build Codex provider overrides for portkey mode (-c overrides apply even with --ignore-user-config).
+# Secret stays in env_key -> Authorization: Bearer; only the non-secret slug goes on the command line.
+codex_extra=()
+if [[ "$gen_provider" == "portkey" ]]; then
+  portkey_base_url="${OPENAI_BASE_URL:-https://api.portkey.ai/v1}"
+  # Routing header: prefer a Config id (x-portkey-config) if given, else an AI-Provider slug.
+  if [[ -n "${PORTKEY_CONFIG:-}" ]]; then
+    portkey_route_header="\"x-portkey-config\" = \"$PORTKEY_CONFIG\""
+  else
+    portkey_route_header="\"x-portkey-provider\" = \"$PORTKEY_PROVIDER\""
+  fi
+  codex_extra+=(
+    --config 'model_provider="portkey"'
+    --config 'model_providers.portkey.name="portkey"'
+    --config "model_providers.portkey.base_url=\"$portkey_base_url\""
+    --config 'model_providers.portkey.env_key="OPENAI_API_KEY"'
+    --config 'model_providers.portkey.wire_api="responses"'
+    --config "model_providers.portkey.http_headers={ $portkey_route_header }"
+  )
+fi
+
+started_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+started_epoch="$(date +%s)"
+echo "Solution output: $run_dir"
+
+if [[ "$gen_provider" == "claude" ]]; then
+  # Native Claude Code CLI as the generation agent (analogous to `codex exec`).
+  # Model: only pass --model if it's a claude-* id (ignore a non-claude GEN_MODEL leaked from verifier.env).
+  # stream-json (needs --verbose) streams live JSONL events AND ends with a
+  # `{"type":"result",...,"usage":{...}}` event carrying the session's cumulative
+  # token usage -- so claude runs now record real tokens (parsed below), which
+  # --output-format text did not expose. The live stream is JSONL rather than
+  # prose; that is the trade-off for capturing usage.
+  claude_args=(-p --dangerously-skip-permissions --output-format stream-json --verbose)
+  claude_model="${GEN_MODEL:-}"; [[ "$claude_model" == claude* ]] || claude_model=""
+  [[ -n "$claude_model" ]] && claude_args+=(--model "$claude_model")
+  [[ -n "${codex_reasoning:-}" ]] && claude_args+=(--effort "$codex_reasoning")
+  echo "Running Claude Code with model=${claude_model:-<default>} effort=$codex_reasoning; no external timeout is applied."
+  set +e
+  docker exec --interactive --user agent "$container" \
+    bash -lc "cd /workspace && claude ${claude_args[*]}" \
+    < verifier/amazon-test/full-solution-prompt.md \
+    2>&1 | tee "$run_dir/codex.log"
+  codex_status="${PIPESTATUS[0]}"
+  set -e
+else
+  echo "Running Codex with model=$gen_model provider=${gen_provider:-default} ($codex_reasoning reasoning); no external timeout is applied."
+  set +e
+  docker exec --interactive --user agent "$container" \
+    codex exec \
+      --model "$gen_model" \
+      --config "model_reasoning_effort=\"$codex_reasoning\"" \
+      ${codex_extra[@]+"${codex_extra[@]}"} \
+      --ignore-user-config \
+      --ignore-rules \
+      --ephemeral \
+      --skip-git-repo-check \
+      --dangerously-bypass-approvals-and-sandbox \
+      --color never \
+      --cd /workspace \
+      - \
+    < verifier/amazon-test/full-solution-prompt.md \
+    2>&1 | tee "$run_dir/codex.log"
+  codex_status="${PIPESTATUS[0]}"
+  set -e
+fi
+
+finished_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+finished_epoch="$(date +%s)"
+
+# ---- Tamper / leakage check (defence-in-depth on top of the isolation above) ----
+# The container no longer mounts the verifier/golden, so the agent CANNOT reach the
+# answer key. This scan is a detective control: if the produced workspace ever
+# contains fingerprints unique to the golden solution or the verifier internals,
+# something leaked (or a future mount regressed) -- flag it loudly. These strings
+# are golden-INTERNAL identifiers / verifier artifacts a genuinely independent
+# candidate would not reproduce verbatim; they are NOT part of instruction.md or
+# the pinned contract, so a legitimate candidate has no reason to contain them.
+tamper_hits="$(grep -rIlE 'enforceNamedSamplePolicy|recordNoQualifiedCollectorException|qc-pinned-contracts|reference-solutions|EnsureNamedSampleTypesSeeded|LX-[AIFP]\b|mutation\.patch' "$workspace" 2>/dev/null || true)"
+tamper_flag="clean"
+if [[ -n "$tamper_hits" ]]; then
+  tamper_flag="SUSPECT"
+  echo "" >&2
+  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" >&2
+  echo "[tamper-check] SUSPECT: workspace contains golden/verifier fingerprints." >&2
+  echo "[tamper-check] The candidate may have accessed the answer key. Files:" >&2
+  printf '  %s\n' $tamper_hits >&2
+  echo "[tamper-check] Treat this run's score as UNTRUSTWORTHY until reviewed." >&2
+  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" >&2
+else
+  echo "[tamper-check] clean — no golden/verifier fingerprints in the workspace."
+fi
+
+# NOTE: the old post-generation OpenAPI self-heal (observe-openapi.py + postprocess-openapi.py)
+# was removed deliberately. It auto-rewrote the candidate's own verification/openapi.json to fill
+# gaps before scoring -- i.e. the harness silently improving the candidate's artifact, which
+# inflates a sloppy candidate's result and is unfair under the current pinned-contract model
+# (the candidate must implement the contract exactly; we grade what it actually produced). It also
+# depended on the deleted `contract_validator` package. The OpenAPI is still validated for real at
+# score time by the engine's `openapi_json_well_formed` capability (AC-124), so nothing is lost.
+
+# ---- Metadata: model/reasoning/timing + best-effort token usage ----
+# Token capture is BEST-EFFORT and differs per provider (duration is always recorded):
+#   claude   : runs in --output-format stream-json (--verbose); the terminal
+#              {"type":"result",...,"usage":{...}} event gives cumulative input/output
+#              (+cache) tokens, parsed from the tee'd log below.
+#   codex    : `codex exec` prints a "tokens used" / "token usage" summary at the end -> grepped.
+#   portkey  : same codex CLI path as codex; prints usage only if the gateway forwards it -> grepped.
+# The parser below scans codex.log for the common shapes and emits {input,output,total} or null.
+duration_seconds=$(( finished_epoch - started_epoch ))
+metadata_provider="${gen_provider:-codex}"
+python3 - \
+  "$run_dir/run-metadata.json" \
+  "$metadata_provider" \
+  "$gen_model" \
+  "$codex_reasoning" \
+  "${GEN_LABEL:-}" \
+  "$started_at" \
+  "$finished_at" \
+  "$duration_seconds" \
+  "$codex_status" \
+  "$run_dir/codex.log" \
+  "$tamper_flag" <<'PY'
+import json, re, sys
+(out_path, provider, model, reasoning, label,
+ started_at, finished_at, duration_seconds, exit_code, log_path, tamper_flag) = sys.argv[1:12]
+
+def parse_tokens(path):
+    try:
+        text = open(path, "r", errors="replace").read()
+    except OSError:
+        return None
+    inp = out = tot = None
+    # claude --output-format stream-json: prefer the terminal
+    # {"type":"result",...,"usage":{...}} event, which carries the SESSION's
+    # cumulative usage. Take the LAST such event (there is normally one) so we
+    # never mistake an early per-turn delta for the total.
+    for line in reversed(text.splitlines()):
+        line = line.strip()
+        if '"type": "result"' not in line and '"type":"result"' not in line:
+            continue
+        try:
+            evt = json.loads(line)
+        except Exception:
+            continue
+        u = evt.get("usage") or {}
+        ci = u.get("input_tokens"); co = u.get("output_tokens")
+        cache = (u.get("cache_creation_input_tokens") or 0) + (u.get("cache_read_input_tokens") or 0)
+        if ci is not None or co is not None:
+            inp = (ci or 0) + cache
+            out = co or 0
+            tot = inp + out
+            return {"input": inp, "output": out, "total": tot}
+    # JSON usage blob: "usage": {"input_tokens": N, "output_tokens": M, ...}
+    m = re.search(r'"input_tokens"\s*:\s*(\d+)', text)
+    if m: inp = int(m.group(1))
+    m = re.search(r'"output_tokens"\s*:\s*(\d+)', text)
+    if m: out = int(m.group(1))
+    # codex-style free text: "input tokens: N", "output tokens: M", "total tokens: T"
+    if inp is None:
+        m = re.search(r'input[ _]tokens?\D+(\d[\d,]*)', text, re.I)
+        if m: inp = int(m.group(1).replace(",", ""))
+    if out is None:
+        m = re.search(r'output[ _]tokens?\D+(\d[\d,]*)', text, re.I)
+        if m: out = int(m.group(1).replace(",", ""))
+    m = re.search(r'total[ _]tokens?\D+(\d[\d,]*)', text, re.I)
+    if m: tot = int(m.group(1).replace(",", ""))
+    if inp is None and out is None and tot is None:
+        # last resort: "tokens used: N"
+        m = re.search(r'tokens?\s+used\D+(\d[\d,]*)', text, re.I)
+        if m: tot = int(m.group(1).replace(",", ""))
+    if inp is None and out is None and tot is None:
+        return None
+    if tot is None and inp is not None and out is not None:
+        tot = inp + out
+    return {"input": inp, "output": out, "total": tot}
+
+meta = {
+    "provider": provider,
+    "model": model,
+    "reasoning": reasoning,
+    "label": label or None,
+    "startedAt": started_at,
+    "finishedAt": finished_at,
+    "durationSeconds": int(duration_seconds),
+    "exitCode": int(exit_code),
+    "tokens": parse_tokens(log_path),
+    "tamperCheck": tamper_flag,
+}
+with open(out_path, "w") as f:
+    json.dump(meta, f, indent=2)
+    f.write("\n")
+PY
+
+echo "Generation duration: ${duration_seconds}s"
+
+echo "Solution workspace: $workspace"
+echo "Codex log: $run_dir/codex.log"
+echo "Run metadata: $run_dir/run-metadata.json"
+exit "$codex_status"

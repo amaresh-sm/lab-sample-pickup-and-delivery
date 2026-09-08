@@ -1,0 +1,21 @@
+{
+  "contractVersion": "1.0",
+  "commands": {
+    "build": ["bash", "app-setup/build.sh"],
+    "start": ["bash", "app-setup/start.sh"],
+    "reset": ["bash", "app-setup/reset.sh"]
+  },
+  "urls": {
+    "frontend": "http://127.0.0.1:18082",
+    "api": "http://127.0.0.1:18082/api",
+    "ready": "http://127.0.0.1:18082/ready"
+  },
+  "artifacts": {
+    "openapi": "app-setup/openapi.json",
+    "mongodbSchema": "app-setup/mongodb-schema.json"
+  },
+  "initialAdmin": {
+    "loginOperationId": "authenticate_user"
+  },
+  "datastoresUsed": ["mongodb"]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Offline Bangalore Basemap",
+  "source_archive": "https://build.protomaps.com/20260716.pmtiles",
+  "basemap_schema": "4.14.11",
+  "pmtiles_cli": "1.31.1",
+  "bounds": [77.45, 12.8, 77.85, 13.2],
+  "center": [77.5946, 12.9716],
+  "min_zoom": 0,
+  "max_zoom": 14,
+  "extracted_on": "2026-07-16",
+  "data_source": "OpenStreetMap contributors",
+  "data_license": "Open Data Commons Open Database License 1.0",
+  "renderer": "MapLibre GL JS",
+  "archive_format": "PMTiles v3"
+}

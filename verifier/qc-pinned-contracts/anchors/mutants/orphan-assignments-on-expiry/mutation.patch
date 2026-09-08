@@ -1,0 +1,18 @@
+diff --git a/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/maintenance.go b/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/maintenance.go
+index c21bc33..a65fca0 100644
+--- a/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/maintenance.go
++++ b/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/maintenance.go
+@@ -187,8 +187,12 @@ func expireSample(state *mongostore.State, sample *mongostore.Sample, now time.T
+ 	journey := state.Journeys[sample.ActiveJourneyID]
+ 	if journey != nil && journey.Status == "active" {
+ 		if len(journey.SampleIDs) <= 1 {
++			// MUTANT orphan-assignments-on-expiry: the journey is marked
++			// cancelled but its assignments are left exactly as they were
++			// (still pending/in-progress against a now-cancelled journey),
++			// reintroducing the real orphan-assignment bug that jams later
++			// plan edits (cancelUnfinishedAssignments is no longer called).
+ 			journey.Status, journey.UpdatedAt = "cancelled", now
+-			cancelUnfinishedAssignments(state, journey.ID)
+ 			releaseReservations(state, journey.ID)
+ 		} else {
+ 			// One member of a live batch missed its deadline. The surviving journey

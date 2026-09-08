@@ -1,0 +1,117 @@
+  !! accept_assignment raised ApiError("create_collection_request -> HTTP 403 (forbidden): {'error': 'The selected role cannot perform this action', 'code': 'forbidden'}")
+  !! cancel_journey raised ApiError("create_collection_request -> HTTP 403 (forbidden): {'error': 'The selected role cannot perform this action', 'code': 'forbidden'}")
+  !! collect_and_seal_sample raised ApiError("create_collection_request -> HTTP 403 (forbidden): {'error': 'The selected role cannot perform this action', 'code': 'forbidden'}")
+  !! create_collection_request raised ApiError("create_collection_request -> HTTP 403 (forbidden): {'error': 'The selected role cannot perform this action', 'code': 'forbidden'}")
+  !! create_sample_type raised ApiError("create_sample_type -> HTTP 409 (concurrent_conflict): {'error': 'Sample type name is already in use or an incompatibility is invalid', 'code': 'concurrent_conflict'}")
+  !! decline_assignment raised ApiError("create_collection_request -> HTTP 403 (forbidden): {'error': 'The selected role cannot perform this action', 'code': 'forbidden'}")
+  !! edit_active_plan raised ApiError("create_collection_request -> HTTP 403 (forbidden): {'error': 'The selected role cannot perform this action', 'code': 'forbidden'}")
+  !! merge_journeys raised ApiError("create_collection_request -> HTTP 403 (forbidden): {'error': 'The selected role cannot perform this action', 'code': 'forbidden'}")
+  !! read_journey_plan raised KeyError('journeyId')
+  !! record_laboratory_exception raised ApiError("create_collection_request -> HTTP 403 (forbidden): {'error': 'The selected role cannot perform this action', 'code': 'forbidden'}")
+  !! report_disruption raised ApiError("create_collection_request -> HTTP 403 (forbidden): {'error': 'The selected role cannot perform this action', 'code': 'forbidden'}")
+  !! reroute_journey raised ApiError("create_collection_request -> HTTP 403 (forbidden): {'error': 'The selected role cannot perform this action', 'code': 'forbidden'}")
+  !! search_audit_trail raised ApiError("create_sample_type -> HTTP 409 (concurrent_conflict): {'error': 'Sample type name is already in use or an incompatibility is invalid', 'code': 'concurrent_conflict'}")
+  !! split_journey raised ApiError("create_collection_request -> HTTP 403 (forbidden): {'error': 'The selected role cannot perform this action', 'code': 'forbidden'}")
+  !! update_sample_type raised ApiError("create_sample_type -> HTTP 409 (concurrent_conflict): {'error': 'Sample type name is already in use or an incompatibility is invalid', 'code': 'concurrent_conflict'}")
+* accept_assignment                lifecycle  credit=0.000
+  authenticate_user                write      credit=0.500
+      positive:    status=200 roles=['requester'] activeRole=''
+      negative:    status=401 code='unauthorized'
+  cancel_journey                   write      credit=0.000
+* check_serviceability             write      credit=0.500
+      positive:    5.0km serviceable=False; 5.05km reason=insufficient_capacity; dry_run sample_count 0->0; tight-window-tight-deadline reason=deadline_unreachable
+      negative:    inverted window -> status=400 code='invalid_collection_window'
+  collect_and_seal_sample          lifecycle  credit=0.000
+* configure_capacity               write      credit=1.000
+      positive:    response capacityUnits=37 cooled=11; ops-state reflects=True
+      negative:    negative capacityUnits -> status=400 code='invalid_capacity'; requester read_operations_state -> 403 (RBAC-gated capacity view)
+* configure_laboratory_acceptance  write      credit=1.000
+      positive:    accepts-on -> serviceable=True; accepts-off -> serviceable=False reason=no_accepting_laboratory
+      negative:    unknown laboratoryId -> status=400 code='invalid_acceptance'
+* confirm_handoff                  lifecycle  credit=0.000
+      positive:    one-sided: status=None sender=None receiver=None; both-sided: status=None holder_flip_ok=False; replay_no_dup=True
+  confirm_laboratory_receipt       lifecycle  credit=0.000
+      positive:    step never attempted (upstream planning did not produce a driveable journey)
+* create_collection_request        write      credit=0.000
+  create_connection                write      credit=1.000
+      positive:    cooled=True via=audit-trail
+      negative:    status=400 code='invalid_connection'
+  create_location                  write      credit=0.500
+      positive:    functions={'collection_point': False, 'hub': True, 'laboratory': True, 'transfer_point': False} found_in_ops_state=True via=audit-trail
+      negative:    status=400 code='invalid_location_function'
+* create_sample_type               write      credit=0.000
+  create_user                      write      credit=1.000
+      positive:    observed via direct-read
+      negative:    status=409 code='username_exists'
+  decline_assignment               write      credit=0.000
+* edit_active_plan                 lifecycle  credit=0.000
+  ingest_presealed_sample          write      credit=0.500
+      positive:    status=201 alreadySealed=True activeAssignmentIds=['f0a40246-00b8-4265-a707-6ce6cb6dc55f', 'ed59c5b8-ad95-4aac-badb-4da92ef09c55'] no_collector_offer=True
+      negative:    unknown initialHolderId -> status=201 code=''
+* initiate_handoff                 lifecycle  credit=0.000
+      positive:    step never attempted (upstream planning did not produce a driveable journey)
+* list_role_work                   read       credit=0.500
+      positive:    status=200 buckets=['completed', 'inProgress', 'pending']; deadline_expiry_orphan_probe: planning did not produce a driveable journey for the deadline-expiry probe -- status=403 payload={'error': 'The selected role cannot perform this action', 'code': 'forbidden'}
+      negative:    requesting a role you don't hold -> status=403 code='forbidden'
+  merge_journeys                   write      credit=0.000
+  read_journey_plan                read       credit=0.000
+  read_operations_state            read       credit=1.000
+      positive:    status=200 keys_present=['samples', 'workers', 'locations', 'connections', 'routes', 'handoffs', 'delays', 'exceptions']
+      negative:    requester -> status=403
+  read_sample_lifecycle            read       credit=1.000
+      positive:    status=200 sealed=False timeline_len=1 ordered=True
+      negative:    status=404 code='not_found'
+  read_sample_state                read       credit=1.000
+      positive:    status=200 state={'status': 'requested'} locationStale=False
+      negative:    AC-2: another requester reading it -> status=403 code='forbidden'
+* read_serviceability_snapshot     read       credit=1.000
+      positive:    status=200 version=140 activeCollectionPointCount=22
+      negative:    requester role -> status=403 code='forbidden'
+  read_ui_bootstrap                read       credit=1.000
+      positive:    status=200 keys=['operations', 'serverTime', 'user']
+      negative:    anonymous -> status=401 code='unauthorized'
+  read_user                        read       credit=1.000
+      positive:    status=200 userId=eae7a077-3b2b-46b1-8ff9-3ba00f3a7c7e
+      negative:    cross-account read_user -> status=403 code='forbidden'
+  record_handling_checkpoint       lifecycle  credit=0.000
+      positive:    step never attempted (upstream planning did not produce a driveable journey)
+  record_laboratory_exception      write      credit=0.000
+  record_worker_location           lifecycle  credit=0.000
+      positive:    step never attempted (upstream planning did not produce a driveable journey)
+* report_disruption                write      credit=0.000
+  reroute_journey                  write      credit=0.000
+* search_audit_trail               read       credit=0.000
+* select_active_role               write      credit=0.500
+      positive:    select requester->200 select dispatcher->200 denied_as_requester=True allowed_as_dispatcher=True roles unchanged=True
+      negative:    status=403 code='forbidden'
+  set_connection_status            write      credit=1.000
+      positive:    active=False
+      negative:    status=404
+  set_location_function_status     write      credit=0.500
+      positive:    disabled collection_point, remaining functions={'collection_point': False, 'hub': False, 'laboratory': True, 'transfer_point': False}
+      negative:    unknown-function->400 (invalid_location_function); function-not-held(hub)->200 ()
+  set_location_status              write      credit=1.000
+      positive:    active=False (AC-24: no restart required)
+      negative:    status=404
+  set_worker_availability          write      credit=1.000
+      positive:    available=True capacityUnits=77 via=audit-trail
+      negative:    status=400 code='invalid_capacity'
+  split_journey                    write      credit=0.000
+  stream_realtime_events           read       credit=1.000
+      positive:    status=200 events=138
+      negative:    anonymous -> status=401 code='unauthorized'
+  system_readiness                 read       credit=1.000
+      positive:    status=200 payload={'status': 'ready'}
+  update_assignment_progress       lifecycle  credit=0.000
+      positive:    step never attempted (upstream planning did not produce a driveable journey)
+  update_location                  write      credit=0.500
+      positive:    name=9xc8z0036-uloc-renamed-1 via=audit-trail
+      negative:    status=400 code='invalid_coordinate'
+* update_sample_type               write      credit=0.000
+  update_user_access               write      credit=1.000
+      positive:    observed via direct-read; roles now ['dispatcher']
+      negative:    status=403 code='forbidden'
+
+capabilities graded: 45
+overall score:       0.4444
+wrote /tmp/sol-xhigh-score.json

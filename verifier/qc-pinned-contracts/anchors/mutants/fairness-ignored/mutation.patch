@@ -1,0 +1,29 @@
+diff --git a/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/planning.go b/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/planning.go
+--- a/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/planning.go
++++ b/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/planning.go
+@@ -806,18 +806,13 @@
+ 	}
+ 	sort.Slice(candidates, func(i, j int) bool {
+ 		a, b := candidates[i], candidates[j]
+-		if a.activeWork != b.activeWork {
+-			return a.activeWork < b.activeWork
+-		}
+-		if a.roleOffers != b.roleOffers {
+-			return a.roleOffers < b.roleOffers
+-		}
+-		if (a.user.LastOfferedAt == nil) != (b.user.LastOfferedAt == nil) {
+-			return a.user.LastOfferedAt == nil
+-		}
+-		if a.user.LastOfferedAt != nil && !a.user.LastOfferedAt.Equal(*b.user.LastOfferedAt) {
+-			return a.user.LastOfferedAt.Before(*b.user.LastOfferedAt)
+-		}
++		// MUTANT fairness-ignored: the fairness ordering has been removed.
++		// Eligible candidates are no longer ranked by current active workload
++		// (activeWork), same-role recent-offer count (roleOffers) or how
++		// recently they were last offered work (LastOfferedAt); the algorithm
++		// now just grabs whichever eligible worker sorts first under a
++		// deterministic, stable key (creationOrder, then username, then ID).
++		// Eligibility filtering above is untouched -- only fairness is broken.
+ 		if a.creationOrder != b.creationOrder {
+ 			return a.creationOrder < b.creationOrder
+ 		}

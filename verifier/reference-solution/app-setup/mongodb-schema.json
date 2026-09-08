@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "1.0",
+  "collections": [
+    {
+      "name": "application_state",
+      "type": "collection",
+      "options": {
+        "validator": {
+          "$jsonSchema": {
+            "bsonType": "object",
+            "required": [
+              "_id",
+              "version",
+              "snapshotId",
+              "chunkCount",
+              "sha256",
+              "updatedAt"
+            ],
+            "properties": {
+              "_id": {
+                "bsonType": "string"
+              },
+              "version": {
+                "bsonType": [
+                  "long",
+                  "int"
+                ],
+                "minimum": 1
+              },
+              "snapshotId": {
+                "bsonType": "string"
+              },
+              "chunkCount": {
+                "bsonType": [
+                  "int",
+                  "long"
+                ],
+                "minimum": 1
+              },
+              "sha256": {
+                "bsonType": "string"
+              },
+              "updatedAt": {
+                "bsonType": "date"
+              }
+            }
+          }
+        },
+        "validationLevel": "strict",
+        "validationAction": "error"
+      },
+      "indexes": []
+    },
+    {
+      "name": "application_state_chunks",
+      "type": "collection",
+      "options": {
+        "validator": {
+          "$jsonSchema": {
+            "bsonType": "object",
+            "required": [
+              "_id",
+              "snapshotId",
+              "index",
+              "payload",
+              "createdAt"
+            ],
+            "properties": {
+              "_id": {
+                "bsonType": "string"
+              },
+              "snapshotId": {
+                "bsonType": "string"
+              },
+              "index": {
+                "bsonType": [
+                  "int",
+                  "long"
+                ],
+                "minimum": 0
+              },
+              "payload": {
+                "bsonType": "binData"
+              },
+              "createdAt": {
+                "bsonType": "date"
+              }
+            }
+          }
+        },
+        "validationLevel": "strict",
+        "validationAction": "error"
+      },
+      "indexes": [
+        {
+          "key": {
+            "snapshotId": 1,
+            "index": 1
+          },
+          "name": "snapshot_chunk_unique",
+          "unique": true
+        },
+        {
+          "key": {
+            "createdAt": 1
+          },
+          "name": "snapshot_created_at"
+        }
+      ]
+    },
+    {
+      "name": "schema_metadata",
+      "type": "collection",
+      "options": {},
+      "indexes": [
+        {
+          "key": {
+            "name": 1
+          },
+          "name": "schema_name_unique",
+          "unique": true
+        }
+      ]
+    }
+  ]
+}

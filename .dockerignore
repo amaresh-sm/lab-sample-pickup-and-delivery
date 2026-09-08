@@ -1,0 +1,8 @@
+.git
+.demo-runtime
+.plan
+**/node_modules
+**/dist
+**/__pycache__
+*.pyc
+verifier/

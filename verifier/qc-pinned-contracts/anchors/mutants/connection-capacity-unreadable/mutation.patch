@@ -1,0 +1,48 @@
+diff --git a/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/views.go b/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/views.go
+index ec54ca7..b8c9fa3 100644
+--- a/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/views.go
++++ b/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/views.go
+@@ -727,7 +727,7 @@ func (s *Service) readOperations(ctx context.Context, p core.Principal, in core.
+ 	}
+ 	out := core.Map{
+ 		"samples": []core.Map{}, "workers": []core.Map{}, "routes": []core.Map{},
+-		"locations": []core.Map{}, "connections": []core.Map{},
++		"locations": []core.Map{},
+ 		"handoffs": []core.Map{}, "delays": []core.Map{}, "exceptions": []core.Map{},
+ 	}
+ 	err := s.Store.View(ctx, func(state *mongostore.State) error {
+@@ -813,30 +813,10 @@ func (s *Service) readOperations(ctx context.Context, p core.Principal, in core.
+ 			out["locations"] = append(out["locations"].([]core.Map), item)
+ 		}
+ 
+-		// A connection carries regular and cooled capacity of its own, which
+-		// planning reserves against, so the same six numbers a location reports have
+-		// to be readable for a connection too. Without this array the capacity
+-		// configured against a connection would be write-only.
+-		connections := make([]*mongostore.Connection, 0, len(state.Connections))
+-		for _, connection := range state.Connections {
+-			connections = append(connections, connection)
+-		}
+-		sort.Slice(connections, func(i, j int) bool { return connections[i].ID < connections[j].ID })
+-		for _, connection := range connections {
+-			item := core.Map{
+-				"id": connection.ID, "connectionId": connection.ID,
+-				"fromLocationId": connection.FromLocationID,
+-				"toLocationId":   connection.ToLocationID,
+-				"travelMinutes":  connection.TravelMinutes,
+-				"costUnits":      connection.CostUnits,
+-				"cooled":         connection.Cooled,
+-				"active":         connection.Active,
+-			}
+-			if capacity := capacityMap(state.Capacities[connection.ID]); capacity != nil {
+-				item["capacity"] = capacity
+-			}
+-			out["connections"] = append(out["connections"].([]core.Map), item)
+-		}
++		// MUTANT connection-capacity-unreadable: the connections array (and the
++		// per-connection capacity it carries) has been deleted from this view.
++		// Real AC-46 defect: capacity is configurable via configure_capacity
++		// but never readable back for a connection resource.
+ 
+ 		filters := core.Object(in["filters"])
+ 		sampleTypeID := core.String(filters["sampleTypeId"])

@@ -1,0 +1,9 @@
+[gym]
+name = "lab-sample-pickup-and-delivery"
+description = "Long-horizon full-stack SWE gym for lab sample pickup, delivery, routing, custody, and recovery — pinned-contract approach"
+default_model = "claude_opus_4_6"
+default_max_steps = 500
+default_timeout = 14400
+
+[environment]
+dockerfile = "environment/Dockerfile"

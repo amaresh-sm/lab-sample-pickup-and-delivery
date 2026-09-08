@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Local Bangalore Map Smoke</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: system-ui, sans-serif;
+      }
+
+      body {
+        display: grid;
+        grid-template-rows: auto 1fr;
+      }
+
+      #status-root {
+        padding: 8px 12px;
+        background: #17324d;
+        color: #fff;
+      }
+
+      #map {
+        min-height: 640px;
+      }
+
+      .sample-point-marker {
+        width: 18px;
+        height: 18px;
+        border: 3px solid #fff;
+        border-radius: 50%;
+        background: #d33636;
+        box-shadow: 0 1px 5px rgb(0 0 0 / 45%);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="status-root"></div>
+    <div id="map" aria-label="Offline Bangalore map"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

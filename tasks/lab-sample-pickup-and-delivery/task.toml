@@ -1,0 +1,29 @@
+format_version = "1.0"
+
+[task]
+task_id = "lab-sample-pickup-and-delivery"
+instruction_file = "instruction.md"
+
+[metadata]
+author_name = "HackerRank"
+difficulty = "hard"
+category = "full-stack"
+tags = ["go", "react", "typescript", "mongodb", "realtime", "concurrency"]
+
+[environment]
+setup_cmd = "bash /opt/arena/bin/start-services.sh"
+internet = true
+
+[environment.resources]
+cpus = 4
+memory_mb = 8192
+storage_mb = 20480
+gpus = 0
+timeout_sec = 14400
+
+[completion]
+signal = "timeout"
+
+[agent]
+type = "swe"
+max_steps = 500

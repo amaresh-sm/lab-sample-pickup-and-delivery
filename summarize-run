@@ -1,0 +1,218 @@
+#!/usr/bin/env python3
+"""summarize-run — build one consolidated summary (summary.json + summary.md) for a
+runs/<id>/ candidate run, pulling every metric into one place.
+
+Usage:
+  ./summarize-run runs/v3-sol-xhigh-20260802T232902Z
+  ./summarize-run runs/<id> --logs-dir runs/<id>/verifier-logs-rerun   # pick a specific score run
+
+Reads (all optional; missing -> null, never crashes):
+  <run>/solution/run-metadata.json     provider, model, reasoning, gen duration, tokens
+  <run>/<logs>/verify-metadata.json    verification duration, overall score
+  <run>/<logs>/reward.json             per-capability credits (score + evaluated/rejected split)
+Computes:
+  LOC over the candidate's own source (excludes deps/build + our copied task files),
+  cost = total_tokens * price (from the EDITABLE table below),
+  evaluated vs rejected scenarios, pass/partial/fail split, %deterministic (always 100).
+
+Writes <run>/summary.json and <run>/summary.md.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+# ---------------------------------------------------------------- EDIT ME
+# USD per 1,000,000 tokens (blended — we only have TOTAL tokens, not an input/output
+# split, so this is a single blended rate per model). Fill in real rates; unknown
+# models -> cost reported as null with a note. These are placeholders.
+PRICE_PER_MTOK: dict[str, float] = {
+    # "gpt-5.6-sol":     0.00,
+    # "gpt-5.6-luna":    0.00,
+    # "claude-opus-4-8": 0.00,
+}
+
+# The verifier engine has NO LLM in the scoring path -> evaluation is fully deterministic.
+DETERMINISTIC_PCT = 100
+
+# LOC counting: only these source extensions count; these dirs/files never do.
+SOURCE_EXTS = {".go", ".ts", ".tsx", ".js", ".jsx", ".vue", ".py", ".sql", ".rs",
+               ".java", ".rb", ".css", ".scss", ".html", ".sh"}
+EXCLUDE_DIRS = {"node_modules", "vendor", "dist", "build", ".git", ".next", "__pycache__",
+                "bin", "target", ".venv", "venv", "coverage", ".cache"}
+# Files WE copied into the candidate workspace — not the candidate's code, must not count.
+EXCLUDE_FILES = {"instruction.md", "openapi.contract.json"}
+
+
+def load_json(path: Path):
+    try:
+        return json.loads(path.read_text())
+    except Exception:
+        return None
+
+
+def count_loc(workspace: Path) -> dict:
+    """Prefer `cloc` (clean code/comment/blank split); fall back to a deterministic
+    extension-based line count. Either way excludes deps/build + our copied files."""
+    if not workspace.is_dir():
+        return {"total": None, "method": "workspace-missing"}
+    # cloc path (if installed) — most accurate.
+    if _have("cloc"):
+        try:
+            out = subprocess.check_output(
+                ["cloc", "--json", "--quiet",
+                 f"--exclude-dir={','.join(sorted(EXCLUDE_DIRS))}",
+                 str(workspace)],
+                stderr=subprocess.DEVNULL, text=True,
+            )
+            data = json.loads(out)
+            s = data.get("SUM", {})
+            return {"code": s.get("code"), "comment": s.get("comment"),
+                    "blank": s.get("blank"),
+                    "total": (s.get("code", 0) + s.get("comment", 0) + s.get("blank", 0)) or None,
+                    "method": "cloc"}
+        except Exception:
+            pass
+    # Fallback: count lines in source files by extension, deterministic.
+    total = 0
+    files = 0
+    for p in workspace.rglob("*"):
+        if not p.is_file():
+            continue
+        if any(part in EXCLUDE_DIRS for part in p.parts):
+            continue
+        if p.name in EXCLUDE_FILES:
+            continue
+        if p.suffix.lower() not in SOURCE_EXTS:
+            continue
+        try:
+            total += sum(1 for _ in p.open("rb"))
+            files += 1
+        except Exception:
+            continue
+    return {"code": None, "comment": None, "blank": None,
+            "total": total or None, "files": files, "method": "wc-by-extension"}
+
+
+def _have(cmd: str) -> bool:
+    from shutil import which
+    return which(cmd) is not None
+
+
+def summarize(run_dir: Path, logs_dir: Path | None) -> dict:
+    sol = run_dir / "solution"
+    workspace = sol / "workspace"
+    gen = load_json(sol / "run-metadata.json") or {}
+
+    # Pick the score run: explicit --logs-dir, else prefer a *-rerun, else verifier-logs.
+    if logs_dir is None:
+        rerun = run_dir / "verifier-logs-rerun"
+        logs_dir = rerun if rerun.is_dir() else (run_dir / "verifier-logs")
+    verify = load_json(logs_dir / "verify-metadata.json") or {}
+    reward = load_json(logs_dir / "reward.json") or {}
+    caps = reward.get("capabilities") or []
+
+    # Evaluated vs rejected. A capability with positive==null threw during setup and
+    # was NEVER assessed ("rejected/errored" — unknown, not a graded failure). One with
+    # a non-null positive actually ran to a verdict ("evaluated").
+    def assessed(c):
+        return any(c.get(dim) is not None for dim in ("positive", "negative", "idempotency", "durability"))
+    evaluated = [c for c in caps if assessed(c)]
+    rejected = [c for c in caps if not assessed(c)]
+    passed = [c for c in evaluated if c.get("credit") == 1.0]
+    partial = [c for c in evaluated if 0.0 < (c.get("credit") or 0.0) < 1.0]
+    failed = [c for c in evaluated if (c.get("credit") or 0.0) == 0.0]
+
+    # Cost from total tokens (blended rate). Unknown model -> null + note.
+    model = gen.get("model")
+    total_tok = ((gen.get("tokens") or {}).get("total"))
+    rate = PRICE_PER_MTOK.get(model)
+    if total_tok is not None and rate is not None:
+        cost = round(total_tok / 1_000_000 * rate, 4)
+        cost_note = f"{total_tok} tok x ${rate}/Mtok (blended, total-only)"
+    else:
+        cost = None
+        cost_note = ("no price for model %r in PRICE_PER_MTOK (edit summarize-run)" % model
+                     if total_tok is not None else "no token total captured")
+
+    loc = count_loc(workspace)
+
+    return {
+        "run": run_dir.name,
+        "scored_from": str(logs_dir.relative_to(run_dir)) if logs_dir.is_relative_to(run_dir) else str(logs_dir),
+        # generation
+        "model": model,
+        "thinking": gen.get("reasoning"),
+        "provider": gen.get("provider"),
+        "generation_seconds": gen.get("durationSeconds"),
+        "tokens_total": total_tok,
+        "cost_usd": cost,
+        "cost_note": cost_note,
+        "loc": loc,
+        # verification
+        "verification_seconds": verify.get("durationSeconds"),
+        "score": reward.get("overall", verify.get("overallScore")),
+        "total_scenarios": len(caps),
+        "evaluated_scenarios": len(evaluated),
+        "rejected_scenarios": len(rejected),          # threw at setup -> not assessed (NOT the same as failed)
+        "passed": len(passed),
+        "partial": len(partial),
+        "failed": len(failed),                        # assessed AND wrong (distinct from rejected)
+        "deterministic_pct": DETERMINISTIC_PCT,
+        "rejected_ids": [c.get("id") for c in rejected],
+    }
+
+
+def to_md(s: dict) -> str:
+    loc = s.get("loc") or {}
+    loc_str = f"{loc.get('total')}" + (f" ({loc.get('method')})" if loc.get("total") is not None else " (n/a)")
+    cost = s["cost_usd"]
+    cost_str = f"${cost}" if cost is not None else f"n/a — {s['cost_note']}"
+    rows = [
+        ("Run", s["run"]),
+        ("Model", s["model"]),
+        ("Thinking", s["thinking"]),
+        ("Provider", s["provider"]),
+        ("Generation time", f"{s['generation_seconds']}s" if s["generation_seconds"] is not None else "n/a"),
+        ("Verification time", f"{s['verification_seconds']}s" if s["verification_seconds"] is not None else "n/a"),
+        ("Tokens (total)", s["tokens_total"]),
+        ("Cost", cost_str),
+        ("LOC", loc_str),
+        ("Score", round(s["score"], 4) if isinstance(s["score"], (int, float)) else "n/a"),
+        ("Scenarios (total)", s["total_scenarios"]),
+        ("  Evaluated", s["evaluated_scenarios"]),
+        ("  Rejected (setup-errored, not assessed)", s["rejected_scenarios"]),
+        ("  Passed / Partial / Failed", f"{s['passed']} / {s['partial']} / {s['failed']}"),
+        ("Deterministic evaluation", f"{s['deterministic_pct']}%"),
+    ]
+    out = [f"# Run summary — {s['run']}", "", f"_scored from `{s['scored_from']}`_", "", "| Metric | Value |", "|---|---|"]
+    out += [f"| {k} | {v} |" for k, v in rows]
+    if s["rejected_ids"]:
+        out += ["", f"**Rejected (couldn't evaluate — setup errored, NOT graded failures):** {', '.join(s['rejected_ids'])}"]
+    return "\n".join(out) + "\n"
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("run_dir", help="runs/<id> directory")
+    ap.add_argument("--logs-dir", default=None, help="specific score-run logs dir (default: *-rerun if present, else verifier-logs)")
+    args = ap.parse_args()
+    run_dir = Path(args.run_dir).resolve()
+    if not run_dir.is_dir():
+        print(f"run dir not found: {run_dir}", file=sys.stderr)
+        return 2
+    logs_dir = Path(args.logs_dir).resolve() if args.logs_dir else None
+    s = summarize(run_dir, logs_dir)
+    (run_dir / "summary.json").write_text(json.dumps(s, indent=2) + "\n")
+    md = to_md(s)
+    (run_dir / "summary.md").write_text(md)
+    print(md)
+    print(f"[summarize-run] wrote {run_dir/'summary.json'} and {run_dir/'summary.md'}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

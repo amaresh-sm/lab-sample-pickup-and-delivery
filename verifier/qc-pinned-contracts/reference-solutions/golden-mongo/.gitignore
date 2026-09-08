@@ -1,0 +1,9 @@
+bin/
+frontend/coverage/
+frontend/dist/
+frontend/node_modules/
+frontend/playwright-report/
+frontend/test-results/
+frontend/tsconfig.tsbuildinfo
+verification/__pycache__/
+

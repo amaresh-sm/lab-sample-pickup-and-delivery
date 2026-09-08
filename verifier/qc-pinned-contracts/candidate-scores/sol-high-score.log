@@ -1,0 +1,119 @@
+  !! accept_assignment raised ApiError("set_worker_availability -> HTTP 404 (not_found): {'code': 'not_found', 'error': 'worker not found'}")
+  !! collect_and_seal_sample raised ApiError("set_worker_availability -> HTTP 404 (not_found): {'code': 'not_found', 'error': 'worker not found'}")
+  !! confirm_handoff raised ApiError("set_worker_availability -> HTTP 404 (not_found): {'code': 'not_found', 'error': 'worker not found'}")
+  !! confirm_laboratory_receipt raised ApiError("set_worker_availability -> HTTP 404 (not_found): {'code': 'not_found', 'error': 'worker not found'}")
+  !! create_sample_type raised ApiError("create_sample_type -> HTTP 409 (sample_type_conflict): {'code': 'sample_type_conflict', 'error': 'sample type name already exists'}")
+  !! decline_assignment raised ApiError("set_worker_availability -> HTTP 404 (not_found): {'code': 'not_found', 'error': 'worker not found'}")
+  !! edit_active_plan raised ApiError("set_worker_availability -> HTTP 404 (not_found): {'code': 'not_found', 'error': 'worker not found'}")
+  !! ingest_presealed_sample raised ApiError("set_worker_availability -> HTTP 404 (not_found): {'code': 'not_found', 'error': 'worker not found'}")
+  !! initiate_handoff raised ApiError("set_worker_availability -> HTTP 404 (not_found): {'code': 'not_found', 'error': 'worker not found'}")
+  !! read_journey_plan raised KeyError('journeyId')
+  !! record_handling_checkpoint raised ApiError("set_worker_availability -> HTTP 404 (not_found): {'code': 'not_found', 'error': 'worker not found'}")
+  !! record_laboratory_exception raised ApiError("set_worker_availability -> HTTP 404 (not_found): {'code': 'not_found', 'error': 'worker not found'}")
+  !! record_worker_location raised ApiError("set_worker_availability -> HTTP 404 (not_found): {'code': 'not_found', 'error': 'worker not found'}")
+  !! report_disruption raised ApiError("set_worker_availability -> HTTP 404 (not_found): {'code': 'not_found', 'error': 'worker not found'}")
+  !! search_audit_trail raised ApiError("create_sample_type -> HTTP 409 (sample_type_conflict): {'code': 'sample_type_conflict', 'error': 'sample type name already exists'}")
+  !! update_assignment_progress raised ApiError("set_worker_availability -> HTTP 404 (not_found): {'code': 'not_found', 'error': 'worker not found'}")
+  !! update_sample_type raised ApiError("create_sample_type -> HTTP 409 (sample_type_conflict): {'code': 'sample_type_conflict', 'error': 'sample type name already exists'}")
+* accept_assignment                lifecycle  credit=0.000
+  authenticate_user                write      credit=0.500
+      positive:    status=200 roles=['requester'] activeRole='requester'
+      negative:    status=401 code='unauthorized'
+  cancel_journey                   write      credit=0.500
+      positive:    status=201 journeyStatus=cancelled via=audit-trail
+      negative:    cancel an already-cancelled journey -> status=409 code='plan_version_conflict'
+* check_serviceability             write      credit=0.000
+      positive:    5.0km serviceable=False; 5.05km reason=no_route; dry_run sample_count 1->1; tight-window-tight-deadline reason=serviceable
+      negative:    inverted window -> status=200 code=''
+  collect_and_seal_sample          lifecycle  credit=0.000
+* configure_capacity               write      credit=0.500
+      positive:    response capacityUnits=37 cooled=11; ops-state reflects=True
+      negative:    negative capacityUnits -> status=400 code='validation_error'; requester read_operations_state -> 403 (RBAC-gated capacity view)
+* configure_laboratory_acceptance  write      credit=0.000
+      positive:    accepts-on -> serviceable=False; accepts-off -> serviceable=False reason=no_accepting_laboratory
+      negative:    unknown laboratoryId -> status=409 code='configuration_conflict'
+* confirm_handoff                  lifecycle  credit=0.000
+  confirm_laboratory_receipt       lifecycle  credit=0.000
+* create_collection_request        write      credit=0.333
+      positive:    serviceability=unserviceable assignments=0 via=None window_echoed=True
+      negative:    inverted window -> status=400 code='invalid_time_window'; sample_count unchanged=True
+      idempotency: replay sampleId=00000000-0000-0000-0000-000000000000 vs original 00000000-0000-0000-0000-000000000000
+  create_connection                write      credit=1.000
+      positive:    cooled=True via=audit-trail
+      negative:    status=400 code='validation_error'
+  create_location                  write      credit=0.000
+      positive:    functions={'collection_point': False, 'hub': True, 'laboratory': True, 'transfer_point': False} found_in_ops_state=True via=audit-trail
+      negative:    status=400 code='validation_error'
+* create_sample_type               write      credit=0.000
+  create_user                      write      credit=1.000
+      positive:    observed via direct-read
+      negative:    status=409 code='username_exists'
+  decline_assignment               write      credit=0.000
+* edit_active_plan                 lifecycle  credit=0.000
+  ingest_presealed_sample          write      credit=0.000
+* initiate_handoff                 lifecycle  credit=0.000
+* list_role_work                   read       credit=0.000
+      positive:    status=200 buckets=['completed', 'inProgress', 'pending']; deadline_expiry_orphan_probe: planning did not produce a driveable journey for the deadline-expiry probe -- status=201 payload={'data': {'activeAssignmentIds': [], 'earliestCollectionAt': '2026-07-31T11:00:29Z', 'latestCollectionAt': '2026-07-31T11:05:59Z', 'requestId': '00000000-0000-0000-0000-000000000000', 'sampleId': '00000000-0000-0000-0000-000000000000', 'serviceability': 'unserviceable', 'serviceabilityReason': 'no_route'}}
+      negative:    requesting a role you don't hold -> status=409 code='role_not_selected'
+  merge_journeys                   write      credit=0.000
+      positive:    planning did not produce two journeys to merge
+  read_journey_plan                read       credit=0.000
+  read_operations_state            read       credit=1.000
+      positive:    status=200 keys_present=['samples', 'workers', 'locations', 'connections', 'routes', 'handoffs', 'delays', 'exceptions']
+      negative:    requester -> status=403
+  read_sample_lifecycle            read       credit=0.500
+      positive:    status=404 sealed=None timeline_len=0 ordered=True
+      negative:    status=404 code='not_found'
+  read_sample_state                read       credit=0.500
+      positive:    status=404 state=None locationStale=None
+      negative:    AC-2: another requester reading it -> status=404 code='not_found'
+* read_serviceability_snapshot     read       credit=1.000
+      positive:    status=200 version=158 activeCollectionPointCount=25
+      negative:    requester role -> status=403 code='forbidden'
+  read_ui_bootstrap                read       credit=1.000
+      positive:    status=200 keys=['operations', 'serverTime', 'user']
+      negative:    anonymous -> status=401 code='unauthorized'
+  read_user                        read       credit=1.000
+      positive:    status=200 userId=6ff3faf2-d069-451d-8083-41dba9b57191
+      negative:    cross-account read_user -> status=403 code='forbidden'
+  record_handling_checkpoint       lifecycle  credit=0.000
+  record_laboratory_exception      write      credit=0.000
+  record_worker_location           lifecycle  credit=0.000
+* report_disruption                write      credit=0.000
+  reroute_journey                  write      credit=0.000
+      positive:    planning did not produce a journey to reroute
+* search_audit_trail               read       credit=0.000
+* select_active_role               write      credit=0.500
+      positive:    select requester->200 select dispatcher->200 denied_as_requester=True allowed_as_dispatcher=True roles unchanged=True
+      negative:    status=403 code='forbidden'
+  set_connection_status            write      credit=1.000
+      positive:    active=False
+      negative:    status=404
+  set_location_function_status     write      credit=1.000
+      positive:    disabled collection_point, remaining functions={'collection_point': False, 'hub': False, 'laboratory': True, 'transfer_point': False}
+      negative:    unknown-function->400 (validation_error); function-not-held(hub)->404 (not_found)
+  set_location_status              write      credit=1.000
+      positive:    active=False (AC-24: no restart required)
+      negative:    status=404
+  set_worker_availability          write      credit=0.500
+      positive:    available=True capacityUnits=77 via=audit-trail
+      negative:    status=400 code='validation_error'
+  split_journey                    write      credit=0.000
+      positive:    planning did not produce two journeys to merge before splitting
+  stream_realtime_events           read       credit=1.000
+      positive:    status=200 events=200
+      negative:    anonymous -> status=401 code='unauthorized'
+  system_readiness                 read       credit=1.000
+      positive:    status=200 payload={'status': 'ready'}
+  update_assignment_progress       lifecycle  credit=0.000
+  update_location                  write      credit=1.000
+      positive:    name=esi7b0042-uloc-renamed-1 via=audit-trail
+      negative:    status=404 code='not_found'
+* update_sample_type               write      credit=0.000
+  update_user_access               write      credit=1.000
+      positive:    observed via direct-read; roles now ['dispatcher']
+      negative:    status=403 code='forbidden'
+
+capabilities graded: 45
+overall score:       0.3741
+wrote /tmp/sol-high-score.json

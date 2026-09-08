@@ -1,0 +1,23 @@
+ARG BASE_IMAGE=lab-sample-pickup-delivery-gym:local
+FROM ${BASE_IMAGE}
+
+USER root
+
+ARG CODEX_VERSION=0.144.6
+
+RUN npm install --global --ignore-scripts --no-audit --no-fund \
+        "@openai/codex@${CODEX_VERSION}" \
+    && npm cache clean --force \
+    && install -d -m 0700 -o agent -g agent /home/agent/.codex
+
+# Bake the contract-validator dependencies into the venv on PATH so the post-generation OpenAPI
+# self-heal (postprocess-openapi.py) can import the verifier's checks deterministically, offline.
+RUN /opt/arena/venv/bin/pip install --no-cache-dir \
+        jsonschema==4.26.0 \
+        openapi-spec-validator==0.7.2 \
+        jmespath==1.0.1 \
+        pglast==8.2 \
+        PyYAML==6.0.3 \
+        psutil==7.2.2
+
+USER agent

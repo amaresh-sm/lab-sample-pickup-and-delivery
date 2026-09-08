@@ -1,0 +1,26 @@
+diff --git a/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/maintenance.go b/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/maintenance.go
+index c21bc33..efe0ac1 100644
+--- a/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/maintenance.go
++++ b/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/maintenance.go
+@@ -242,15 +242,13 @@ func recordNoQualifiedCollectorException(state *mongostore.State, sample *mongos
+ 	sample.ActiveJourneyID = ""
+ 	sample.Version++
+ 	sample.UpdatedAt = now
+-	// A timer-driven exception is still an exception: it is recorded and
+-	// published exactly as the deadline expiry beside it is, so the outcome is
+-	// searchable in the audit trail and reaches the requester and the dispatcher
+-	// rather than only appearing on the sample record.
++	// MUTANT pulse-exception-unaudited (rebased onto the shared
++	// recordNoQualifiedCollectorException path): the audit call has been
++	// removed, so a Pulse / no-eligible-worker timeout leaves NO durable,
++	// searchable audit entry -- only the sample record itself and the realtime
++	// event reflect the exception. No sample_exception_recorded row is ever
++	// written, so the outcome is invisible to search_audit_trail.
+ 	payload := core.Map{"sampleId": sample.ID, "status": "exception", "reason": noQualifiedCollectorReason}
+-	state.AddAudit(
+-		mongostore.SystemActorID, mongostore.SystemRole,
+-		"sample", sample.ID, "sample_exception_recorded", true, payload,
+-	)
+ 	emit(state, []string{sample.RequesterID, "dispatcher"}, "sample.exception", "sample", sample.ID, payload)
+ }
+

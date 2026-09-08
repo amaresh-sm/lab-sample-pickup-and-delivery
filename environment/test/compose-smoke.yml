@@ -1,0 +1,14 @@
+name: arena-compose-smoke
+
+services:
+  workspace-probe:
+    image: busybox:1.36.1
+    pull_policy: never
+    command: ["sh", "-c", "test -w /workspace"]
+    user: "1000:1000"
+    network_mode: none
+    read_only: true
+    volumes:
+      - type: bind
+        source: /workspace
+        target: /workspace

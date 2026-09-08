@@ -1,0 +1,38 @@
+task_id: lab-sample-pickup-and-delivery
+criteria:
+  - id: api-contract-artifact
+    requirement: The candidate supplies a valid OpenAPI handoff matching the frozen public API contract.
+    contract: public/contracts/openapi.contract.json
+    hidden_test: backend.contract-artifact
+    mutant: missing-openapi-artifact
+    weight: 0.02
+  - id: runtime-contract
+    requirement: The running application exposes the frozen operations, response envelopes, errors, and lifecycle handoff.
+    contract: public/contracts/openapi.contract.json
+    hidden_test: backend.runtime-contract
+    mutant: runtime-contract-drift
+    weight: 0.08
+  - id: backend-behavior
+    requirement: The backend implements sample pickup, planning, custody, capacity, worker fairness, disruptions, laboratory receipt, RBAC, audit, and realtime workflows.
+    contract: public/contracts/openapi.contract.json
+    hidden_test: backend.capabilities
+    mutant: backend capability mutants
+    weight: 0.54
+  - id: ui-behavior
+    requirement: The browser application exposes role-aware tracking, work, monitoring, validation, and operational workflows.
+    contract: public/contracts/ui.contract.json
+    hidden_test: ui.capabilities
+    mutant: UI capability mutants
+    weight: 0.07
+  - id: ui-contract-audit
+    requirement: The public UI contract declares the observable scenario surface exercised by the UI verifier.
+    contract: public/contracts/ui.contract.json
+    hidden_test: ui.contract-audit
+    mutant: missing-ui-contract-scenario
+    weight: 0.01
+  - id: reliability
+    requirement: Durable state, idempotent writes, and concurrent assignment, capacity, and plan updates remain correct.
+    contract: public/contracts/openapi.contract.json
+    hidden_test: backend.non-functional
+    mutant: restart-and-race mutants
+    weight: 0.28

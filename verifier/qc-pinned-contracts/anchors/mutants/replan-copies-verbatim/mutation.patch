@@ -1,0 +1,109 @@
+diff --git a/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/plan_changes.go b/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/plan_changes.go
+index 48f7b06..a30b150 100644
+--- a/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/plan_changes.go
++++ b/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/plan_changes.go
+@@ -1352,6 +1352,95 @@ func reserveRouteResources(state *mongostore.State, journeyID string, resources
+ 	return nil
+ }
+ 
++// MUTANT replan-copies-verbatim: reportDisruption's replan no longer
++// recomputes anything -- it clones the disrupted journey's stops and
++// assignments (same workers, same route, same ETA) onto a new journey id and
++// reports it "replaced", without ever re-checking worker eligibility,
++// capacity, or deadline feasibility via findRoute/fairWorker/
++// validateJourneyPlan. This reproduces, in golden-mongo, the effect of the
++// real production defect that exists in the sibling golden-postgres app.
++func copyJourneyRouteVerbatim(state *mongostore.State, journey *mongostore.Journey, now time.Time) (*mongostore.Journey, string, error) {
++	oldStops := stopsForJourney(state, journey.ID)
++	oldAssignments := assignmentsForJourney(state, journey.ID)
++	// Snapshot which assignments are still unfinished BEFORE
++	// cancelUnfinishedAssignments below mutates those same records in place
++	// (assignmentsForJourney returns live pointers into state.Assignments).
++	carryOver := make([]*mongostore.Assignment, 0, len(oldAssignments))
++	for _, assignment := range oldAssignments {
++		if assignment.Status != "completed" && assignment.Status != "delivered" && assignment.Status != "cancelled" {
++			carryOver = append(carryOver, assignment)
++		}
++	}
++	type frozenAssignment struct {
++		sampleID, kind, from, to, workerID string
++		leg                                int
++	}
++	frozen := make([]frozenAssignment, 0, len(carryOver))
++	for _, assignment := range carryOver {
++		frozen = append(frozen, frozenAssignment{
++			sampleID: assignment.SampleID, kind: assignment.Kind,
++			from: assignment.FromLocationID, to: assignment.ToLocationID,
++			workerID: assignment.WorkerID, leg: assignment.LegSequence,
++		})
++	}
++
++	journey.Status, journey.UpdatedAt = "replaced", now
++	journey.PlanVersion++
++	cancelUnfinishedAssignments(state, journey.ID)
++
++	replacementID := core.UUID()
++	replacement := &mongostore.Journey{
++		ID: replacementID, PrimarySampleID: journey.PrimarySampleID,
++		SampleIDs:           append([]string{}, journey.SampleIDs...),
++		ParentJourneyID:     journey.ID,
++		IsReplacement:       true,
++		PlanVersion:         1,
++		RouteMode:           journey.RouteMode,
++		Status:              "active",
++		EstimatedDeliveryAt: journey.EstimatedDeliveryAt, // same ETA -- never recomputed
++		TotalCostUnits:      journey.TotalCostUnits,
++		CapacityUsed:        journey.CapacityUsed,
++		CapacityAvailable:   journey.CapacityAvailable,
++		CreatedAt:           now,
++		UpdatedAt:           now,
++	}
++	state.Journeys[replacementID] = replacement
++
++	for _, stop := range oldStops {
++		id := core.UUID()
++		state.Stops[id] = &mongostore.JourneyStop{
++			ID: id, JourneyID: replacementID, LocationID: stop.LocationID,
++			StopType: stop.StopType, Sequence: stop.Sequence,
++			EstimatedAt: stop.EstimatedAt, DwellMinutes: stop.DwellMinutes,
++		}
++	}
++
++	for _, f := range frozen {
++		id := core.UUID()
++		// Same worker carried over verbatim -- no re-check of role,
++		// qualification, or availability. This is the exact bug: eligibility
++		// is never revalidated against the replacement plan.
++		state.Assignments[id] = newAssignment(id, replacementID, f.sampleID, f.kind, f.leg, f.from, f.to, f.workerID, now)
++	}
++
++	// Re-point the old reservations at the new journey instead of releasing
++	// and recomputing capacity against the (possibly now-unavailable) route.
++	for _, reservation := range state.Reservations {
++		if reservation.JourneyID == journey.ID && reservation.Status == "active" {
++			reservation.JourneyID = replacementID
++		}
++	}
++
++	for _, sampleID := range replacement.SampleIDs {
++		if sample := state.Samples[sampleID]; sample != nil {
++			sample.ActiveJourneyID = replacementID
++			sample.Version++
++			sample.UpdatedAt = now
++		}
++	}
++	return replacement, "replaced", nil
++}
++
+ func (s *Service) reportDisruption(ctx context.Context, p core.Principal, in core.Map) (core.Map, error) {
+ 	if err := require(p, "dispatcher", "administrator"); err != nil {
+ 		return nil, err
+@@ -1378,7 +1467,7 @@ func (s *Service) reportDisruption(ctx context.Context, p core.Principal, in cor
+ 				continue
+ 			}
+ 			affectedSamples = append(affectedSamples, journey.SampleIDs...)
+-			replacement, status, err := replaceJourneyRoute(state, journey, occurredAt, core.String(in["reason"]))
++			replacement, status, err := copyJourneyRouteVerbatim(state, journey, occurredAt)
+ 			if err != nil {
+ 				return txResult{}, err
+ 			}

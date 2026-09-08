@@ -1,0 +1,10 @@
+jsonschema==4.26.0
+jmespath==1.0.1
+openapi-spec-validator==0.7.2
+pglast==8.2
+playwright==1.61.0
+psutil==7.2.2
+pytest==9.1.1
+PyYAML==6.0.3
+requests==2.34.2
+websockets==16.1

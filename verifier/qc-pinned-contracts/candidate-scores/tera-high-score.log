@@ -1,0 +1,121 @@
+  !! accept_assignment raised TypeError("'NoneType' object is not iterable")
+  !! create_collection_request raised TypeError("object of type 'NoneType' has no len()")
+  !! decline_assignment raised TypeError("'NoneType' object is not iterable")
+  !! ingest_presealed_sample raised TypeError("'NoneType' object is not iterable")
+  !! record_laboratory_exception raised TypeError("'NoneType' object is not iterable")
+* accept_assignment                lifecycle  credit=0.000
+  authenticate_user                write      credit=0.500
+      positive:    status=200 roles=['requester'] activeRole=''
+      negative:    status=401 code='unauthorized'
+  cancel_journey                   write      credit=0.000
+      positive:    planning did not produce a journey to cancel
+* check_serviceability             write      credit=0.000
+      positive:    5.0km serviceable=False; 5.05km reason=outside_service_coverage; dry_run sample_count 2->2; tight-window-tight-deadline reason=outside_service_coverage
+      negative:    inverted window -> status=200 code=''
+  collect_and_seal_sample          lifecycle  credit=0.000
+      positive:    step never attempted (upstream planning did not produce a driveable journey)
+* configure_capacity               write      credit=0.000
+      positive:    response capacityUnits=37 cooled=11; ops-state reflects=False
+      negative:    negative capacityUnits -> status=200 code=''; requester read_operations_state -> 403 (RBAC-gated capacity view)
+* configure_laboratory_acceptance  write      credit=0.000
+      positive:    accepts-on -> serviceable=False; accepts-off -> serviceable=False reason=outside_service_coverage
+      negative:    unknown laboratoryId -> status=200 code=''
+* confirm_handoff                  lifecycle  credit=0.000
+      positive:    one-sided: status=None sender=None receiver=None; both-sided: status=None holder_flip_ok=False; replay_no_dup=True
+  confirm_laboratory_receipt       lifecycle  credit=0.000
+      positive:    step never attempted (upstream planning did not produce a driveable journey)
+* create_collection_request        write      credit=0.000
+  create_connection                write      credit=0.500
+      positive:    cooled=True via=ops-state
+      negative:    status=201 code=''
+  create_location                  write      credit=0.000
+      positive:    functions={} found_in_ops_state=True via=audit-trail
+      negative:    status=201 code=''
+* create_sample_type               write      credit=0.000
+      positive:    amber_qualified=False indigo_qualified=False frost_cooled_route=False pulse_no_batch(despite request)=False amber<->indigo symmetric=False new_amber_auto_linked_to_indigo=False
+      negative:    Frost with non-cooling container -> status=201 code=''
+  create_user                      write      credit=0.500
+      positive:    observed via direct-read
+      negative:    status=409 code='concurrent_conflict'
+  decline_assignment               write      credit=0.000
+* edit_active_plan                 lifecycle  credit=0.000
+      positive:    replace_worker: step never attempted (upstream planning did not produce a driveable journey); reroute_shape: planning did not produce a journey to reroute via edit_active_plan
+      negative:    stale replay -> {}
+  ingest_presealed_sample          write      credit=0.000
+* initiate_handoff                 lifecycle  credit=0.000
+      positive:    step never attempted (upstream planning did not produce a driveable journey)
+* list_role_work                   read       credit=0.500
+      positive:    status=403 buckets=[]; deadline_expiry_orphan_probe: planning did not produce a driveable journey for the deadline-expiry probe -- status=201 payload={'data': {'activeAssignmentIds': None, 'alreadySealed': False, 'earliestCollectionAt': '2026-07-31T11:01:02Z', 'journeyId': '', 'latestCollectionAt': '2026-07-31T11:06:32Z', 'originType': 'home', 'requestId': 'cd8ef159-4a1c-486a-a5bf-dc3e8770ace8', 'sampleId': '0a8f4cf7-78d4-44ee-8aed-bed64d12b51b', 'serviceability': 'unserviceable', 'serviceabilityReason': 'outside_service_coverage', 'targetLaboratoryId': ''}}
+      negative:    requesting a role you don't hold -> status=403 code='forbidden'
+  merge_journeys                   write      credit=0.000
+      positive:    planning did not produce two journeys to merge
+  read_journey_plan                read       credit=0.500
+      positive:    status=404 planVersion=None routeMode=None legs=0
+      negative:    unrelated requester -> status=403 code='forbidden'
+  read_operations_state            read       credit=1.000
+      positive:    status=200 keys_present=['samples', 'workers', 'locations', 'connections', 'routes', 'handoffs', 'delays', 'exceptions']
+      negative:    requester -> status=403
+  read_sample_lifecycle            read       credit=1.000
+      positive:    status=200 sealed=False timeline_len=1 ordered=True
+      negative:    status=404 code='not_found'
+  read_sample_state                read       credit=1.000
+      positive:    status=200 state={'status': 'unserviceable'} locationStale=True
+      negative:    AC-2: another requester reading it -> status=403 code='forbidden'
+* read_serviceability_snapshot     read       credit=0.500
+      positive:    status=200 version=1 activeCollectionPointCount=0
+      negative:    requester role -> status=200 code=''
+  read_ui_bootstrap                read       credit=1.000
+      positive:    status=200 keys=['operations', 'serverTime', 'user']
+      negative:    anonymous -> status=401 code='unauthorized'
+  read_user                        read       credit=1.000
+      positive:    status=200 userId=bddc75a7-1ef4-4247-98fe-11244a424d3f
+      negative:    cross-account read_user -> status=403 code='forbidden'
+  record_handling_checkpoint       lifecycle  credit=0.000
+      positive:    step never attempted (upstream planning did not produce a driveable journey)
+  record_laboratory_exception      write      credit=0.000
+  record_worker_location           lifecycle  credit=0.000
+      positive:    step never attempted (upstream planning did not produce a driveable journey)
+* report_disruption                write      credit=0.000
+      positive:    planning failed before a disruption scenario could be built
+  reroute_journey                  write      credit=0.000
+      positive:    planning did not produce a journey to reroute
+* search_audit_trail               read       credit=0.000
+      positive:    status=200 total=182 all_seven_fields_present=False failure_recorded=False; pulse_offer_expiry_audit_probe: could not discover the collection assignment's offerExpiresAt from list_role_work: None
+      negative:    limit=0 -> status=200 code=''
+* select_active_role               write      credit=0.500
+      positive:    select requester->200 select dispatcher->200 denied_as_requester=True allowed_as_dispatcher=True roles unchanged=True
+      negative:    status=403 code='forbidden'
+  set_connection_status            write      credit=1.000
+      positive:    active=False
+      negative:    status=404
+  set_location_function_status     write      credit=0.000
+      positive:    disabled collection_point, remaining functions={'collection_point': False}
+      negative:    unknown-function->200 (); function-not-held(hub)->200 ()
+  set_location_status              write      credit=1.000
+      positive:    active=False (AC-24: no restart required)
+      negative:    status=404
+  set_worker_availability          write      credit=0.500
+      positive:    available=True capacityUnits=77 via=audit-trail
+      negative:    status=200 code=''
+  split_journey                    write      credit=0.000
+      positive:    planning did not produce two journeys to merge before splitting
+  stream_realtime_events           read       credit=1.000
+      positive:    status=200 events=0
+      negative:    anonymous -> status=401 code='unauthorized'
+  system_readiness                 read       credit=1.000
+      positive:    status=200 payload={'status': 'ready'}
+  update_assignment_progress       lifecycle  credit=0.000
+      positive:    step never attempted (upstream planning did not produce a driveable journey)
+  update_location                  write      credit=0.500
+      positive:    name=a420o0036-uloc-renamed-1 via=audit-trail
+      negative:    status=201 code=''
+* update_sample_type               write      credit=0.000
+      positive:    update requested batchingAllowed=True, server kept True (non-overridable policy)
+      negative:    status=201 code=''
+  update_user_access               write      credit=1.000
+      positive:    observed via direct-read; roles now ['dispatcher']
+      negative:    status=403 code='forbidden'
+
+capabilities graded: 45
+overall score:       0.3222
+wrote /tmp/tera-high-score.json

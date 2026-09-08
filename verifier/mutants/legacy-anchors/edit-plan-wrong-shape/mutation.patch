@@ -1,0 +1,27 @@
+diff --git a/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/plan_changes.go b/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/plan_changes.go
+index 48f7b06..5d3bbc5 100644
+--- a/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/plan_changes.go
++++ b/verifier/qc-pinned-contracts/reference-solutions/golden-mongo/backend/internal/service/plan_changes.go
+@@ -123,16 +123,12 @@ func (s *Service) editPlan(ctx context.Context, p core.Principal, in core.Map) (
+ 			if err != nil {
+ 				return txResult{}, err
+ 			}
+-			// Every other branch of this operation answers with the whole journey
+-			// plan, and one plan shape is what the operation documents. A reroute is
+-			// no exception: the caller gets the edited plan itself — now "replaced",
+-			// or "cancelled" when nothing could be replanned — alongside the replan
+-			// outcome and the replacement plan when one was built. Returning only
+-			// {journeyId,status,valid,replacementJourney} left the caller without the
+-			// plan version it needs for its next optimistic edit.
+-			out := journeyMap(state, journey)
+-			out["valid"] = replacement != nil
+-			out["replanStatus"] = status
++			// MUTANT edit-plan-wrong-shape: reverted to the truncated response
++			// shape (real AC-77 defect) -- the caller no longer gets the full
++			// JourneyPlan (planVersion, legs, orderedStops, ...), just these
++			// four fields, leaving it without the plan version it needs for
++			// its next optimistic edit.
++			out := core.Map{"journeyId": journeyID, "status": journey.Status, "valid": replacement != nil}
+ 			if replacement != nil {
+ 				out["replacementJourney"] = journeyMap(state, replacement)
+ 			}

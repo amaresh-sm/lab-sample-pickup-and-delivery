@@ -1,0 +1,44 @@
+# Candidate generations and verifier reports are run artifacts, not task source.
+runs/
+dist/
+candidates/
+verifier/proof-of-work/
+verifier/reference-solution/dist-server/
+
+# Generated Python bytecode and test caches.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Legacy local credentials, staging copies, and verifier runtime output.
+.plan/
+.demo-runtime/
+.claude/worktrees/
+.coverage
+.coverage.*
+htmlcov/
+verifier/verifier.env
+verifier.env
+candidate-workspace/
+verifier-results/
+.DS_Store
+.env-runtime/
+verifier/**/.venv/
+verifier/**/node_modules/
+verifier/**/_inputs/
+verifier/**/_codebase/
+verifier/**/results.json
+verifier/**/test-results/
+verifier/**/playwright-report/
+verifier/**/.pytest_cache/
+verifier/**/*.bak-*/
+verifier/score.json
+verifier/score.md
+/solution-run/
+/.golden-vue-mongo-work/
+/.golden-vue-mongo-results/
+/verifier-logs/
+/runs/*
+!/runs/summary.md
+!/runs/summary.csv
+verifier/__pycache__/
