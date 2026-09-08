@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Canonical task-facing name for one ASTRA candidate generation run.
+set -Eeuo pipefail
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+exec "$root/generate" "$@"

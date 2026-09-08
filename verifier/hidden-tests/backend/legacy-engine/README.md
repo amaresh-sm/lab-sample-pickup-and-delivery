@@ -1,7 +1,7 @@
 # Pinned-contract grading engine (phase 1)
 
 Grades a candidate app's implementation of the pinned Lab Sample
-Pickup & Delivery contract (`tasks/lab-sample-pickup-and-delivery/openapi.contract.json`, 45
+Pickup & Delivery contract (`tasks/public/contracts/openapi.contract.json`, 45
 operations) purely over HTTP. It never reads a database directly: every
 capability writes through the app's API and reads the effect back through
 the app's OWN read endpoints (direct read -> audit-trail search ->
@@ -108,7 +108,7 @@ into `activeAssignmentIds`. It asks the app: for each assignment id, scan
 `list_role_work` across every worker we seeded for the relevant field roles,
 and use whichever alias's `pending`/`inProgress`/`completed` bucket actually
 contains that assignment id (this mirrors golden-mongo's own verification
-helper, `World.find_offered` in `verification/api_client.py` -- the same
+   helper, `World.find_offered` in `app-setup/api_client.py` -- the same
 discovery idea, generalised to grading rather than to golden's own
 self-checks). The chain is then driven using the ids and aliases the app
 itself produced. A step still earns 0 credit if it genuinely fails; the fix
@@ -167,7 +167,7 @@ validated as a general mechanism earlier this session (see
    to the exact pinned `operationId`. `run.py` discovers it automatically and
    fails loudly (`duplicate capability id`) if two modules claim the same id.
 4. Ground every assertion in the pinned contract's exact field/error-code
-   names (`tasks/lab-sample-pickup-and-delivery/openapi.contract.json`) and, where one exists, the
+   names (`tasks/public/contracts/openapi.contract.json`) and, where one exists, the
    matching row in `verifier/qc-pinned-contracts/ACCEPTANCE.md` -- never
    invent a field name; if in doubt, mine golden-mongo's
    `backend/internal/service/*_test.go`.

@@ -42,8 +42,6 @@ def origin(url: str) -> str:
 def manifest(candidate: Path) -> tuple[dict[str, list[str]], dict[str, str], Path]:
     path = candidate / "app-setup/manifest.json"
     if not path.is_file():
-        path = candidate / "verification/manifest.json"
-    if not path.is_file():
         raise SystemExit(f"candidate manifest is missing: {path}")
     payload = json.loads(path.read_text(encoding="utf-8"))
     commands = payload.get("commands")
@@ -184,7 +182,7 @@ def run(parsed: argparse.Namespace) -> int:
                 "--frontend-url", urls["frontend"],
                 "--base-url", origin(urls["api"]),
                 "--contract", str(CONTRACT),
-                "--manifest", "/input/candidate/app-setup/manifest.json",
+                "--manifest", str(manifest_path),
                 "--admin-user", parsed.admin_user,
                 "--admin-pass", parsed.admin_pass,
                 "score", "--json-out", str(ui_path),

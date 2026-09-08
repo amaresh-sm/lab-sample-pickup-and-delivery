@@ -1,12 +1,12 @@
 """HTTP client for the pinned-contract grading engine.
 
 Everything here speaks ONLY HTTP, addressed by `operationId` as declared in
-`tasks/lab-sample-pickup-and-delivery/openapi.contract.json` (the frozen, pinned contract) rather
+`tasks/public/contracts/openapi.contract.json` (the frozen, pinned contract) rather
 than by hand-written URLs. This means a capability spec cannot silently drift
 from the pinned contract, and grading never depends on how a candidate app's
 own (possibly buggy) `app-setup/openapi.json` describes itself.
 
-Adapted from golden-mongo's `verification/api_client.py` (same idea: an
+Adapted from the reference app's `app-setup/api_client.py` (same idea: an
 operationId-keyed `Client` plus a `World` seeder), but repointed at the pinned
 contract instead of a per-app-generated one, and extended with the
 `World`/`Session` helpers this engine's capability specs need.
@@ -28,7 +28,7 @@ from pathlib import Path
 from typing import Any, Callable, Optional
 
 def _default_contract_path() -> Path:
-    """Repo-relative default: engine/ -> qc-pinned-contracts/ -> verifier/ -> repo root -> tasks/lab-sample-pickup-and-delivery.
+    """Resolve the canonical public contract from the repository root.
 
     Falls back to the bare filename (resolved relative to the current working
     directory) when this file has been copied somewhere shallower than the
@@ -39,10 +39,10 @@ def _default_contract_path() -> Path:
     here = Path(__file__).resolve()
     parents = here.parents
     if len(parents) > 3:
-        candidate = parents[3] / "tasks" / "lab-sample-pickup-and-delivery" / "openapi.contract.json"
+        candidate = parents[3] / "tasks" / "public" / "contracts" / "openapi.contract.json"
         if candidate.exists():
             return candidate
-    return Path("tasks/lab-sample-pickup-and-delivery/openapi.contract.json")
+    return Path("tasks/public/contracts/openapi.contract.json")
 
 
 CONTRACT_PATH = _default_contract_path()
@@ -69,7 +69,7 @@ def load_contract(path: Path = CONTRACT_PATH) -> dict[str, Any]:
         raise ContractLoadError(
             f"could not read the pinned contract at {path!s} ({exc.__class__.__name__}: {exc}). "
             "This is the engine's OWN input (normally "
-            "tasks/lab-sample-pickup-and-delivery/openapi.contract.json), not a candidate's file -- every capability "
+            "tasks/public/contracts/openapi.contract.json), not a candidate's file -- every capability "
             "probe's operationId routing table depends on it. If this engine has been copied "
             "somewhere shallower than the repo it came from, pass --contract explicitly."
         ) from exc

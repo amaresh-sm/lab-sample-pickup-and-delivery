@@ -1,53 +1,71 @@
 # ASTRA-RL Lab Sample Pickup and Delivery
 
-This repository is the ASTRA-format migration of the lab sample pickup and delivery task. It
-keeps candidate-visible material under `tasks/` and evaluator-private material under `verifier/`.
+This repository contains one greenfield ASTRA task. Candidate-visible files live under `tasks/`; the
+private reference implementation, hidden tests, mutants, scoring rules, and evidence live under
+`verifier/`.
 
-## Task package
+## Canonical layout
 
 ```text
 tasks/
 ├── task.toml
 ├── instruction.md
-└── public/contracts/
-    ├── openapi.contract.json
-    └── ui.contract.json
+└── public/
+    ├── README.md
+    └── contracts/
+        ├── openapi.contract.json
+        └── ui.contract.json
 
 verifier/
-├── reference-solution/
-├── hidden-tests/backend/
-├── hidden-tests/ui/
+├── reference-solution/app-setup/
+├── hidden-tests/
 ├── mutants/
 ├── acceptance-criteria.yml
 ├── scoring.yml
 └── proof-of-work/
 ```
 
-The candidate receives only `tasks/instruction.md` and `tasks/public/`. The private verifier grades
-the running application through the frozen HTTP contract and browser UI; it does not inspect
-candidate databases or source code.
+The generation container receives only `tasks/instruction.md` and `tasks/public/`. A completed
+candidate must create `app-setup/manifest.json`, `build.sh`, `reset.sh`, `start.sh`, and its
+`openapi.json` artifact in the candidate workspace.
 
-## Validate and evaluate
+## Validate, generate, verify, score
 
 ```bash
 python3 scripts/validate_task.py tasks
-python3 -m unittest discover -s harness_checks
-python3 -m astra_harness.generate --task tasks --provider codex --model <model> --reasoning medium
-python3 -m astra_harness.verify --task tasks --candidate runs/<task>/<candidate>/candidate \
-  --run runs/<task>/<candidate> --verifier-command "python3 /input/verifier/run.py"
+python3 -m unittest discover -s harness_checks -q
+python3 scripts/build_images.py
+
+./generate-candidate-solution --provider codex --model <model> --reasoning medium
+python3 -m astra_harness.verify \
+  --task tasks \
+  --candidate runs/lab-sample-pickup-and-delivery/<run-id>/candidate \
+  --run runs/lab-sample-pickup-and-delivery/<run-id> \
+  --verifier-command "python3 /input/verifier/run.py"
+python3 -m astra_harness.score --task tasks --run runs/lab-sample-pickup-and-delivery/<run-id>
 python3 -m astra_harness.benchmark --runs-root runs
 ```
 
-Build the images first with `python3 scripts/build_images.py`. The runtime image is based on the
-original environment and includes Go, Node, MongoDB, PostgreSQL, Redis, Playwright, and local map
-assets. The ASTRA harness adds isolated candidate-generation and verifier boundaries around it.
+`./generate`, `./verify`, `./evaluate`, and `./benchmark` remain small compatibility aliases, but
+all of them now invoke the canonical ASTRA modules and use the `candidate/app-setup/` layout.
 
-## Scoring
+The verifier supplies the administrator credentials and bounded operational timers to both the
+candidate runtime and the private verifier. Override them with the verifier CLI options or a
+private env file; never commit credentials.
 
-`verifier/score_adapter.py` converts the pinned-contract reward into ASTRA's normalized criteria
-ledger. The published score is 2% API artifact, 8% runtime contract, 54% backend behavior, 7% UI
-behavior, 1% UI contract audit, and 28% reliability. Reliability includes durability across
-restart, idempotency replay, and concurrent safety.
+## Readiness and packaging
 
-The legacy capability engine remains under `verifier/hidden-tests/backend/legacy-engine/`; its
-HTTP-only behavioral probes are invoked by the ASTRA task-scoped `verifier/run.py` adapter.
+```bash
+python3 readiness_checks/check_package.py
+python3 readiness_checks/check_acceptance.py
+python3 readiness_checks/check_report_privacy.py
+python3 readiness_checks/check_scoring.py
+python3 readiness_checks/check_determinism.py
+python3 readiness_checks/check_proof_work.py
+python3 readiness_checks/check_reference.py
+python3 readiness_checks/check_mutants.py
+python3 scripts/package_task.py --output dist/task-package.tar.gz
+```
+
+Proof-of-work evidence is task-specific and must be generated from this task's verifier. It is not
+copied from another task or accepted from ignored local run artifacts.

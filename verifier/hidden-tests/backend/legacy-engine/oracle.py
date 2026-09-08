@@ -138,7 +138,7 @@ class Engine:
         already carries workers from earlier capabilities in this same run,
         a freshly seeded worker can never win an offer unless the incumbents
         are parked first. Mirrors golden-mongo's own verification helper,
-        `World.park_existing_field_workers` in verification/api_client.py.
+        `World.park_existing_field_workers` in app-setup/api_client.py.
 
         Parking serves TWO purposes, and app isolation only removes one of them:
           1. clear leftover workers from EARLIER capabilities -- a fresh app

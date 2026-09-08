@@ -4,7 +4,7 @@
     python3 run_ui.py score \\
         --frontend-url http://127.0.0.1:18082 \\
         --base-url     http://127.0.0.1:18082 \\
-        --contract tasks/lab-sample-pickup-and-delivery/openapi.contract.json \\
+        --contract tasks/public/contracts/openapi.contract.json \\
         --admin-user admin --admin-pass admin123 \\
         --json-out /logs/ui-reward.json
 
@@ -64,7 +64,7 @@ def discover() -> list[UiCapability]:
 
 
 def _manifest_info(manifest_path: str | None) -> dict | None:
-    """Load just enough of ``verification/manifest.json`` to restart the app
+    """Load just enough of ``app-setup/manifest.json`` to restart the app
     between scenarios: the reset/start commands, the ready URL, and the port
     to kill. Returns None (restarts disabled) if no manifest was given."""
     if not manifest_path:
@@ -87,7 +87,7 @@ def _restart_app(info: dict, timeout: float = 90.0) -> bool:
     works for ANY candidate's process, since only the port is knowable in
     advance), reset the DB, relaunch the start command, and poll ready.
 
-    This is the isolation the API engine's own ``verify-isolated`` already
+    This uses the same restart isolation as the API engine
     gets between every capability; the UI engine never had it. A single
     scenario's own leftover workers/locations/connections otherwise pile up on
     ONE never-restarted live app across all 15 scenarios -- confirmed live
@@ -206,11 +206,11 @@ def main() -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--frontend-url", required=True, help="origin the browser drives (manifest urls.frontend)")
     p.add_argument("--base-url", required=True, help="server origin for the HTTP seeder")
-    p.add_argument("--contract", default="tasks/lab-sample-pickup-and-delivery/openapi.contract.json")
+    p.add_argument("--contract", default="tasks/public/contracts/openapi.contract.json")
     p.add_argument(
         "--manifest",
         default=None,
-        help="path to verification/manifest.json; when given, restarts the app (kill by port, "
+        help="path to app-setup/manifest.json; when given, restarts the app (kill by port, "
         "reset, relaunch, wait ready) before EVERY scenario for full isolation. Omit to disable.",
     )
     p.add_argument("--admin-user", default="admin")

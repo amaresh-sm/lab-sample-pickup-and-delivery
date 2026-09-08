@@ -1,5 +1,5 @@
 """Dependency-free JSON Schema validator for the subset actually used by
-tasks/lab-sample-pickup-and-delivery/openapi.contract.json: $ref, allOf,
+tasks/public/contracts/openapi.contract.json: $ref, allOf,
 oneOf, type, properties, required, additionalProperties, enum, items,
 minLength, minimum, maximum, exclusiveMinimum. `format` is read but NOT
 validated (no date-time/uuid format checkers) -- a deliberate scope

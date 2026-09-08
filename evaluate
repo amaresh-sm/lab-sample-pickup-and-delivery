@@ -1,89 +1,66 @@
 #!/usr/bin/env bash
-# evaluate — end-to-end: generate ONE candidate solution, then verify it, into a single
-# runs/<label>-<UTC>/ folder holding both solution/ and verifier-logs/.
-#
-# Thin orchestrator over ./generate and ./verify. All generation flags pass straight through.
-#
-# Produces:
-#   runs/<id>/solution/       (from ./generate)
-#   runs/<id>/verifier-logs/  (from ./verify: reward.json, verify-metadata.json, *.log)
-#
-# Usage:
-#   ./evaluate
-#   ./evaluate --provider claude --model claude-opus-4-8 --reasoning high
-#   ./evaluate --provider portkey --label pk
-#
-# Flags (same as ./generate):
-#   --provider claude|codex|portkey|openai   --model <id>   --reasoning low|medium|high
-#   --label <name>   --env-file <file>
-#   --admin-user U   --admin-pass P          (passed to ./verify)
-#   --help
+# Canonical ASTRA end-to-end flow: generate, verify, then normalize the score.
 set -Eeuo pipefail
-root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"; cd "$root"
 
-# Split args: generation flags go to ./generate, admin flags go to ./verify.
-gen_args=(); admin_user=""; admin_pass=""
-label=""; model=""; reasoning=""; provider=""
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+cd "$root"
+
+run_id=""
+generate_args=()
+verify_args=()
+provider="${GEN_PROVIDER:-codex}"
+model="${GEN_MODEL:-${CODEX_MODEL:-gpt-5.6-terra}}"
+reasoning="${CODEX_REASONING:-medium}"
 while (($#)); do
   case "$1" in
-    --label)     label="${2:-}"; gen_args+=(--label "${2:-}"); shift 2 ;;
-    --model)     model="${2:-}"; gen_args+=(--model "${2:-}"); shift 2 ;;
-    --reasoning) reasoning="${2:-}"; gen_args+=(--reasoning "${2:-}"); shift 2 ;;
-    --provider)  provider="${2:-}"; gen_args+=(--provider "${2:-}"); shift 2 ;;
-    --env-file)  gen_args+=(--env-file "${2:-}"); shift 2 ;;
-    --admin-user) admin_user="${2:-}"; shift 2 ;;
-    --admin-pass) admin_pass="${2:-}"; shift 2 ;;
-    --help|-h)   sed -n '2,20p' "$0"; exit 0 ;;
+    --label|--run-id) run_id="${2:-}"; shift 2 ;;
+    --provider) provider="${2:-}"; generate_args+=(--provider "${2:-}"); shift 2 ;;
+    --model) model="${2:-}"; generate_args+=(--model "${2:-}"); shift 2 ;;
+    --reasoning) reasoning="${2:-}"; generate_args+=(--reasoning "${2:-}"); shift 2 ;;
+    --env-file) generate_args+=(--env-file "${2:-}"); verify_args+=(--env-file "${2:-}"); shift 2 ;;
+    --auth-file|--claude-credentials-file|--cloud-config-file|--ca-cert|--image|--dockerfile|--command)
+      generate_args+=("$1" "${2:-}"); shift 2 ;;
+    --verifier-image) verify_args+=(--image "${2:-}"); shift 2 ;;
+    --runtime-image|--candidate-env-file|--admin-user|--admin-pass|--unassigned-search-timeout-seconds|--assignment-offer-ttl-seconds|--maintenance-interval-milliseconds)
+      verify_args+=("$1" "${2:-}"); shift 2 ;;
+    --timeout-seconds)
+      generate_args+=(--timeout-seconds "${2:-}"); verify_args+=(--timeout-seconds "${2:-}"); shift 2 ;;
+    --help|-h)
+      echo "Usage: ./evaluate [generation and verifier options]"
+      echo "Output: runs/lab-sample-pickup-and-delivery/<run-id>/"
+      exit 0 ;;
     *) echo "unknown argument: $1" >&2; exit 2 ;;
   esac
 done
 
-# Pin the run folder here so generate + verify land in the SAME runs/<id>/.
-if [[ -z "$label" ]]; then
-  label="${provider:+$provider-}${model:-sol}"
-  [[ -n "$reasoning" ]] && label="${label}-${reasoning}"
+if [[ -z "$run_id" ]]; then
+  run_id="${provider}-${model}-${reasoning}-$(date -u +%Y%m%dT%H%M%SZ)"
 fi
-label="$(printf '%s' "$label" | tr -c 'A-Za-z0-9._-' '-')"
-run_id="${label}-$(date -u +%Y%m%dT%H%M%SZ)"
-run_dir="$root/runs/$run_id"
-echo "[evaluate] run dir: $run_dir"
+run_id="$(printf '%s' "$run_id" | tr -c 'A-Za-z0-9._-' '-')"
+runs_root="${RUNS_ROOT:-runs}"
+run_dir="$root/$runs_root/lab-sample-pickup-and-delivery/$run_id"
 
-# ---- 1. generate ----
+generate_args+=(--provider "$provider" --model "$model" --reasoning "$reasoning" --run-id "$run_id")
 set +e
-./generate "${gen_args[@]}" --run-dir "$run_dir"
-gen_status=$?
-set -e
-[[ "$gen_status" -ne 0 ]] && echo "[evaluate] note: generation exited $gen_status; verifying anyway" >&2
-
-# ---- 2. verify ----
-verify_args=(--workspace "$run_dir/solution/workspace" --logs-dir "$run_dir/verifier-logs")
-[[ -n "$admin_user" ]] && verify_args+=(--admin-user "$admin_user")
-[[ -n "$admin_pass" ]] && verify_args+=(--admin-pass "$admin_pass")
-set +e
-./verify "${verify_args[@]}"
-verify_status=$?
+"$root/generate-candidate-solution" "${generate_args[@]}"
+generation_status=$?
 set -e
 
-# ---- combined summary ----
-gen_meta="$run_dir/solution/run-metadata.json"
-ver_meta="$run_dir/verifier-logs/verify-metadata.json"
-gen_dur="?"; gen_tokens="not captured"; ver_dur="?"; score="?"
-if [[ -f "$gen_meta" ]]; then
-  gen_dur="$(jq -r '.durationSeconds // "?"' "$gen_meta" 2>/dev/null || echo '?')"
-  jq -e '.tokens != null' "$gen_meta" >/dev/null 2>&1 && \
-    gen_tokens="$(jq -r '"in=\(.tokens.input // "?") out=\(.tokens.output // "?") total=\(.tokens.total // "?")"' "$gen_meta")"
-fi
-if [[ -f "$ver_meta" ]]; then
-  ver_dur="$(jq -r '.durationSeconds // "?"' "$ver_meta" 2>/dev/null || echo '?')"
-  score="$(jq -r '.overallScore // "?"' "$ver_meta" 2>/dev/null || echo '?')"
+set +e
+"$root/verify" --workspace "$run_dir/candidate" --run "$run_dir" "${verify_args[@]}"
+verification_status=$?
+set -e
+
+score_status=1
+if [[ -f "$run_dir/reports/criteria.json" ]]; then
+  set +e
+  python3 -m astra_harness.score --task tasks --run "$run_dir"
+  score_status=$?
+  set -e
 fi
 
-echo
-echo "==================== evaluate summary ===================="
-echo "  run dir            : $run_dir"
-echo "  generation duration: ${gen_dur}s"
-echo "  generation tokens  : ${gen_tokens}"
-echo "  verifier duration  : ${ver_dur}s"
-echo "  overall score      : ${score}"
-echo "=========================================================="
-exit "$verify_status"
+echo "generation exit: $generation_status"
+echo "verification exit: $verification_status"
+echo "score exit: $score_status"
+echo "run directory: $run_dir"
+exit "$verification_status"

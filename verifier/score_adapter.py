@@ -79,7 +79,7 @@ def outcome(score: Any, source: str) -> dict[str, Any]:
 
 
 def artifact_score(candidate: Path, public_contract: Path) -> float:
-    candidates = [candidate / "app-setup/openapi.json", candidate / "verification/openapi.json"]
+    candidates = [candidate / "app-setup/openapi.json"]
 
     def structural(value: Any, path: tuple[str, ...] = ()) -> Any:
         """Ignore prose-only OpenAPI fields while preserving the API shape."""

@@ -42,16 +42,16 @@ engine/ui_capabilities/
     accept_assignment.py         accept_assignment_writes_through                 (AC-31)
 ```
 
-A top-level `./run-ui --workspace <built solution>` boots the app in a
-throwaway container and runs `run_ui.py` inside it (browser in the same network
-namespace as the app), writing `<logs-dir>/ui-reward.json`.
+The canonical ASTRA verifier boots the candidate runtime and invokes this UI
+suite inside the private verifier container, writing the UI reward beneath the
+ASTRA run's `reports/` directory.
 
 Manual, against an already-running app inside its container:
 
 ```bash
 PLAYWRIGHT_BROWSERS_PATH=/ms-playwright python3 run_ui.py \
   --frontend-url http://127.0.0.1:18082 --base-url http://127.0.0.1:18082 \
-  --contract tasks/lab-sample-pickup-and-delivery/openapi.contract.json \
+  --contract tasks/public/contracts/openapi.contract.json \
   score --verbose --json-out /logs/ui-reward.json
 ```
 

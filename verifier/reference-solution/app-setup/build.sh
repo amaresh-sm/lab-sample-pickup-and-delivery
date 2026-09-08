@@ -4,7 +4,7 @@ set -euo pipefail
 WORKSPACE_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 cd "$WORKSPACE_ROOT/backend"
-# SKIP_GO_TESTS: for mutant-gate builds only (gate-isolated.sh), never for
+# SKIP_GO_TESTS: for controlled mutant builds only, never for
 # real candidate scoring. A behavioural mutant can correctly break golden's
 # OWN pre-existing Go unit tests (that's evidence the mutation is real, not
 # a build defect) -- what a mutant gate needs to know is whether the

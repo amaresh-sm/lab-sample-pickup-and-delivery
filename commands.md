@@ -1,56 +1,61 @@
-# Commands cheat-sheet
+# ASTRA task commands
 
-Three root commands drive the whole loop. All output lands in `runs/<label>-<UTC>/`.
+The canonical task package is `tasks/`, and each run is stored at
+`runs/<task-id>/<run-id>/`. A generated candidate lives at
+`runs/<task-id>/<run-id>/candidate/`.
 
-## Generate a candidate solution
-
-```bash
-./generate --provider codex   --model gpt-5.6-terra --reasoning medium --label terra-med
-./generate --provider claude  --model claude-opus-4-8 --reasoning high
-./generate --provider portkey --label pk            # model/route come from verifier.env (PORTKEY_CONFIG)
-```
-
-- `--provider`  `claude` (subscription creds ~/.claude, or ANTHROPIC_API_KEY) | `codex` (ChatGPT OAuth ~/.codex/auth.json) | `portkey` (OPENAI_API_KEY token + PORTKEY_CONFIG in verifier.env)
-- `--model`, `--reasoning`, `--label` are optional; the label auto-derives from provider+model+reasoning.
-- Output: `runs/<id>/solution/workspace/` (built app + `verification/`), plus `run-metadata.json` recording provider, model, reasoning, **durationSeconds**, exitCode, and best-effort **tokens**.
-
-Local dev uses `claude`/`codex` (no API key). Packaged/vendor runs use `portkey` (no proprietary-model dependency).
-
-## Verify an already-built solution
+## Validate and build images
 
 ```bash
-./verify --workspace runs/<id>/solution/workspace
+python3 scripts/validate_task.py tasks
+python3 -m unittest discover -s harness_checks -q
+python3 scripts/build_images.py
 ```
 
-Boots the candidate in a throwaway container (starts its datastores, runs the manifest's `build` → `reset` → `start`, waits for `/ready`), then runs the pinned-contract engine against it. Writes `verifier-logs/reward.json` and `verify-metadata.json` (records the verifier's **durationSeconds** + overall score).
-
-## Do both, end to end
+## Generate a candidate
 
 ```bash
-./evaluate --provider codex --model gpt-5.6-terra --reasoning medium
+python3 -m astra_harness.generate \
+  --task tasks --provider codex --model <model> --reasoning medium
 ```
 
-Generates then verifies into one `runs/<id>/` folder and prints a combined summary (generation duration+tokens, verifier duration, overall score).
+The candidate sees only `INSTRUCTION.md` and `contracts/` from the public task package. Provider
+credentials belong in a private `--env-file`; they are never committed.
 
-## Run the engine directly (against an already-running app)
+## Verify and score a candidate
 
 ```bash
-python3 verifier/qc-pinned-contracts/engine/run.py \
-  --base-url http://127.0.0.1:PORT --admin-user admin --admin-pass admin123 \
-  score --json-out reward.json
+python3 -m astra_harness.verify \
+  --task tasks \
+  --candidate runs/lab-sample-pickup-and-delivery/<run-id>/candidate \
+  --run runs/lab-sample-pickup-and-delivery/<run-id> \
+  --verifier-command "python3 /input/verifier/run.py"
+python3 -m astra_harness.score --task tasks --run runs/lab-sample-pickup-and-delivery/<run-id>
 ```
 
-The engine is HTTP-only and deterministic — it talks to the app over the pinned contract
-(`tasks/lab-sample-pickup-and-delivery/openapi.contract.json`); there is no LLM in the scoring path.
+The verifier starts the candidate from `candidate/app-setup/manifest.json`, injects
+`ADMIN_USERNAME`/`ADMIN_PASSWORD` and bounded timer values into both containers, and writes
+`reports/criteria.json` plus `reports/score.json`.
 
-## Build the images (once)
+## End-to-end convenience command
 
 ```bash
-docker build -t lab-sample-pickup-delivery-gym:local -f environment/Dockerfile .
-docker build --build-arg BASE_IMAGE=lab-sample-pickup-delivery-gym:local \
-  --build-arg CODEX_VERSION=0.144.6 \
-  -t lab-sample-pickup-delivery-gym:codex-local \
-  -f verifier/amazon-test/Dockerfile.codex .
+./evaluate --provider codex --model <model> --reasoning medium
 ```
 
-`./generate` builds these automatically on first run if they're missing.
+The root `generate`, `verify`, and `benchmark` commands are compatibility aliases for the ASTRA
+modules. Use the module commands above in new automation.
+
+## Readiness and packaging
+
+```bash
+python3 readiness_checks/check_package.py
+python3 readiness_checks/check_acceptance.py
+python3 readiness_checks/check_report_privacy.py
+python3 readiness_checks/check_scoring.py
+python3 readiness_checks/check_determinism.py
+python3 readiness_checks/check_proof_work.py
+python3 readiness_checks/check_reference.py
+python3 readiness_checks/check_mutants.py
+python3 scripts/package_task.py --output dist/task-package.tar.gz
+```

@@ -332,7 +332,7 @@ def _run_create_sample_type(engine) -> CapabilityReport:
         },
     )
 
-    # A real, contract-backed invalid-input case: tasks/lab-sample-pickup-and-delivery/openapi.contract.json
+    # A real, contract-backed invalid-input case: tasks/public/contracts/openapi.contract.json
     # marks `containerType` required for create_sample_type, and writeSampleType's
     # own validation (admin.go) rejects a blank container with 400
     # invalid_handling_rule -- independent of any particular sample-type name.

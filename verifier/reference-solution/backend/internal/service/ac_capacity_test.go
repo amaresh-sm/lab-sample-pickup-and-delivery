@@ -154,7 +154,7 @@ func TestAC45AC46BothCapacityDimensionsAreReadableAndRoleScoped(t *testing.T) {
 	// so capacityMap was only ever called for a location and the six numbers
 	// configured against a connection were write-only. read_operations_state now
 	// reports a connections array carrying the same capacity block, and
-	// verification/openapi.json documents it as OperationsConnection. The message
+	// app-setup/openapi.json documents it as OperationsConnection. The message
 	// below is kept as the diagnostic should that array ever be dropped again.
 	connectionCapacity := operationsCapacityFor(operations, network.connectionID)
 	if connectionCapacity == nil {

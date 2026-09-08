@@ -1,8 +1,9 @@
 # Candidate generations and verifier reports are run artifacts, not task source.
-runs/
+/runs/*
+!/runs/summary.md
+!/runs/summary.csv
 dist/
-candidates/
-verifier/proof-of-work/
+/candidates/
 verifier/reference-solution/dist-server/
 
 # Generated Python bytecode and test caches.
@@ -38,7 +39,15 @@ verifier/score.md
 /.golden-vue-mongo-work/
 /.golden-vue-mongo-results/
 /verifier-logs/
-/runs/*
-!/runs/summary.md
-!/runs/summary.csv
 verifier/__pycache__/
+
+# Keep compact, reviewed proof metadata and score ledgers; ignore bulky logs and
+# transient browser/backend output. Evidence must come from this task's verifier.
+/verifier/proof-of-work/**/*.log
+/verifier/proof-of-work/**/logs/
+/verifier/proof-of-work/**/reports/*
+!/verifier/proof-of-work/**/reports/score.json
+!/verifier/proof-of-work/**/reports/backend/
+!/verifier/proof-of-work/**/reports/backend/reward.json
+/verifier/proof-of-work/**/criteria.json
+/verifier/proof-of-work/**/assertion.txt

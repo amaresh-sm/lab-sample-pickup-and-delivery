@@ -14,6 +14,19 @@ from pathlib import Path
 from .redaction import redact_tree
 
 
+DEFAULT_VERIFIER_ENV = {
+    "ADMIN_USERNAME": "admin",
+    "ADMIN_PASSWORD": "admin123",
+    # Keep the long-running qualification probe bounded in local and CI runs.
+    # These values remain overridable through an env file or the CLI.
+    "UNASSIGNED_SEARCH_TIMEOUT_SECONDS": "60",
+    "ASSIGNMENT_OFFER_TTL_SECONDS": "120",
+    "MAINTENANCE_INTERVAL_MILLISECONDS": "1000",
+    "ENGINE_MAINTENANCE_INTERVAL_SECONDS": "1",
+}
+SELECTED_ENV_KEYS = tuple(DEFAULT_VERIFIER_ENV)
+
+
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -33,8 +46,58 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="private environment file injected into the candidate runtime",
     )
+    parser.add_argument("--admin-user", default=None, help="administrator username (default: admin)")
+    parser.add_argument("--admin-pass", default=None, help="administrator password (default: admin123)")
+    parser.add_argument("--unassigned-search-timeout-seconds", type=int, default=None)
+    parser.add_argument("--assignment-offer-ttl-seconds", type=int, default=None)
+    parser.add_argument("--maintenance-interval-milliseconds", type=int, default=None)
     parser.add_argument("--timeout-seconds", type=int, default=14_400)
     return parser.parse_args()
+
+
+def read_env_file(path: Path | None) -> dict[str, str]:
+    """Read simple KEY=VALUE entries without expanding or exposing other secrets."""
+
+    if path is None or not path.is_file():
+        return {}
+    values: dict[str, str] = {}
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        if key not in SELECTED_ENV_KEYS:
+            continue
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+            value = value[1:-1]
+        values[key] = value
+    return values
+
+
+def verifier_environment(args: argparse.Namespace) -> dict[str, str]:
+    """Build the bounded environment shared by the app and private verifier."""
+
+    values = dict(DEFAULT_VERIFIER_ENV)
+    values.update({key: os.environ[key] for key in SELECTED_ENV_KEYS if key in os.environ})
+    values.update(read_env_file(args.env_file))
+    values.update(read_env_file(args.candidate_env_file))
+    overrides = {
+        "ADMIN_USERNAME": args.admin_user,
+        "ADMIN_PASSWORD": args.admin_pass,
+        "UNASSIGNED_SEARCH_TIMEOUT_SECONDS": args.unassigned_search_timeout_seconds,
+        "ASSIGNMENT_OFFER_TTL_SECONDS": args.assignment_offer_ttl_seconds,
+        "MAINTENANCE_INTERVAL_MILLISECONDS": args.maintenance_interval_milliseconds,
+    }
+    values.update({key: str(value) for key, value in overrides.items() if value is not None})
+    return values
+
+
+def docker_environment_args(values: dict[str, str]) -> list[str]:
+    """Render environment values using Docker's required ``KEY=VALUE`` form."""
+
+    return [argument for key, value in values.items() for argument in ("--env", f"{key}={value}")]
 
 
 def docker_exec(
@@ -56,11 +119,7 @@ def load_candidate_manifest(candidate: Path) -> tuple[dict[str, list[str]], str,
 
     path = candidate / "app-setup" / "manifest.json"
     if not path.is_file():
-        legacy = candidate / "verification" / "manifest.json"
-        if legacy.is_file():
-            path = legacy
-        else:
-            raise SystemExit(f"candidate manifest is missing: {path}")
+        raise SystemExit(f"candidate manifest is missing: {path}")
     try:
         raw = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
@@ -244,6 +303,7 @@ def run(args: argparse.Namespace) -> int:
     name = f"astra-verify-{task_id}-{run_dir.name}".replace("_", "-")
     runtime_name = f"{name}-runtime"
     commands, manifest_path, ready_url = load_candidate_manifest(candidate)
+    shared_env = verifier_environment(args)
     runtime_args = [
         "docker", "run", "--detach", "--rm", "--name", runtime_name,
         "--cap-drop", "NET_RAW",
@@ -255,6 +315,7 @@ def run(args: argparse.Namespace) -> int:
     ]
     if args.candidate_env_file:
         runtime_args += ["--env-file", str(args.candidate_env_file.resolve())]
+    runtime_args += docker_environment_args(shared_env)
     runtime_args += [args.runtime_image]
     docker_args = [
         "docker", "run", "--rm", "--name", name,
@@ -277,6 +338,7 @@ def run(args: argparse.Namespace) -> int:
     ]
     if args.env_file:
         docker_args[2:2] = ["--env-file", str(args.env_file.resolve())]
+    docker_args[2:2] += docker_environment_args(shared_env)
 
     metadata_path = run_dir / "verification.json"
     metadata: dict[str, object] = {

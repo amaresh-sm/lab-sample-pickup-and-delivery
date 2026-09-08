@@ -19,7 +19,7 @@ The fix (`_classify_assignments` below): never index into `activeAssignmentIds`.
 Instead, ask the app itself which worker each assignment was offered to, by
 scanning `list_role_work` across every worker we seeded for the relevant
 field roles (mirrors golden-mongo's own verification helper,
-`World.find_offered` in verification/api_client.py) -- then drive the chain
+`World.find_offered` in app-setup/api_client.py) -- then drive the chain
 using whichever ids and aliases the app actually produced. A step still gets
 0 credit if it genuinely fails (e.g. a real upstream planning bug) -- the fix
 only removes FALSE zeros caused by the harness's own shape assumptions, per

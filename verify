@@ -1,204 +1,28 @@
 #!/usr/bin/env bash
-# verify — boot a built candidate solution in a throwaway container and score it with the
-# current pinned-contract engine (verifier/qc-pinned-contracts/engine/run.py).
-#
-# The engine speaks pure HTTP and needs only Python 3 stdlib, so it runs INSIDE the candidate
-# container (same network namespace as the app, which binds to loopback per the manifest).
-#
-# Steps:
-#   1. docker run the base image (its entrypoint starts postgres/mongo/redis).
-#   2. run the manifest's build, then reset (app stopped), then start (background).
-#   3. poll urls.ready until HTTP 200 {"status":"ready"}.
-#   4. run the engine against urls.api, writing <logs-dir>/reward.json.
-#   5. record <logs-dir>/verify-metadata.json (timing + overallScore) and tear the container down.
-#
-# Usage:
-#   ./verify --workspace runs/<id>/solution/workspace
-#   ./verify --workspace DIR --logs-dir DIR [--image TAG] [--admin-user U] [--admin-pass P]
-#
-# Flags:
-#   --workspace DIR    built solution; must contain verification/manifest.json (required)
-#   --logs-dir DIR     output dir for reward.json + verify-metadata.json
-#                      (default: runs/<id>/verifier-logs when workspace is */solution/workspace)
-#   --image TAG        base image (default: lab-sample-pickup-delivery-gym:local)
-#   --admin-user U     bootstrap admin username (default: admin)
-#   --admin-pass P     bootstrap admin password (default: admin123)
-#   --help
+# Compatibility alias for the canonical ASTRA verifier.
 set -Eeuo pipefail
-root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"; cd "$root"
 
-workspace=""; logs_dir=""
-image="${IMAGE_TAG:-lab-sample-pickup-delivery-gym:local}"
-admin_user="${ADMIN_USERNAME:-admin}"
-admin_pass="${ADMIN_PASSWORD:-admin123}"
-contract="tasks/lab-sample-pickup-and-delivery/openapi.contract.json"   # NEW pinned task path
-engine="verifier/qc-pinned-contracts/engine/run.py"
-ready_timeout="${READY_TIMEOUT_SECONDS:-180}"
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+cd "$root"
 
+workspace=""
+run_dir=""
+args=(--task tasks --verifier-command "python3 /input/verifier/run.py")
 while (($#)); do
   case "$1" in
-    --workspace)  workspace="${2:-}"; shift 2 ;;
-    --logs-dir)   logs_dir="${2:-}"; shift 2 ;;
-    --image)      image="${2:-}"; shift 2 ;;
-    --admin-user) admin_user="${2:-}"; shift 2 ;;
-    --admin-pass) admin_pass="${2:-}"; shift 2 ;;
-    --help|-h)    sed -n '2,26p' "$0"; exit 0 ;;
+    --workspace|--candidate) workspace="${2:-}"; shift 2 ;;
+    --logs-dir|--run) run_dir="${2:-}"; shift 2 ;;
+    --image|--runtime-image|--env-file|--candidate-env-file|--timeout-seconds|--admin-user|--admin-pass|--unassigned-search-timeout-seconds|--assignment-offer-ttl-seconds|--maintenance-interval-milliseconds)
+      args+=("$1" "${2:-}"); shift 2 ;;
+    --help|-h)
+      echo "Usage: ./verify --workspace RUNS/<task>/<candidate>/candidate [--logs-dir DIR]"
+      echo "Canonical equivalent: python3 -m astra_harness.verify --task tasks ..."
+      exit 0 ;;
     *) echo "unknown argument: $1" >&2; exit 2 ;;
   esac
 done
 
 [[ -n "$workspace" ]] || { echo "--workspace is required" >&2; exit 2; }
-[[ -d "$workspace" ]] || { echo "workspace not found: $workspace" >&2; exit 2; }
-workspace="$(cd "$workspace" && pwd -P)"
-manifest="$workspace/verification/manifest.json"
-[[ -f "$manifest" ]] || { echo "no built solution: $manifest is missing" >&2; exit 2; }
-
-# Infer logs-dir: sibling verifier-logs/ when the workspace is runs/<id>/solution/workspace.
-if [[ -z "$logs_dir" ]]; then
-  if [[ "$(basename "$workspace")" == "workspace" && "$(basename "$(dirname "$workspace")")" == "solution" ]]; then
-    logs_dir="$(dirname "$(dirname "$workspace")")/verifier-logs"
-  else
-    logs_dir="$root/verifier-logs"
-  fi
-fi
-mkdir -p "$logs_dir"; logs_dir="$(cd "$logs_dir" && pwd -P)"
-
-if ! docker image inspect "$image" >/dev/null 2>&1; then
-  echo "base image missing: $image" >&2
-  echo "Build it once:  docker build -t $image -f environment/Dockerfile ." >&2
-  exit 2
-fi
-
-# ---- Parse the manifest (bash 3.2-safe: read loops, no mapfile) ----
-build_cmd=(); while IFS= read -r l; do build_cmd+=("$l"); done < <(jq -r '.commands.build[]' "$manifest")
-reset_cmd=(); while IFS= read -r l; do reset_cmd+=("$l"); done < <(jq -r '.commands.reset[]' "$manifest")
-start_cmd=(); while IFS= read -r l; do start_cmd+=("$l"); done < <(jq -r '.commands.start[]' "$manifest")
-api_url="$(jq -r '.urls.api'   "$manifest")"
-ready_url="$(jq -r '.urls.ready' "$manifest")"
-
-[[ ${#start_cmd[@]} -gt 0 ]] || { echo "manifest has no commands.start" >&2; exit 2; }
-[[ -n "$api_url" && "$api_url" != "null" ]]     || { echo "manifest has no urls.api" >&2; exit 2; }
-[[ -n "$ready_url" && "$ready_url" != "null" ]] || { echo "manifest has no urls.ready" >&2; exit 2; }
-
-# The engine's --base-url must be the server ORIGIN (scheme://host:port), NOT
-# manifest.urls.api: the pinned contract's own paths already carry the /api
-# prefix (e.g. POST /api/authenticate-user) and its `servers` url is the bare
-# origin. Passing urls.api (which ends in /api) would double-prefix to
-# /api/api/... -> the app's router returns 404 "operation not found". Strip any
-# path from urls.api and keep only scheme://host:port.
-base_origin="$(printf '%s' "$api_url" | sed -E 's#^(https?://[^/]+).*#\1#')"
-
-container="verify-$(date -u +%Y%m%dT%H%M%SZ)-$$"
-cleanup() { docker rm --force "$container" >/dev/null 2>&1 || true; }
-trap cleanup EXIT
-
-echo "[verify] image     = $image"
-echo "[verify] workspace = $workspace"
-echo "[verify] logs-dir  = $logs_dir"
-echo "[verify] api       = $api_url"
-echo "[verify] ready     = $ready_url"
-
-started_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"; started_epoch="$(date +%s)"
-
-# Timer env vars. The engine's wall-clock probes read these (engine_wait_seconds),
-# and the app under test must be started with the SAME values so its real timers
-# agree with what the engine waits for. Vars set here on `docker run` are visible
-# to every later `docker exec` in this container -- both the backgrounded app
-# start AND the engine run -- so one place covers both. Defaults are the
-# CI-fast-but-safe values validated earlier (the app enforces its own minimums,
-# e.g. UNASSIGNED_SEARCH_TIMEOUT_SECONDS>=60); override via the environment.
-# Without these, the unassigned-collector probe would wait the 1-hour production
-# default and the whole run would appear to hang.
-unassigned_timeout="${UNASSIGNED_SEARCH_TIMEOUT_SECONDS:-60}"
-offer_ttl="${ASSIGNMENT_OFFER_TTL_SECONDS:-120}"
-maintenance_ms="${MAINTENANCE_INTERVAL_MILLISECONDS:-1000}"
-
-# ---- 1. boot the container (entrypoint starts the datastores) ----
-docker run --detach --name "$container" \
-  --env "ADMIN_USERNAME=$admin_user" \
-  --env "ADMIN_PASSWORD=$admin_pass" \
-  --env "UNASSIGNED_SEARCH_TIMEOUT_SECONDS=$unassigned_timeout" \
-  --env "ASSIGNMENT_OFFER_TTL_SECONDS=$offer_ttl" \
-  --env "MAINTENANCE_INTERVAL_MILLISECONDS=$maintenance_ms" \
-  --mount "type=bind,src=$workspace,dst=/workspace" \
-  --mount "type=bind,src=$root,dst=/opt/gym,readonly" \
-  --mount "type=bind,src=$logs_dir,dst=/logs" \
-  "$image" sleep infinity >/dev/null
-echo "[verify] timers: unassigned-search=${unassigned_timeout}s offer-ttl=${offer_ttl}s maintenance=${maintenance_ms}ms"
-
-# Wait for postgres/mongo/redis to answer (start-services already ran via the entrypoint,
-# but poll to be safe before build/reset touch them).
-echo "[verify] waiting for datastores..."
-dl=$(( $(date +%s) + 60 ))
-until docker exec "$container" /opt/arena/bin/healthcheck.sh >/dev/null 2>&1; do
-  if (( $(date +%s) >= dl )); then echo "[verify] datastores never became healthy" >&2; exit 1; fi
-  sleep 2
-done
-
-# ---- 2. build, then reset (app stopped), then start (background) ----
-echo "[verify] build..."
-docker exec --workdir /workspace "$container" "${build_cmd[@]}" 2>&1 | tee "$logs_dir/build.log" || {
-  echo "[verify] build failed" >&2; exit 1; }
-
-echo "[verify] reset..."
-docker exec --workdir /workspace "$container" "${reset_cmd[@]}" 2>&1 | tee "$logs_dir/reset.log" || {
-  echo "[verify] reset failed" >&2; exit 1; }
-
-# Build a shell-safe command string for the backgrounded start.
-start_quoted=""
-for a in "${start_cmd[@]}"; do start_quoted="$start_quoted $(printf '%q' "$a")"; done
-echo "[verify] start (background)..."
-docker exec --detach "$container" \
-  bash -lc "cd /workspace && exec$start_quoted >/logs/app-start.log 2>&1"
-
-# ---- 3. poll readiness ----
-echo "[verify] waiting for ready (timeout ${ready_timeout}s)..."
-ready=0
-dl=$(( $(date +%s) + ready_timeout ))
-while (( $(date +%s) < dl )); do
-  body="$(docker exec "$container" curl -fsS "$ready_url" 2>/dev/null || true)"
-  if printf '%s' "$body" | jq -e '.status == "ready"' >/dev/null 2>&1; then ready=1; break; fi
-  sleep 3
-done
-
-overall="null"
-if [[ "$ready" -ne 1 ]]; then
-  echo "[verify] app never reported ready — dumping last start log:" >&2
-  docker exec "$container" tail -n 40 /logs/app-start.log 2>/dev/null >&2 || true
-else
-  # ---- 4. score with the pinned-contract engine (inside the container) ----
-  echo "[verify] scoring..."
-  docker exec --workdir /opt/gym "$container" \
-    python3 "$engine" \
-      --base-url "$base_origin" \
-      --contract "$contract" \
-      --admin-user "$admin_user" \
-      --admin-pass "$admin_pass" \
-      score --json-out /logs/reward.json 2>&1 | tee "$logs_dir/engine.log" || true
-  if [[ -f "$logs_dir/reward.json" ]]; then
-    overall="$(jq -r '.overall // "null"' "$logs_dir/reward.json" 2>/dev/null || echo null)"
-  fi
-fi
-
-finished_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"; finished_epoch="$(date +%s)"
-duration=$(( finished_epoch - started_epoch ))
-
-# ---- 5. verifier timing metadata ----
-jq -n \
-  --arg startedAt "$started_at" \
-  --arg finishedAt "$finished_at" \
-  --argjson durationSeconds "$duration" \
-  --argjson overallScore "$overall" \
-  --arg workspace "$workspace" \
-  '{startedAt:$startedAt,finishedAt:$finishedAt,durationSeconds:$durationSeconds,overallScore:$overallScore,workspace:$workspace}' \
-  > "$logs_dir/verify-metadata.json"
-
-echo
-echo "[verify] done"
-echo "  overall score : $overall"
-echo "  duration      : ${duration}s"
-echo "  reward.json   : $logs_dir/reward.json"
-echo "  metadata      : $logs_dir/verify-metadata.json"
-
-[[ "$ready" -eq 1 ]] || exit 1
-exit 0
+[[ -n "$run_dir" ]] || run_dir="$(dirname "$(cd "$workspace" && pwd -P)")"
+args+=(--candidate "$workspace" --run "$run_dir")
+exec python3 -m astra_harness.verify "${args[@]}"

@@ -189,8 +189,8 @@ def cmd_score(args: argparse.Namespace) -> int:
             # Contract conformance: a side effect of the HTTP calls the
             # capabilities above already made in THIS process -- no new
             # scenarios, no new calls. Only operations this run actually
-            # exercised appear here; isolated mode's merge step (verify-isolated)
-            # combines every group's contractReport into one whole-suite sweep,
+            # exercised appear here; the adapter merges every group into one
+            # combines every group's contractReport into one whole-suite report,
             # the same pattern durability's dur-part-N.json merge already uses.
             "contractReport": {
                 op_id: {

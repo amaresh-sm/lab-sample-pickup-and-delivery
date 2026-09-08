@@ -316,4 +316,4 @@ The code repository is at `/workspace`. You are inside a Docker container and ma
 
 ## HTTP API Contract — IMPLEMENT EXACTLY (pinned)
 
-Your backend MUST implement the HTTP API described in `openapi.contract.json` (provided in your workspace) **exactly as specified** — the same paths, methods, request field names, request/response body shapes, and status codes. Do **not** rename fields, change nesting, add or remove fields, or redesign the routes. Your generated `app-setup/openapi.json` must match this contract.
+Your backend MUST implement the HTTP API described in `contracts/openapi.contract.json` (provided in your workspace) **exactly as specified** — the same paths, methods, request field names, request/response body shapes, and status codes. Do **not** rename fields, change nesting, add or remove fields, or redesign the routes. Your generated `app-setup/openapi.json` must match this contract.
