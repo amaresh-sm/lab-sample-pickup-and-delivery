@@ -10,6 +10,7 @@ case "$provider" in
   codex) provider="codex" ;;
   portkey|openai) provider="openai-compatible" ;;
   claude) provider="claude-code" ;;
+  openhands) provider="openhands" ;;
   openai-compatible|claude-code) : ;;
   *) echo "unsupported provider: $provider" >&2; exit 2 ;;
 esac
@@ -25,7 +26,7 @@ while (($#)); do
         codex) provider="codex" ;;
         portkey|openai) provider="openai-compatible" ;;
         claude) provider="claude-code" ;;
-        openai-compatible|claude-code) provider="${2}" ;;
+        openhands|openai-compatible|claude-code) provider="${2}" ;;
         *) echo "unsupported provider: ${2:-}" >&2; exit 2 ;;
       esac
       args+=(--provider "$provider"); shift 2 ;;
@@ -33,6 +34,7 @@ while (($#)); do
     --reasoning) args+=(--reasoning "${2:-}"); shift 2 ;;
     --label|--run-id) args+=(--run-id "${2:-}"); shift 2 ;;
     --candidates-root) args+=(--candidates-root "${2:-}"); shift 2 ;;
+    --openhands-gateway-repo) args+=(--openhands-gateway-repo "${2:-}"); shift 2 ;;
     --env-file|--auth-file|--claude-credentials-file|--cloud-config-file|--ca-cert|--image|--dockerfile|--timeout-seconds|--command)
       args+=("$1" "${2:-}"); shift 2 ;;
     --help|-h)

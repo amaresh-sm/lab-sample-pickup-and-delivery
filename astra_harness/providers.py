@@ -37,4 +37,13 @@ def build_provider_command(provider: str, model: str, reasoning: str) -> Provide
             "--dangerously-skip-permissions --output-format stream-json --verbose",
             ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_BASE_URL"),
         )
-    raise ValueError("provider must be codex, openai-compatible, or claude-code")
+    if provider == "openhands":
+        return ProviderCommand(
+            "hackerrank-openhands run "
+            "--workspace /workspace "
+            "--instruction-file /workspace/INSTRUCTION.md "
+            f"--model {model_arg} --reasoning {shlex.quote(reasoning)} "
+            "--output /tmp/openhands-run --redact",
+            ("ASTRA_GATEWAY_API_KEY", "ASTRA_GATEWAY_BASE_URL", "LLM_API_KEY", "LLM_BASE_URL"),
+        )
+    raise ValueError("provider must be codex, openai-compatible, claude-code, or openhands")

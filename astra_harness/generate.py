@@ -24,7 +24,7 @@ def utc_now() -> str:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate a candidate in an isolated container")
     parser.add_argument("--task", type=Path, required=True)
-    parser.add_argument("--provider", choices=("codex", "openai-compatible", "claude-code"), required=True)
+    parser.add_argument("--provider", choices=("codex", "openai-compatible", "claude-code", "openhands"), required=True)
     parser.add_argument("--model", required=True)
     parser.add_argument("--reasoning", choices=("low", "medium", "high", "xhigh", "max"), default="medium")
     parser.add_argument("--run-id", default=None)
@@ -37,6 +37,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--image", default="astra-candidate-generation:latest")
     parser.add_argument("--dockerfile", type=Path, default=None)
+    parser.add_argument(
+        "--openhands-gateway-repo",
+        type=Path,
+        default=None,
+        help="local gateway source used when building the OpenHands generation image",
+    )
     parser.add_argument("--env-file", type=Path, default=None, help="Private provider env file; never commit it")
     parser.add_argument("--auth-file", type=Path, default=None, help="Optional Codex auth.json copied into the container")
     parser.add_argument(
@@ -65,7 +71,12 @@ def ensure_image(args: argparse.Namespace) -> None:
         stderr=subprocess.DEVNULL,
         check=False,
     )
-    required_cli = "claude" if args.provider == "claude-code" else "codex"
+    required_cli = {
+        "codex": "codex",
+        "openai-compatible": "codex",
+        "claude-code": "claude",
+        "openhands": "hackerrank-openhands",
+    }[args.provider]
     if found.returncode == 0:
         installed = subprocess.run(
             ["docker", "run", "--rm", "--entrypoint", "sh", args.image, "-lc", f"command -v {required_cli}"],
@@ -76,13 +87,31 @@ def ensure_image(args: argparse.Namespace) -> None:
         if installed.returncode == 0:
             return
     repository_root = Path(__file__).resolve().parents[1]
-    dockerfile = (args.dockerfile or repository_root / "environment/candidate-generation/Dockerfile").resolve()
+    default_dockerfile = (
+        repository_root / "environment/candidate-generation/Dockerfile.openhands"
+        if args.provider == "openhands"
+        else repository_root / "environment/candidate-generation/Dockerfile"
+    )
+    dockerfile = (args.dockerfile or default_dockerfile).resolve()
     if not dockerfile.is_file():
         raise SystemExit(f"generation image is missing and Dockerfile was not found: {dockerfile}")
-    subprocess.run(
-        ["docker", "build", "--tag", args.image, "--file", str(dockerfile), str(repository_root)],
-        check=True,
-    )
+    build_command = ["docker", "build", "--tag", args.image, "--file", str(dockerfile)]
+    if args.provider == "openhands":
+        gateway_repo = args.openhands_gateway_repo or os.getenv("OPENHANDS_GATEWAY_REPO")
+        if not gateway_repo:
+            raise SystemExit(
+                "OpenHands generation image needs --openhands-gateway-repo "
+                "or OPENHANDS_GATEWAY_REPO"
+            )
+        gateway_repo_path = Path(gateway_repo).expanduser().resolve()
+        if not (gateway_repo_path / "pyproject.toml").is_file() or not (gateway_repo_path / "src").is_dir():
+            raise SystemExit(f"OpenHands gateway source is invalid: {gateway_repo_path}")
+        build_command = [
+            "docker", "buildx", "build", "--load", "--tag", args.image,
+            "--file", str(dockerfile), "--build-context", f"openhands={gateway_repo_path}",
+        ]
+    build_command.append(str(repository_root))
+    subprocess.run(build_command, check=True)
 
 
 def prepare_workspace(task_dir: Path, run_dir: Path) -> Path:
@@ -225,6 +254,21 @@ def run(args: argparse.Namespace) -> int:
                 ["docker", "exec", "--interactive", "--user", "agent", container_name,
                  "sh", "-lc", f"cd /workspace && {generation_command}"],
                 check=False, stdin=prompt_stream, stdout=stdout, stderr=stderr, timeout=args.timeout_seconds, text=True,
+            )
+        if args.provider == "openhands":
+            openhands_logs = logs / "openhands"
+            openhands_logs.mkdir(parents=True, exist_ok=True)
+            subprocess.run(
+                ["docker", "cp", f"{container_name}:/tmp/openhands-run/.", str(openhands_logs)],
+                check=False,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            subprocess.run(
+                ["docker", "exec", container_name, "rm", "-rf", "/tmp/openhands-run"],
+                check=False,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
             )
         if prompt_stream:
             prompt_stream.close()

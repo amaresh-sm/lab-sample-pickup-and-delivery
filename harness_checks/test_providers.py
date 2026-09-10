@@ -16,10 +16,18 @@ class ProviderCommandTests(unittest.TestCase):
         self.assertNotIn("{prompt}", command.command)
 
     def test_all_advertised_providers_construct_a_command(self) -> None:
-        for provider in ("codex", "openai-compatible", "claude-code"):
+        for provider in ("codex", "openai-compatible", "claude-code", "openhands"):
             with self.subTest(provider=provider):
                 command = build_provider_command(provider, "example-model", "high")
                 self.assertTrue(command.command)
+
+    def test_openhands_uses_the_gateway_runner_and_private_output_directory(self) -> None:
+        command = build_provider_command("openhands", "gpt-5.6-sol", "medium")
+
+        self.assertIn("hackerrank-openhands run", command.command)
+        self.assertIn("--instruction-file /workspace/INSTRUCTION.md", command.command)
+        self.assertIn("--output /tmp/openhands-run", command.command)
+        self.assertIn("ASTRA_GATEWAY_API_KEY", command.credential_env)
 
     def test_codex_paths_request_structured_events(self) -> None:
         for provider in ("codex", "openai-compatible"):

@@ -20,7 +20,9 @@ python3 -m astra_harness.generate \
 ```
 
 The candidate sees only `INSTRUCTION.md` and `contracts/` from the public task package. Provider
-credentials belong in a private `--env-file`; they are never committed.
+credentials belong in a private `--env-file`; they are never committed. Supported providers are
+`codex`, `openai-compatible`, `claude-code`, and `openhands`. For `openhands`, pass
+`--openhands-gateway-repo /path/to/hackerrank-openhands-gateway` when the image is built.
 
 ## Verify and score a candidate
 

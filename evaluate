@@ -19,7 +19,7 @@ while (($#)); do
     --reasoning) reasoning="${2:-}"; generate_args+=(--reasoning "${2:-}"); shift 2 ;;
     --candidates-root) candidates_root_override="${2:-}"; shift 2 ;;
     --env-file) generate_args+=(--env-file "${2:-}"); verify_args+=(--env-file "${2:-}"); shift 2 ;;
-    --auth-file|--claude-credentials-file|--cloud-config-file|--ca-cert|--image|--dockerfile|--command)
+    --auth-file|--claude-credentials-file|--cloud-config-file|--ca-cert|--image|--dockerfile|--command|--openhands-gateway-repo)
       generate_args+=("$1" "${2:-}"); shift 2 ;;
     --verifier-image) verify_args+=(--image "${2:-}"); shift 2 ;;
     --runtime-image|--candidate-env-file|--admin-user|--admin-pass|--unassigned-search-timeout-seconds|--assignment-offer-ttl-seconds|--maintenance-interval-milliseconds)

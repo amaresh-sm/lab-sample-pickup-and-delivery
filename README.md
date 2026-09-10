@@ -53,6 +53,11 @@ The verifier supplies the administrator credentials and bounded operational time
 candidate runtime and the private verifier. Override them with the verifier CLI options or a
 private env file; never commit credentials.
 
+Candidate generation supports `codex`, `openai-compatible`, `claude-code`, and `openhands`. The
+OpenHands provider uses the HackerRank Gateway package and requires
+`--openhands-gateway-repo /path/to/hackerrank-openhands-gateway` when its generation image is
+built.
+
 ## Readiness and packaging
 
 ```bash

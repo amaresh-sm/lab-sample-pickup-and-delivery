@@ -13,7 +13,7 @@ npm run package -- --output dist/task-package.tar.gz
 The command is implemented by `scripts/package_task.py`. It runs every validator and readiness
 check before creating a deterministic archive; a failed check prevents archive creation.
 
-Candidate generation supports three adapters through one command:
+Candidate generation supports four adapters through one command:
 
 ```bash
 python3 -m astra_harness.generate \
@@ -26,7 +26,8 @@ python3 -m astra_harness.generate \
 
 The adapter selects the provider's native CLI flags. The container receives only `instruction.md`
 and `public/`; credentials are injected from the private env file at runtime. Use `--command` when
-a site-specific CLI installation has a different invocation syntax.
+a site-specific CLI installation has a different invocation syntax. The `openhands` adapter uses
+the HackerRank Gateway package and accepts `--openhands-gateway-repo` when its image is built.
 
 For `claude-code`, provide `ANTHROPIC_API_KEY` in the private env file. A Claude Code login can
 also be copied explicitly with `--claude-credentials-file /absolute/path/to/.credentials.json`.
