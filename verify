@@ -15,7 +15,7 @@ while (($#)); do
     --image|--runtime-image|--env-file|--candidate-env-file|--timeout-seconds|--admin-user|--admin-pass|--unassigned-search-timeout-seconds|--assignment-offer-ttl-seconds|--maintenance-interval-milliseconds)
       args+=("$1" "${2:-}"); shift 2 ;;
     --help|-h)
-      echo "Usage: ./verify --workspace RUNS/<task>/<candidate>/candidate [--logs-dir DIR]"
+      echo "Usage: ./verify --workspace candidates/<run-id>/candidate [--run DIR]"
       echo "Canonical equivalent: python3 -m astra_harness.verify --task tasks ..."
       exit 0 ;;
     *) echo "unknown argument: $1" >&2; exit 2 ;;

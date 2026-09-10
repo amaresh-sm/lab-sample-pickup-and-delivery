@@ -14,8 +14,8 @@ class ProofWorkTests(unittest.TestCase):
     def test_requires_repeated_reference_and_frontier_runs(self) -> None:
         root = Path(tempfile.mkdtemp())
         (root / "verifier/proof-of-work/reference-runs").mkdir(parents=True)
-        (root / "verifier/proof-of-work/candidate-runs").mkdir(parents=True)
         (root / "verifier/proof-of-work/mutant-runs").mkdir(parents=True)
+        (root / "candidates").mkdir(parents=True)
         (root / "verifier/mutants").mkdir(parents=True)
         result = check_proof_work(root / "verifier", root / "verifier/proof-of-work")
         self.assertFalse(result["ok"])
@@ -26,16 +26,18 @@ class ProofWorkTests(unittest.TestCase):
         root = Path(tempfile.mkdtemp())
         proof = root / "verifier/proof-of-work"
         verifier = root / "verifier"
+        candidates = root / "candidates"
         for name in ("one", "two"):
-            run = proof / "candidate-runs" / name
+            run = candidates / name
             (run / "reports").mkdir(parents=True)
-            (run / "provenance.json").write_text(json.dumps({
-                "source_run_id": name, "provider": "codex", "model": "frontier",
-                "reasoning": "high", "generation_elapsed_seconds": 10,
-                "source_exit_code": 0, "source_tamper_check": "clean",
+            (run / "candidate").mkdir()
+            (run / "metadata.json").write_text(json.dumps({
+                "task_id": "task", "run_id": name, "provider": "codex", "model": "frontier",
+                "reasoning": "high", "started_at": "t", "finished_at": "t",
+                "duration_seconds": 10, "status": "completed", "exit_code": 0,
             }))
             (run / "verification.json").write_text(json.dumps({"status": "passed", "exit_code": 0}))
-            (run / "score.json").write_text(json.dumps({"score": 0.5, "hard_pass": False}))
+            (run / "reports/score.json").write_text(json.dumps({"score": 0.5, "hard_pass": False}))
         for name in ("r1", "r2"):
             run = proof / "reference-runs" / name
             (run / "reports").mkdir(parents=True)
@@ -57,7 +59,7 @@ class ProofWorkTests(unittest.TestCase):
         (mutant / "reports/score.json").write_text(json.dumps({"score": 0.5, "hard_pass": False}))
         (mutant / "reports/backend/reward.json").write_text("{}")
         matrix.write_text(json.dumps({"mutants": {"example": {}}}))
-        result = check_proof_work(verifier, proof)
+        result = check_proof_work(verifier, proof, candidates)
         self.assertTrue(result["ok"], result["failures"])
 
 

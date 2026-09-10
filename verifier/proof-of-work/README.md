@@ -9,3 +9,8 @@ reviewed metadata and score ledgers in Git; transient logs and browser reports r
 
 The readiness commands validate the evidence against this repository's `verifier/`, contracts,
 scoring rules, and task identifier.
+
+Candidate workspaces and their verification reports are generated under
+`candidates/<run-id>/candidate/`. The proof-of-work directory is reserved for private reference
+and mutant evidence under `reference-runs/` and `mutant-runs/`. Do not move candidate workspaces
+into proof-of-work or use proof-of-work as the generation root.

@@ -70,6 +70,10 @@ provider, model, reasoning setting, generation result, tamper check, verificatio
 normalized score. The check validates the metadata that is available; it does not independently
 decide whether a named model is frontier-tier.
 
+The candidate workspaces and their verification reports used to produce this evidence remain under
+`candidates/<run-id>/candidate/`. The proof-of-work check reads candidate runs from `candidates/`
+and reads reference and mutant evidence from `verifier/proof-of-work/`.
+
 ## Mutant coverage
 
 `check_mutants.py` discovers every `verifier/mutants/*.patch` file and requires a corresponding

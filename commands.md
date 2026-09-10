@@ -1,8 +1,8 @@
 # ASTRA task commands
 
-The canonical task package is `tasks/`, and each run is stored at
-`runs/<task-id>/<run-id>/`. A generated candidate lives at
-`runs/<task-id>/<run-id>/candidate/`.
+The canonical task package is `tasks/`, and each candidate run is stored at
+`candidates/<run-id>/`. The generated candidate workspace lives at
+`candidates/<run-id>/candidate/`.
 
 ## Validate and build images
 
@@ -27,10 +27,10 @@ credentials belong in a private `--env-file`; they are never committed.
 ```bash
 python3 -m astra_harness.verify \
   --task tasks \
-  --candidate runs/lab-sample-pickup-and-delivery/<run-id>/candidate \
-  --run runs/lab-sample-pickup-and-delivery/<run-id> \
+  --candidate candidates/<run-id>/candidate \
+  --run candidates/<run-id> \
   --verifier-command "python3 /input/verifier/run.py"
-python3 -m astra_harness.score --task tasks --run runs/lab-sample-pickup-and-delivery/<run-id>
+python3 -m astra_harness.score --task tasks --run candidates/<run-id>
 ```
 
 The verifier starts the candidate from `candidate/app-setup/manifest.json`, injects

@@ -16,7 +16,7 @@ esac
 
 model="${GEN_MODEL:-${CODEX_MODEL:-gpt-5.6-terra}}"
 reasoning="${CODEX_REASONING:-medium}"
-args=(--task tasks --runs-root "${RUNS_ROOT:-runs}" --provider "$provider" --model "$model" --reasoning "$reasoning")
+args=(--task tasks --candidates-root "${CANDIDATES_ROOT:-candidates}" --provider "$provider" --model "$model" --reasoning "$reasoning")
 
 while (($#)); do
   case "$1" in
@@ -32,6 +32,7 @@ while (($#)); do
     --model) args+=(--model "${2:-}"); shift 2 ;;
     --reasoning) args+=(--reasoning "${2:-}"); shift 2 ;;
     --label|--run-id) args+=(--run-id "${2:-}"); shift 2 ;;
+    --candidates-root) args+=(--candidates-root "${2:-}"); shift 2 ;;
     --env-file|--auth-file|--claude-credentials-file|--cloud-config-file|--ca-cert|--image|--dockerfile|--timeout-seconds|--command)
       args+=("$1" "${2:-}"); shift 2 ;;
     --help|-h)

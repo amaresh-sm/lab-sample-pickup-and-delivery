@@ -44,8 +44,8 @@ Run the task's private verifier against a generated candidate:
 ```bash
 python3 -m astra_harness.verify \
   --task tasks \
-  --candidate runs/<task-id>/<candidate-id>/candidate \
-  --run runs/<task-id>/<candidate-id> \
+  --candidate candidates/<candidate-id>/candidate \
+  --run candidates/<candidate-id> \
   --verifier-command '<task-specific test command>' \
   --candidate-env-file /absolute/path/to/private-runtime.env
 ```
@@ -73,7 +73,7 @@ Then calculate the published score:
 ```bash
 python3 -m astra_harness.score \
   --task tasks \
-  --run runs/<task-id>/<candidate-id>
+  --run candidates/<candidate-id>
 ```
 
 The scorer reads private `verifier/scoring.yml`, validates that weights total `1.0`, and writes

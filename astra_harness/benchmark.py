@@ -9,7 +9,13 @@ from pathlib import Path
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--runs-root", type=Path, default=Path("runs"))
+    parser.add_argument(
+        "--candidates-root",
+        dest="candidates_root",
+        type=Path,
+        default=Path("candidates"),
+        help="directory containing candidate run artifacts (default: candidates)",
+    )
     parser.add_argument("--output", type=Path, default=Path("benchmark.md"))
     return parser.parse_args()
 
@@ -60,7 +66,7 @@ def render(items: list[dict]) -> str:
 
 def main() -> int:
     args = parse_args()
-    output = render(rows(args.runs_root.resolve()))
+    output = render(rows(args.candidates_root.resolve()))
     args.output.write_text(output, encoding="utf-8")
     print(output, end="")
     return 0

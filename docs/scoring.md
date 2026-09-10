@@ -31,6 +31,8 @@ Recommended artifact layout:
 proof-of-work/
 ├── reference-runs/
 ├── mutant-runs/
-├── candidate-runs/
 └── summary.json
 ```
+
+Candidate runs, including their workspaces and verification reports, are stored at
+`candidates/<run-id>/candidate/`. They are not relocated into `verifier/proof-of-work/`.

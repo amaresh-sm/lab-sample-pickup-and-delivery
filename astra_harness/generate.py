@@ -28,7 +28,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model", required=True)
     parser.add_argument("--reasoning", choices=("low", "medium", "high", "xhigh", "max"), default="medium")
     parser.add_argument("--run-id", default=None)
-    parser.add_argument("--runs-root", type=Path, default=Path("runs"))
+    parser.add_argument(
+        "--candidates-root",
+        dest="candidates_root",
+        type=Path,
+        default=Path("candidates"),
+        help="directory containing candidate run artifacts (default: candidates)",
+    )
     parser.add_argument("--image", default="astra-candidate-generation:latest")
     parser.add_argument("--dockerfile", type=Path, default=None)
     parser.add_argument("--env-file", type=Path, default=None, help="Private provider env file; never commit it")
@@ -106,7 +112,7 @@ def run(args: argparse.Namespace) -> int:
     task_dir = args.task.resolve()
     task_id = task_identifier(task_dir)
     run_id = args.run_id or f"{args.provider}-{int(time.time())}"
-    run_dir = (args.runs_root / task_id / run_id).resolve()
+    run_dir = (args.candidates_root / run_id).resolve()
     logs = run_dir / "logs"
     run_dir.mkdir(parents=True, exist_ok=False)
     logs.mkdir()

@@ -17,6 +17,7 @@ while (($#)); do
     --provider) provider="${2:-}"; generate_args+=(--provider "${2:-}"); shift 2 ;;
     --model) model="${2:-}"; generate_args+=(--model "${2:-}"); shift 2 ;;
     --reasoning) reasoning="${2:-}"; generate_args+=(--reasoning "${2:-}"); shift 2 ;;
+    --candidates-root) candidates_root_override="${2:-}"; shift 2 ;;
     --env-file) generate_args+=(--env-file "${2:-}"); verify_args+=(--env-file "${2:-}"); shift 2 ;;
     --auth-file|--claude-credentials-file|--cloud-config-file|--ca-cert|--image|--dockerfile|--command)
       generate_args+=("$1" "${2:-}"); shift 2 ;;
@@ -27,7 +28,7 @@ while (($#)); do
       generate_args+=(--timeout-seconds "${2:-}"); verify_args+=(--timeout-seconds "${2:-}"); shift 2 ;;
     --help|-h)
       echo "Usage: ./evaluate [generation and verifier options]"
-      echo "Output: runs/lab-sample-pickup-and-delivery/<run-id>/"
+      echo "Output: candidates/<run-id>/"
       exit 0 ;;
     *) echo "unknown argument: $1" >&2; exit 2 ;;
   esac
@@ -37,10 +38,10 @@ if [[ -z "$run_id" ]]; then
   run_id="${provider}-${model}-${reasoning}-$(date -u +%Y%m%dT%H%M%SZ)"
 fi
 run_id="$(printf '%s' "$run_id" | tr -c 'A-Za-z0-9._-' '-')"
-runs_root="${RUNS_ROOT:-runs}"
-run_dir="$root/$runs_root/lab-sample-pickup-and-delivery/$run_id"
+candidates_root="${candidates_root_override:-${CANDIDATES_ROOT:-candidates}}"
+run_dir="$root/$candidates_root/$run_id"
 
-generate_args+=(--provider "$provider" --model "$model" --reasoning "$reasoning" --run-id "$run_id")
+generate_args+=(--candidates-root "$candidates_root" --provider "$provider" --model "$model" --reasoning "$reasoning" --run-id "$run_id")
 set +e
 "$root/generate-candidate-solution" "${generate_args[@]}"
 generation_status=$?

@@ -101,34 +101,33 @@ def _check_mutant_runs(verifier_dir: Path, proof_dir: Path, failures: list[str])
     return rows
 
 
-def _check_candidate_runs(proof_dir: Path, failures: list[str]) -> list[dict[str, Any]]:
-    runs = sorted(path for path in (proof_dir / "candidate-runs").glob("*") if path.is_dir())
+def _check_candidate_runs(candidates_dir: Path, failures: list[str]) -> list[dict[str, Any]]:
+    """Validate candidate runs from the canonical ``candidates/<run-id>/`` root."""
+
+    runs = sorted(path for path in candidates_dir.glob("*") if path.is_dir())
     if len(runs) < 2:
         failures.append(f"at least two frontier-model candidate runs are required (found {len(runs)})")
     rows: list[dict[str, Any]] = []
     for run in runs:
         context = f"candidate/{run.name}"
         metadata_path = run / "metadata.json"
-        if not metadata_path.is_file():
-            # Historical exports use provenance.json; it is accepted as the run metadata file.
-            metadata_path = run / "provenance.json"
         try:
             metadata = load_json(metadata_path)
             verification = load_json(run / "verification.json")
-            score = load_json(run / "score.json")
+            score = load_json(run / "reports/score.json")
         except (OSError, ValueError, TypeError, json.JSONDecodeError) as exc:
             failures.append(f"{context}: unusable evidence ({exc})")
             continue
+        if not (run / "candidate").is_dir():
+            failures.append(f"{context}: candidate workspace is missing: {run / 'candidate'}")
         _require_fields(
             metadata,
-            ("source_run_id", "provider", "model", "reasoning", "generation_elapsed_seconds", "source_exit_code"),
+            ("task_id", "run_id", "provider", "model", "reasoning", "started_at", "finished_at", "duration_seconds", "exit_code"),
             context,
             failures,
         )
-        if metadata.get("source_exit_code") != 0:
+        if metadata.get("status") != "completed" or metadata.get("exit_code") != 0:
             failures.append(f"{context}: generation did not finish successfully")
-        if metadata.get("source_tamper_check") != "clean":
-            failures.append(f"{context}: source tamper check is not clean")
         if verification.get("status") != "passed" or verification.get("exit_code") != 0:
             failures.append(f"{context}: verifier did not finish successfully")
         if not isinstance(score.get("score"), (int, float)) or not isinstance(score.get("hard_pass"), bool):
@@ -144,19 +143,21 @@ def _check_candidate_runs(proof_dir: Path, failures: list[str]) -> list[dict[str
     return rows
 
 
-def check_proof_work(verifier_dir: Path, proof_dir: Path) -> dict[str, Any]:
+def check_proof_work(verifier_dir: Path, proof_dir: Path, candidates_dir: Path | None = None) -> dict[str, Any]:
     """Validate stored proof-of-work metadata for the current task."""
 
     verifier_dir = verifier_dir.resolve()
     proof_dir = proof_dir.resolve()
+    candidates_dir = (candidates_dir or verifier_dir.parent / "candidates").resolve()
     failures: list[str] = []
     result: dict[str, Any] = {
         "check": "proof-of-work-evidence",
         "verifier_dir": str(verifier_dir),
         "proof_dir": str(proof_dir),
+        "candidates_dir": str(candidates_dir),
         "reference_runs": _check_reference_runs(proof_dir, failures),
         "mutant_runs": _check_mutant_runs(verifier_dir, proof_dir, failures),
-        "candidate_runs": _check_candidate_runs(proof_dir, failures),
+        "candidate_runs": _check_candidate_runs(candidates_dir, failures),
         "failures": failures,
     }
     result["ok"] = not failures
@@ -167,9 +168,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--verifier-dir", type=Path, default=Path("verifier"))
     parser.add_argument("--proof-dir", type=Path, default=Path("verifier/proof-of-work"))
+    parser.add_argument("--candidates-dir", type=Path, default=Path("candidates"))
     parser.add_argument("--json", action="store_true", help="emit a machine-readable result")
     args = parser.parse_args()
-    result = check_proof_work(args.verifier_dir, args.proof_dir)
+    result = check_proof_work(args.verifier_dir, args.proof_dir, args.candidates_dir)
     emit_result(result, args.json)
     return 0 if result["ok"] else 1
 

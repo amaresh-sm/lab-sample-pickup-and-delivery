@@ -39,15 +39,15 @@ python3 scripts/build_images.py
 ./generate-candidate-solution --provider codex --model <model> --reasoning medium
 python3 -m astra_harness.verify \
   --task tasks \
-  --candidate runs/lab-sample-pickup-and-delivery/<run-id>/candidate \
-  --run runs/lab-sample-pickup-and-delivery/<run-id> \
+  --candidate candidates/<run-id>/candidate \
+  --run candidates/<run-id> \
   --verifier-command "python3 /input/verifier/run.py"
-python3 -m astra_harness.score --task tasks --run runs/lab-sample-pickup-and-delivery/<run-id>
-python3 -m astra_harness.benchmark --runs-root runs
+python3 -m astra_harness.score --task tasks --run candidates/<run-id>
+python3 -m astra_harness.benchmark --candidates-root candidates
 ```
 
-`./generate`, `./verify`, `./evaluate`, and `./benchmark` remain small compatibility aliases, but
-all of them now invoke the canonical ASTRA modules and use the `candidate/app-setup/` layout.
+`./generate`, `./verify`, `./evaluate`, and `./benchmark` remain small convenience aliases, but
+all of them invoke the canonical ASTRA modules and use the `candidate/app-setup/` layout.
 
 The verifier supplies the administrator credentials and bounded operational timers to both the
 candidate runtime and the private verifier. Override them with the verifier CLI options or a
