@@ -79,7 +79,16 @@ def ensure_image(args: argparse.Namespace) -> None:
     }[args.provider]
     if found.returncode == 0:
         installed = subprocess.run(
-            ["docker", "run", "--rm", "--entrypoint", "sh", args.image, "-lc", f"command -v {required_cli}"],
+            [
+                "docker",
+                "run",
+                "--rm",
+                "--entrypoint",
+                "sh",
+                args.image,
+                "-lc",
+                f"command -v {required_cli} && getent passwd agent >/dev/null",
+            ],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             check=False,
