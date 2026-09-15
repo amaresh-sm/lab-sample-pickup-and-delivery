@@ -35,4 +35,4 @@ proof-of-work/
 ```
 
 Candidate runs, including their workspaces and verification reports, are stored at
-`candidates/<run-id>/candidate/`. They are not relocated into `verifier/proof-of-work/`.
+`benchmarking-candidates/<run-id>/candidate/`. They are not relocated into `verifier/proof-of-work/`.

@@ -39,24 +39,26 @@ python3 scripts/build_images.py
 ./generate-candidate-solution --provider codex --model <model> --reasoning medium
 python3 -m astra_harness.verify \
   --task tasks \
-  --candidate candidates/<run-id>/candidate \
-  --run candidates/<run-id> \
+  --candidate benchmarking-candidates/<run-id>/candidate \
+  --run benchmarking-candidates/<run-id> \
   --verifier-command "python3 /input/verifier/run.py"
-python3 -m astra_harness.score --task tasks --run candidates/<run-id>
-python3 -m astra_harness.benchmark --candidates-root candidates
+python3 -m astra_harness.score --task tasks --run benchmarking-candidates/<run-id>
+python3 -m astra_harness.benchmark
 ```
 
 `./generate`, `./verify`, `./evaluate`, and `./benchmark` remain small convenience aliases, but
-all of them invoke the canonical ASTRA modules and use the `candidate/app-setup/` layout.
+all of them invoke the canonical ASTRA modules, use `benchmarking-candidates/<run-id>/`, and keep
+the `candidate/app-setup/` layout inside each run.
 
 The verifier supplies the administrator credentials and bounded operational timers to both the
 candidate runtime and the private verifier. Override them with the verifier CLI options or a
 private env file; never commit credentials.
 
 Candidate generation supports `codex`, `openai-compatible`, `claude-code`, and `openhands`. The
-OpenHands provider uses the HackerRank Gateway package and requires
-`--openhands-gateway-repo /path/to/hackerrank-openhands-gateway` when its generation image is
-built.
+OpenHands provider uses the HackerRank Gateway package from
+`--openhands-gateway-repo /path/to/hackerrank-openhands-gateway` (or
+`OPENHANDS_GATEWAY_REPO`). The harness fingerprints that source and rebuilds the generation image
+when it changes, so an existing image cannot silently use an older gateway package.
 
 ## Readiness and packaging
 

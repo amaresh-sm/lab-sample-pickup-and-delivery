@@ -4,6 +4,8 @@
 !/runs/summary.csv
 dist/
 /candidates/
+/benchmarking-candidates/*
+!/benchmarking-candidates/.gitkeep
 verifier/reference-solution/dist-server/
 
 # Generated Python bytecode and test caches.

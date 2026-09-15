@@ -11,10 +11,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--candidates-root",
+        "--runs-root",
         dest="candidates_root",
         type=Path,
-        default=Path("candidates"),
-        help="directory containing candidate run artifacts (default: candidates)",
+        default=Path("benchmarking-candidates"),
+        help="directory containing candidate run artifacts (default: benchmarking-candidates)",
     )
     parser.add_argument("--output", type=Path, default=Path("benchmark.md"))
     return parser.parse_args()

@@ -11,6 +11,6 @@ The readiness commands validate the evidence against this repository's `verifier
 scoring rules, and task identifier.
 
 Candidate workspaces and their verification reports are generated under
-`candidates/<run-id>/candidate/`. The proof-of-work directory is reserved for private reference
+`benchmarking-candidates/<run-id>/candidate/`. The proof-of-work directory is reserved for private reference
 and mutant evidence under `reference-runs/` and `mutant-runs/`. Do not move candidate workspaces
 into proof-of-work or use proof-of-work as the generation root.

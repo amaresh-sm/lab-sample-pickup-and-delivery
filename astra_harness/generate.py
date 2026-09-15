@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import shutil
@@ -30,10 +31,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--run-id", default=None)
     parser.add_argument(
         "--candidates-root",
+        "--runs-root",
         dest="candidates_root",
         type=Path,
-        default=Path("candidates"),
-        help="directory containing candidate run artifacts (default: candidates)",
+        default=Path("benchmarking-candidates"),
+        help="directory containing candidate run artifacts (default: benchmarking-candidates)",
     )
     parser.add_argument("--image", default="astra-candidate-generation:latest")
     parser.add_argument("--dockerfile", type=Path, default=None)
@@ -63,8 +65,67 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def ensure_image(args: argparse.Namespace) -> None:
-    """Build the generation image when it is missing or lacks the selected CLI."""
+def openhands_gateway_digest(gateway_repo: Path) -> str:
+    """Hash the files copied into the OpenHands generation image."""
+    digest = hashlib.sha256()
+    source_files = [gateway_repo / "pyproject.toml", gateway_repo / "README.md"]
+    package_root = gateway_repo / "src" / "hackerrank_openhands"
+    source_files.extend(
+        sorted(
+            path
+            for path in package_root.rglob("*")
+            if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc"
+        )
+    )
+    for path in source_files:
+        relative = path.relative_to(gateway_repo).as_posix().encode("utf-8")
+        digest.update(len(relative).to_bytes(4, "big"))
+        digest.update(relative)
+        digest.update(path.read_bytes())
+    return digest.hexdigest()
+
+
+def resolve_openhands_gateway(args: argparse.Namespace) -> tuple[Path, str] | None:
+    """Resolve and fingerprint the exact gateway source used for an OpenHands build."""
+    if args.provider != "openhands":
+        return None
+    gateway_repo = args.openhands_gateway_repo or os.getenv("OPENHANDS_GATEWAY_REPO")
+    if not gateway_repo:
+        raise SystemExit(
+            "OpenHands generation requires --openhands-gateway-repo "
+            "or OPENHANDS_GATEWAY_REPO so the image uses an explicit gateway source"
+        )
+    gateway_repo_path = Path(gateway_repo).expanduser().resolve()
+    if (
+        not (gateway_repo_path / "pyproject.toml").is_file()
+        or not (gateway_repo_path / "README.md").is_file()
+        or not (gateway_repo_path / "src" / "hackerrank_openhands").is_dir()
+    ):
+        raise SystemExit(f"OpenHands gateway source is invalid: {gateway_repo_path}")
+    return gateway_repo_path, openhands_gateway_digest(gateway_repo_path)
+
+
+def image_has_openhands_gateway(image: str, digest: str) -> bool:
+    """Check whether an existing image contains the requested gateway source."""
+    inspected = subprocess.run(
+        ["docker", "image", "inspect", image],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if inspected.returncode != 0:
+        return False
+    try:
+        image_data = json.loads(inspected.stdout)[0]
+    except (IndexError, json.JSONDecodeError, TypeError):
+        return False
+    labels = image_data.get("Config", {}).get("Labels") or {}
+    return labels.get("org.astra.openhands-gateway.digest") == digest
+
+
+def ensure_image(args: argparse.Namespace) -> str | None:
+    """Build the generation image when it is missing, incomplete, or stale."""
+    gateway_source = resolve_openhands_gateway(args)
     found = subprocess.run(
         ["docker", "image", "inspect", args.image],
         stdout=subprocess.DEVNULL,
@@ -77,7 +138,10 @@ def ensure_image(args: argparse.Namespace) -> None:
         "claude-code": "claude",
         "openhands": "hackerrank-openhands",
     }[args.provider]
-    if found.returncode == 0:
+    if found.returncode == 0 and (
+        args.provider != "openhands"
+        or image_has_openhands_gateway(args.image, gateway_source[1])
+    ):
         installed = subprocess.run(
             [
                 "docker",
@@ -94,7 +158,7 @@ def ensure_image(args: argparse.Namespace) -> None:
             check=False,
         )
         if installed.returncode == 0:
-            return
+            return gateway_source[1] if gateway_source else None
     repository_root = Path(__file__).resolve().parents[1]
     default_dockerfile = (
         repository_root / "environment/candidate-generation/Dockerfile.openhands"
@@ -106,21 +170,15 @@ def ensure_image(args: argparse.Namespace) -> None:
         raise SystemExit(f"generation image is missing and Dockerfile was not found: {dockerfile}")
     build_command = ["docker", "build", "--tag", args.image, "--file", str(dockerfile)]
     if args.provider == "openhands":
-        gateway_repo = args.openhands_gateway_repo or os.getenv("OPENHANDS_GATEWAY_REPO")
-        if not gateway_repo:
-            raise SystemExit(
-                "OpenHands generation image needs --openhands-gateway-repo "
-                "or OPENHANDS_GATEWAY_REPO"
-            )
-        gateway_repo_path = Path(gateway_repo).expanduser().resolve()
-        if not (gateway_repo_path / "pyproject.toml").is_file() or not (gateway_repo_path / "src").is_dir():
-            raise SystemExit(f"OpenHands gateway source is invalid: {gateway_repo_path}")
+        gateway_repo_path, gateway_digest = gateway_source
         build_command = [
             "docker", "buildx", "build", "--load", "--tag", args.image,
             "--file", str(dockerfile), "--build-context", f"openhands={gateway_repo_path}",
+            "--build-arg", f"OPENHANDS_GATEWAY_DIGEST={gateway_digest}",
         ]
     build_command.append(str(repository_root))
     subprocess.run(build_command, check=True)
+    return gateway_source[1] if gateway_source else None
 
 
 def prepare_workspace(task_dir: Path, run_dir: Path) -> Path:
@@ -156,7 +214,7 @@ def run(args: argparse.Namespace) -> int:
     logs.mkdir()
     workspace = prepare_workspace(task_dir, run_dir)
     workspace_before = snapshot_workspace(workspace)
-    ensure_image(args)
+    gateway_digest = ensure_image(args)
 
     provider_command = build_provider_command(args.provider, args.model, args.reasoning)
     generation_command = args.command or provider_command.command
@@ -181,6 +239,8 @@ def run(args: argparse.Namespace) -> int:
         "status": "running",
         "mounts": ["candidate workspace:rw"],
     }
+    if gateway_digest:
+        metadata["openhands_gateway_source_digest"] = gateway_digest
     (run_dir / "metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
     started = time.monotonic()
     container_started = False

@@ -102,7 +102,7 @@ def _check_mutant_runs(verifier_dir: Path, proof_dir: Path, failures: list[str])
 
 
 def _check_candidate_runs(candidates_dir: Path, failures: list[str]) -> list[dict[str, Any]]:
-    """Validate candidate runs from the canonical ``candidates/<run-id>/`` root."""
+    """Validate candidate runs from the canonical ``benchmarking-candidates/<run-id>/`` root."""
 
     runs = sorted(path for path in candidates_dir.glob("*") if path.is_dir())
     if len(runs) < 2:
@@ -148,7 +148,7 @@ def check_proof_work(verifier_dir: Path, proof_dir: Path, candidates_dir: Path |
 
     verifier_dir = verifier_dir.resolve()
     proof_dir = proof_dir.resolve()
-    candidates_dir = (candidates_dir or verifier_dir.parent / "candidates").resolve()
+    candidates_dir = (candidates_dir or verifier_dir.parent / "benchmarking-candidates").resolve()
     failures: list[str] = []
     result: dict[str, Any] = {
         "check": "proof-of-work-evidence",
@@ -168,7 +168,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--verifier-dir", type=Path, default=Path("verifier"))
     parser.add_argument("--proof-dir", type=Path, default=Path("verifier/proof-of-work"))
-    parser.add_argument("--candidates-dir", type=Path, default=Path("candidates"))
+    parser.add_argument("--candidates-dir", type=Path, default=Path("benchmarking-candidates"))
     parser.add_argument("--json", action="store_true", help="emit a machine-readable result")
     args = parser.parse_args()
     result = check_proof_work(args.verifier_dir, args.proof_dir, args.candidates_dir)

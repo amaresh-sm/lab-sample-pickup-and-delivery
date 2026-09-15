@@ -1,8 +1,8 @@
 # ASTRA task commands
 
 The canonical task package is `tasks/`, and each candidate run is stored at
-`candidates/<run-id>/`. The generated candidate workspace lives at
-`candidates/<run-id>/candidate/`.
+`benchmarking-candidates/<run-id>/`. The generated candidate workspace lives at
+`benchmarking-candidates/<run-id>/candidate/`.
 
 ## Validate and build images
 
@@ -22,17 +22,19 @@ python3 -m astra_harness.generate \
 The candidate sees only `INSTRUCTION.md` and `contracts/` from the public task package. Provider
 credentials belong in a private `--env-file`; they are never committed. Supported providers are
 `codex`, `openai-compatible`, `claude-code`, and `openhands`. For `openhands`, pass
-`--openhands-gateway-repo /path/to/hackerrank-openhands-gateway` when the image is built.
+`--openhands-gateway-repo /path/to/hackerrank-openhands-gateway` (or set
+`OPENHANDS_GATEWAY_REPO`). The source is fingerprinted and the image is rebuilt whenever it is
+different from the gateway package already installed in the image.
 
 ## Verify and score a candidate
 
 ```bash
 python3 -m astra_harness.verify \
   --task tasks \
-  --candidate candidates/<run-id>/candidate \
-  --run candidates/<run-id> \
+  --candidate benchmarking-candidates/<run-id>/candidate \
+  --run benchmarking-candidates/<run-id> \
   --verifier-command "python3 /input/verifier/run.py"
-python3 -m astra_harness.score --task tasks --run candidates/<run-id>
+python3 -m astra_harness.score --task tasks --run benchmarking-candidates/<run-id>
 ```
 
 The verifier starts the candidate from `candidate/app-setup/manifest.json`, injects

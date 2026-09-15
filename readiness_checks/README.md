@@ -71,8 +71,8 @@ normalized score. The check validates the metadata that is available; it does no
 decide whether a named model is frontier-tier.
 
 The candidate workspaces and their verification reports used to produce this evidence remain under
-`candidates/<run-id>/candidate/`. The proof-of-work check reads candidate runs from `candidates/`
-and reads reference and mutant evidence from `verifier/proof-of-work/`.
+`benchmarking-candidates/<run-id>/candidate/`. The proof-of-work check reads candidate runs from
+`benchmarking-candidates/` and reads reference and mutant evidence from `verifier/proof-of-work/`.
 
 ## Mutant coverage
 

@@ -3,6 +3,9 @@
 ARG BASE_IMAGE=astra-candidate-runtime:latest
 FROM ${BASE_IMAGE}
 
+ARG OPENHANDS_GATEWAY_DIGEST=unknown
+LABEL org.astra.openhands-gateway.digest="${OPENHANDS_GATEWAY_DIGEST}"
+
 USER root
 ARG CODEX_VERSION=0.144.6
 ARG CLAUDE_CODE_VERSION=latest
@@ -15,7 +18,7 @@ RUN npm install --global --ignore-scripts --no-audit --no-fund "@openai/codex@${
 # credentials, virtual environments, tests, and Git data never enter the image.
 COPY --from=openhands /pyproject.toml /opt/hackerrank-openhands-gateway/pyproject.toml
 COPY --from=openhands /README.md /opt/hackerrank-openhands-gateway/README.md
-COPY --from=openhands /src /opt/hackerrank-openhands-gateway/src
+COPY --from=openhands /src/hackerrank_openhands /opt/hackerrank-openhands-gateway/src/hackerrank_openhands
 
 RUN python3 -m pip install --break-system-packages --no-cache-dir /opt/hackerrank-openhands-gateway \
     && install -d -m 0700 -o agent -g agent /home/agent/.codex /home/agent/.claude
