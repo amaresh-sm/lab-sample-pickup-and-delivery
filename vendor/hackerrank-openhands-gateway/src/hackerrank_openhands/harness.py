@@ -435,7 +435,6 @@ def run(
     gateway_base_url: str | None = None,
     env_file: Path | None = None,
     redact_output: bool = False,
-    max_iterations: int = 300,
 ) -> RunResult:
     """Run one OpenHands coding session and write JSONL event records."""
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -530,7 +529,7 @@ def run(
                     max_size=120,
                 ),
             )
-            conversation = Conversation(agent=agent, callbacks=[callback], workspace=str(workspace), max_iteration_per_run=max_iterations)
+            conversation = Conversation(agent=agent, callbacks=[callback], workspace=str(workspace))
             with capture_gateway_responses(gateway_responses_path):
                 conversation.send_message(instruction)
                 conversation.run()
