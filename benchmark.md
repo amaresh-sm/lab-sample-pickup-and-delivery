@@ -17,6 +17,7 @@ Normalized ASTRA task scores; each row is backed by reports/score.json and telem
 | lab-sample-pickup-and-delivery | openhands-kimi-k3-high-20260919-v2 | kimi-k3 | high | 0.5540 | no | 5504.195 | 1987 |
 | lab-sample-pickup-and-delivery | openhands-1789931908 | grok-4.5 | high | 0.5453 | no | 2714.578 | 5609 |
 | lab-sample-pickup-and-delivery | openhands-kimi-k3-high-20260919-v1 | kimi-k3 | high | 0.5157 | no | 10361.23 | 44 |
+| lab-sample-pickup-and-delivery | openhands-1789936188 | claude-sonnet-5 | medium | 0.5000 | no | 3555.592 | — |
 | lab-sample-pickup-and-delivery | openhands-grok-4.5-medium-20260921-prod-v1 | grok-4.5 | medium | 0.4992 | no | 3473.647 | 3928 |
 | lab-sample-pickup-and-delivery | openhands-grok-4.5-medium-20260916-retry | grok-4.5 | medium | 0.4935 | no | 1611.117 | 523 |
 | lab-sample-pickup-and-delivery | openhands-kimi-k3-medium-20260920-prod-queue-v1 | kimi-k3 | medium | 0.4416 | no | 2350.875 | 1635 |
@@ -55,10 +56,10 @@ Normalized ASTRA task scores; each row is backed by reports/score.json and telem
 | lab-sample-pickup-and-delivery | openhands-deepseek-v4-pro-medium-20260920-prod-v2 | deepseek-v4-pro | medium | 0.1264 | no | 1994.173 | 27 |
 | lab-sample-pickup-and-delivery | openhands-minimax-m3-medium-20260920-prod-v2 | minimax-m3 | medium | 0.1212 | no | 2868.561 | 35 |
 | lab-sample-pickup-and-delivery | openhands-minimax-m3-medium-20260920-prod-v3 | minimax-m3 | medium | 0.1066 | no | 1310.562 | 28 |
+| lab-sample-pickup-and-delivery | openhands-deepseek-v4-pro-high-20260921-prod-v2 | deepseek-v4-pro | high | 0.1015 | no | 5094.985 | 29 |
 | lab-sample-pickup-and-delivery | openhands-1789709204 | gpt-5.6-luna | medium | 0.0980 | no | 218.701 | 10 |
 | lab-sample-pickup-and-delivery | openhands-minimax-m3-high-20260919-v2 | minimax-m3 | high | 0.0910 | no | 2124.934 | 69 |
 | lab-sample-pickup-and-delivery | openhands-gpt-5.6-luna-medium-20260920-dev-v2 | gpt-5.6-luna | medium | 0.0856 | no | 155.389 | 11 |
-| lab-sample-pickup-and-delivery | openhands-deepseek-v4-pro-high-20260920-prod-v2 | deepseek-v4-pro | high | 0.0366 | no | 2164.647 | 33 |
 | lab-sample-pickup-and-delivery | openhands-1789710696 | gpt-5.6-terra | medium | 0.0344 | no | 221.063 | 11 |
 | lab-sample-pickup-and-delivery | openhands-deepseek-v4-pro-medium-20260920-prod-v3 | deepseek-v4-pro | medium | 0.0300 | no | 2390.692 | 1386 |
 | lab-sample-pickup-and-delivery | openhands-minimax-m3-medium-20260920-prod-v7 | minimax-m3 | medium | 0.0300 | no | 1021.681 | 27 |
