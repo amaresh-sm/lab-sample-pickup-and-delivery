@@ -6,7 +6,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from .harness import REASONING_OPTIONS, run
+from .harness import REASONING_OPTIONS, normalize_gateway_model, run
 from .telemetry import collect
 
 
@@ -17,6 +17,12 @@ def main() -> int:
     parser.add_argument("--instruction-file", type=Path, required=True)
     parser.add_argument("--model", required=True)
     parser.add_argument("--reasoning", choices=REASONING_OPTIONS, default="medium")
+    parser.add_argument(
+        "--max-iterations",
+        type=int,
+        default=3200,
+        help="Maximum OpenHands agent iterations for this run (default: 3200)",
+    )
     parser.add_argument("--output", type=Path, default=Path("run-output"))
     parser.add_argument("--gateway-base-url")
     parser.add_argument("--env-file", type=Path, help="optional Gateway .env file; defaults to .env in the current directory")
@@ -26,11 +32,21 @@ def main() -> int:
         argv = argv[1:]
     args = parser.parse_args(argv)
 
-    result = run(args.workspace, args.instruction_file, args.model, args.reasoning, args.output, args.gateway_base_url, args.env_file, args.redact)
+    result = run(
+        args.workspace,
+        args.instruction_file,
+        args.model,
+        args.reasoning,
+        args.output,
+        args.gateway_base_url,
+        args.env_file,
+        args.redact,
+        args.max_iterations,
+    )
     collect(
         result.events_path,
         args.output / "telemetry.json",
-        model=args.model if "/" in args.model else f"openai/{args.model}",
+        model=normalize_gateway_model(args.model),
         reasoning=args.reasoning,
         started_at=result.started_at,
         completed_at=result.completed_at,
