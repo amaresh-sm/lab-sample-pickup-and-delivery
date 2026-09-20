@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import shlex
 from dataclasses import dataclass
 
@@ -46,4 +47,46 @@ def build_provider_command(provider: str, model: str, reasoning: str) -> Provide
             "--output /tmp/openhands-run --redact",
             ("ASTRA_GATEWAY_API_KEY", "ASTRA_GATEWAY_BASE_URL", "LLM_API_KEY", "LLM_BASE_URL"),
         )
-    raise ValueError("provider must be codex, openai-compatible, claude-code, or openhands")
+    if provider == "pi-dev":
+        # Pi reads custom OpenAI-compatible providers from models.json.  The
+        # values are environment-variable names, so credentials never enter
+        # the image or the generated command line.
+        model_config = json.dumps(
+            {
+                "providers": {
+                    "hackerrank": {
+                        "api": "openai-completions",
+                        "apiKey": "ASTRA_GATEWAY_API_KEY",
+                        "models": [
+                            {
+                                "id": model,
+                                "name": model,
+                                "reasoning": True,
+                                "input": ["text"],
+                                "contextWindow": 200000,
+                                "maxTokens": 120000,
+                                "compat": {
+                                    "supportsDeveloperRole": False,
+                                    "supportsReasoningEffort": True,
+                                },
+                            }
+                        ],
+                    }
+                }
+            },
+            separators=(",", ":"),
+        )
+        write_config = (
+            "const fs=require('fs');"
+            f"const config={model_config};"
+            "if(!process.env.ASTRA_GATEWAY_BASE_URL)throw new Error('ASTRA_GATEWAY_BASE_URL is required');"
+            "config.providers.hackerrank.baseUrl=process.env.ASTRA_GATEWAY_BASE_URL;"
+            "fs.writeFileSync('/home/agent/.pi/agent/models.json',JSON.stringify(config));"
+        )
+        return ProviderCommand(
+            f"mkdir -p /home/agent/.pi/agent && node -e {shlex.quote(write_config)} && "
+            f"pi --model hackerrank/{shlex.quote(model)} --thinking {shlex.quote(reasoning)} "
+            "-p @/workspace/INSTRUCTION.md",
+            ("ASTRA_GATEWAY_API_KEY", "ASTRA_GATEWAY_BASE_URL"),
+        )
+    raise ValueError("provider must be codex, openai-compatible, claude-code, openhands, or pi-dev")

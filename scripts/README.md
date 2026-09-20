@@ -13,12 +13,12 @@ npm run package -- --output dist/task-package.tar.gz
 The command is implemented by `scripts/package_task.py`. It runs every validator and readiness
 check before creating a deterministic archive; a failed check prevents archive creation.
 
-Candidate generation supports four adapters through one command:
+Candidate generation supports five adapters through one command:
 
 ```bash
 python3 -m astra_harness.generate \
   --task tasks \
-  --provider <codex|openai-compatible|claude-code> \
+  --provider <codex|openai-compatible|claude-code|openhands|pi-dev> \
   --model <model-name> \
   --reasoning <low|medium|high|xhigh|max> \
   --env-file /absolute/path/to/private-provider.env

@@ -29,7 +29,23 @@ def args() -> argparse.Namespace:
     parser.add_argument("--admin-pass", default=os.environ.get("ADMIN_PASSWORD", "admin123"))
     parser.add_argument("--skip-ui", action="store_true")
     parser.add_argument("--external-lifecycle", action="store_true")
+    parser.add_argument(
+        "--ui-timeout-seconds",
+        type=int,
+        default=int(os.environ.get("ASTRA_UI_TIMEOUT_SECONDS", "600")),
+        help="maximum time allowed for the UI suite before UI scoring is blocked",
+    )
     return parser.parse_args()
+
+
+def capability_timeout_seconds() -> int:
+    """Return the upper bound for one legacy capability subprocess."""
+
+    raw = os.environ.get("ASTRA_CAPABILITY_TIMEOUT_SECONDS", "90")
+    try:
+        return max(1, int(raw))
+    except ValueError:
+        return 90
 
 
 def origin(url: str) -> str:
@@ -57,7 +73,7 @@ def manifest(candidate: Path) -> tuple[dict[str, list[str]], dict[str, str], Pat
     return selected, selected_urls, path
 
 
-def run_engine(base_url: str, admin_user: str, admin_pass: str, command: str, output: Path, only: str | None = None, statefile: Path | None = None) -> subprocess.CompletedProcess[str]:
+def run_engine(base_url: str, admin_user: str, admin_pass: str, command: str, output: Path, only: str | None = None, statefile: Path | None = None, timeout: int | None = None) -> subprocess.CompletedProcess[str]:
     command_args = [sys.executable, str(LEGACY_ENGINE), "--base-url", base_url, "--contract", str(CONTRACT), "--admin-user", admin_user, "--admin-pass", admin_pass, command]
     if command == "score":
         command_args += ["--json-out", str(output)]
@@ -71,7 +87,44 @@ def run_engine(base_url: str, admin_user: str, admin_pass: str, command: str, ou
         command_args += ["--statefile", str(statefile or output), "--json-out", str(output)]
     env = dict(os.environ)
     env.update({"WORKSPACE": "/input/candidate", "VERIFIER_ISOLATED": "1"})
-    return subprocess.run(command_args, cwd=LEGACY_ENGINE.parent, env=env, check=False, text=True)
+    return subprocess.run(command_args, cwd=LEGACY_ENGINE.parent, env=env, check=False, text=True, timeout=timeout)
+
+
+def write_blocked_part(path: Path, group: str, reason: str) -> None:
+    """Write zero-credit evidence when a capability subprocess times out."""
+
+    capabilities = []
+    for capability_id in group.split(","):
+        capabilities.append(
+            {
+                "id": capability_id,
+                "kind": "blocked",
+                "credit": 0.0,
+                "status": "blocked",
+                "positive": reason,
+                "negative": None,
+                "idempotency": None,
+                "positiveOk": False,
+                "negativeOk": None,
+                "idempotencyOk": None,
+                "durabilityOk": False,
+                "durability": reason,
+            }
+        )
+    payload = {
+        "overall": 0.0,
+        "provenance": {
+            "engineCommit": None,
+            "engineDirty": False,
+            "engineCommitSource": "unavailable",
+            "mode": "isolated",
+            "subset": group.split(","),
+            "subsetNote": "blocked capability subprocesses receive zero credit",
+        },
+        "capabilities": capabilities,
+        "contractReport": {},
+    }
+    path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
 def request_control(output: Path, label: str, action: str, timeout: float = 180.0) -> None:
@@ -127,6 +180,25 @@ def merge(parts: list[Path], output: Path) -> Path:
     return output
 
 
+def write_blocked_ui_reward(path: Path, reason: str) -> None:
+    """Write explicit zero-credit UI evidence when the UI suite cannot finish."""
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            {
+                "status": "blocked",
+                "overall": None,
+                "capabilities": [],
+                "blocked_reason": reason,
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+
 def run(parsed: argparse.Namespace) -> int:
     candidate = parsed.candidate.resolve(strict=True)
     output = parsed.output.resolve()
@@ -138,23 +210,64 @@ def run(parsed: argparse.Namespace) -> int:
     part_dir = output / "parts"
     part_dir.mkdir(exist_ok=True)
     part_paths: list[Path] = []
+    timeout = capability_timeout_seconds()
     for index, group in enumerate(groups()):
         if index and parsed.external_lifecycle:
-            request_control(output, f"group-{index}", "reset-start")
+            try:
+                request_control(output, f"group-{index}", "reset-start", timeout=float(timeout))
+            except TimeoutError:
+                part = part_dir / f"part-{index + 1}.json"
+                write_blocked_part(part, group, f"candidate reset-start acknowledgment exceeded {timeout}s timeout")
+                part_paths.append(part)
+                continue
         part = part_dir / f"part-{index + 1}.json"
-        run_engine(origin(urls["api"]), parsed.admin_user, parsed.admin_pass, "score", part, group)
+        try:
+            run_engine(origin(urls["api"]), parsed.admin_user, parsed.admin_pass, "score", part, group, timeout=timeout)
+        except subprocess.TimeoutExpired:
+            write_blocked_part(part, group, f"score subprocess exceeded {timeout}s timeout")
         part_paths.append(part)
+        if json.loads(part.read_text(encoding="utf-8")).get("capabilities") and all(
+            capability.get("status") == "blocked" for capability in json.loads(part.read_text(encoding="utf-8")).get("capabilities", [])
+        ):
+            continue
         state = part_dir / f"dur-{index + 1}.json"
-        run_engine(origin(urls["api"]), parsed.admin_user, parsed.admin_pass, "durability-write", state, group)
+        try:
+            run_engine(origin(urls["api"]), parsed.admin_user, parsed.admin_pass, "durability-write", state, group, timeout=timeout)
+        except subprocess.TimeoutExpired:
+            payload = json.loads(part.read_text(encoding="utf-8"))
+            for capability in payload.get("capabilities") or []:
+                capability["durabilityOk"] = False
+                capability["durability"] = f"durability-write subprocess exceeded {timeout}s timeout"
+                capability["credit"] = 0.0
+            part.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+            continue
         try:
             has_state = bool(json.loads(state.read_text(encoding="utf-8")))
         except (OSError, json.JSONDecodeError):
             has_state = False
         if has_state:
             if parsed.external_lifecycle:
-                request_control(output, f"durability-{index + 1}", "restart")
+                try:
+                    request_control(output, f"durability-{index + 1}", "restart", timeout=float(timeout))
+                except TimeoutError:
+                    payload = json.loads(part.read_text(encoding="utf-8"))
+                    for capability in payload.get("capabilities") or []:
+                        capability["durabilityOk"] = False
+                        capability["durability"] = f"candidate restart acknowledgment exceeded {timeout}s timeout"
+                        capability["credit"] = 0.0
+                    part.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+                    continue
             verify_state = state.with_name(state.stem + ".verify.json")
-            run_engine(origin(urls["api"]), parsed.admin_user, parsed.admin_pass, "durability-verify", verify_state, statefile=state)
+            try:
+                run_engine(origin(urls["api"]), parsed.admin_user, parsed.admin_pass, "durability-verify", verify_state, statefile=state, timeout=timeout)
+            except subprocess.TimeoutExpired:
+                payload = json.loads(part.read_text(encoding="utf-8"))
+                for capability in payload.get("capabilities") or []:
+                    capability["durabilityOk"] = False
+                    capability["durability"] = f"durability-verify subprocess exceeded {timeout}s timeout"
+                    capability["credit"] = 0.0
+                part.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+                continue
             durability = json.loads(verify_state.read_text(encoding="utf-8")) if verify_state.is_file() else {}
             payload = json.loads(part.read_text(encoding="utf-8"))
             durable_by_id = {item["id"]: item for item in durability.get("capabilities") or []}
@@ -176,20 +289,30 @@ def run(parsed: argparse.Namespace) -> int:
     if not parsed.skip_ui:
         ui_path = output / "ui/ui-reward.json"
         ui_path.parent.mkdir(parents=True, exist_ok=True)
-        subprocess.run(
-            [
-                sys.executable, str(LEGACY_UI),
-                "--frontend-url", urls["frontend"],
-                "--base-url", origin(urls["api"]),
-                "--contract", str(CONTRACT),
-                "--manifest", str(manifest_path),
-                "--admin-user", parsed.admin_user,
-                "--admin-pass", parsed.admin_pass,
-                "score", "--json-out", str(ui_path),
-            ],
-            cwd=LEGACY_UI.parent,
-            check=False,
-        )
+        ui_command = [
+            sys.executable, str(LEGACY_UI),
+            "--frontend-url", urls["frontend"],
+            "--base-url", origin(urls["api"]),
+            "--contract", str(CONTRACT),
+            "--manifest", str(manifest_path),
+            "--admin-user", parsed.admin_user,
+            "--admin-pass", parsed.admin_pass,
+            "score", "--json-out", str(ui_path),
+        ]
+        try:
+            subprocess.run(
+                ui_command,
+                cwd=LEGACY_UI.parent,
+                check=False,
+                timeout=parsed.ui_timeout_seconds,
+            )
+        except subprocess.TimeoutExpired:
+            write_blocked_ui_reward(
+                ui_path,
+                f"UI verifier exceeded {parsed.ui_timeout_seconds}s timeout",
+            )
+        if not ui_path.is_file():
+            write_blocked_ui_reward(ui_path, "UI verifier did not produce a reward report")
     else:
         ui_path = output / "ui/ui-reward.json"
         ui_path.parent.mkdir(parents=True, exist_ok=True)

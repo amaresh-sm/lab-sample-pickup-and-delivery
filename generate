@@ -11,6 +11,7 @@ case "$provider" in
   portkey|openai) provider="openai-compatible" ;;
   claude) provider="claude-code" ;;
   openhands) provider="openhands" ;;
+  pi|pi-dev) provider="pi-dev" ;;
   openai-compatible|claude-code) : ;;
   *) echo "unsupported provider: $provider" >&2; exit 2 ;;
 esac
@@ -27,6 +28,7 @@ while (($#)); do
         portkey|openai) provider="openai-compatible" ;;
         claude) provider="claude-code" ;;
         openhands|openai-compatible|claude-code) provider="${2}" ;;
+        pi|pi-dev) provider="pi-dev" ;;
         *) echo "unsupported provider: ${2:-}" >&2; exit 2 ;;
       esac
       args+=(--provider "$provider"); shift 2 ;;

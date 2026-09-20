@@ -19,15 +19,63 @@ import importlib
 import json
 import os
 import pkgutil
+import signal
 import sys
+from contextlib import contextmanager
 from pathlib import Path
 
 ENGINE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(ENGINE_DIR))
 
 from client import load_contract, make_admin_session, CONTRACT_PATH, CONTRACT_REPORT  # noqa: E402
-from oracle import Engine, Capability  # noqa: E402
+from oracle import Capability, CapabilityReport, Engine, Verdict  # noqa: E402
 import capabilities  # noqa: E402
+
+
+class CapabilityTimeout(TimeoutError):
+    """Raised when one capability exceeds its total execution budget."""
+
+
+@contextmanager
+def capability_deadline(capability_id: str):
+    """Bound a capability's total wall-clock time without aborting the suite.
+
+    HTTP socket timeouts only bound periods of inactivity. A long-poll endpoint
+    can keep returning data and therefore never trigger one, so the capability
+    itself needs a total deadline. The same bound applies to durability probes:
+    their write phase runs before the restart handshake and must not be able to
+    stall the entire suite. The verifier is single-threaded, making a
+    process-local alarm safe here; the timeout is disabled immediately after
+    each capability returns.
+    """
+
+    if capability_id == "stream_realtime_events":
+        raw_timeout = os.environ.get("ASTRA_STREAM_REALTIME_EVENTS_TIMEOUT_SECONDS", "30")
+    else:
+        raw_timeout = os.environ.get("ASTRA_CAPABILITY_TIMEOUT_SECONDS", "30")
+    try:
+        timeout = max(1.0, float(raw_timeout))
+    except ValueError:
+        timeout = 30.0
+
+    if not hasattr(signal, "SIGALRM"):
+        yield
+        return
+
+    previous_handler = signal.getsignal(signal.SIGALRM)
+
+    def _raise_timeout(_signum, _frame):
+        raise CapabilityTimeout(
+            f"blocked: {capability_id} exceeded {timeout:g}s total timeout"
+        )
+
+    signal.signal(signal.SIGALRM, _raise_timeout)
+    signal.setitimer(signal.ITIMER_REAL, timeout)
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, previous_handler)
 
 
 def discover_capabilities() -> list[Capability]:
@@ -126,8 +174,15 @@ def cmd_score(args: argparse.Namespace) -> int:
     total = 0.0
     for cap in caps:
         try:
-            report = cap.run(engine)
+            with capability_deadline(cap.id):
+                report = cap.run(engine)
             credit = report.credit()
+        except CapabilityTimeout as exc:
+            # A genuinely stuck capability contributes zero, but must not
+            # prevent independent capabilities from being evaluated.
+            credit = 0.0
+            report = CapabilityReport(positive=Verdict(ok=False, detail=str(exc)))
+            print(f"  !! {cap.id} {exc}", file=sys.stderr)
         except Exception as exc:  # a capability's OWN bug must not crash the whole run
             credit = 0.0
             report = None
@@ -170,6 +225,11 @@ def cmd_score(args: argparse.Namespace) -> int:
                     "id": cid,
                     "kind": kind,
                     "credit": credit,
+                    "status": (
+                        "blocked"
+                        if report and report.positive.detail.startswith("blocked:")
+                        else ("pass" if report else "failed")
+                    ),
                     "positive": report.positive.detail if report else None,
                     "negative": report.negative.detail if report and report.negative else None,
                     "idempotency": report.idempotency.detail if report and report.idempotency else None,
@@ -238,8 +298,11 @@ def cmd_durability_write(args: argparse.Namespace) -> int:
         if not cap.durability_write:
             continue
         try:
-            state[cap.id] = cap.durability_write(engine)
+            with capability_deadline(cap.id):
+                state[cap.id] = cap.durability_write(engine)
             print(f"wrote sentinel for {cap.id}")
+        except CapabilityTimeout as exc:
+            print(f"  !! {cap.id} {exc}", file=sys.stderr)
         except Exception as exc:
             print(f"  !! {cap.id} durability_write raised {exc!r}", file=sys.stderr)
     Path(args.statefile).write_text(json.dumps(state))
@@ -265,7 +328,11 @@ def cmd_durability_verify(args: argparse.Namespace) -> int:
         if not cap or not cap.durability_verify:
             continue
         total += 1
-        verdict = cap.durability_verify(engine, sentinel)
+        try:
+            with capability_deadline(cap_id):
+                verdict = cap.durability_verify(engine, sentinel)
+        except CapabilityTimeout as exc:
+            verdict = Verdict(ok=False, detail=str(exc))
         ok += int(verdict.ok)
         rows.append((cap_id, verdict))
         print(f"{'OK ' if verdict.ok else 'FAIL'} {cap_id:<32} {verdict.detail}")

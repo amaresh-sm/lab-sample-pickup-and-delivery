@@ -205,15 +205,18 @@ def stop_runtime_candidate(runtime_name: str, process: subprocess.Popen[bytes] |
 
 
 def wait_for_runtime_database(runtime_name: str, timeout: int) -> None:
-    """Wait for the disposable database before a manifest reset touches it."""
+    """Wait for every runtime datastore before manifest commands run.
+
+    The runtime entrypoint starts PostgreSQL, MongoDB, and Redis together.
+    Waiting only for PostgreSQL allowed a manifest build command to race the
+    entrypoint while the other services were still starting.
+    """
 
     deadline = time.monotonic() + min(timeout, 60)
     while time.monotonic() < deadline:
         probe = subprocess.run(
             [
-                "docker", "exec", "--env", "PGPASSWORD=arena", runtime_name,
-                "psql", "--host", "127.0.0.1", "--username", "arena", "--dbname", "arena",
-                "--command", "SELECT 1",
+                "docker", "exec", runtime_name, "/opt/arena/bin/healthcheck.sh",
             ],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
@@ -234,6 +237,7 @@ def wait_for_restart_request(
 
     handled: set[str] = set()
     deadline = time.monotonic() + timeout
+    control_timeout = int(os.environ.get("ASTRA_CAPABILITY_TIMEOUT_SECONDS", "90"))
     while verifier_process.poll() is None:
         if time.monotonic() > deadline:
             verifier_process.kill()
@@ -247,12 +251,19 @@ def wait_for_restart_request(
             if label in handled:
                 continue
             stop_runtime_candidate(runtime_name, candidate_process)
-            if action == "reset-start":
-                reset_result = docker_exec(runtime_name, reset_command, stdout=subprocess.DEVNULL, timeout=120)
-                if reset_result.returncode != 0:
-                    raise RuntimeError(f"candidate reset command failed during {label}")
-            candidate_process = start_runtime_candidate(runtime_name, start_command, logs / "candidate.start.log", ready_url)
-            (control_dir / f"{('reset-start' if action == 'reset-start' else 'restart')}-{label}.ack").write_text("ok\n", encoding="utf-8")
+            ack = control_dir / f"{('reset-start' if action == 'reset-start' else 'restart')}-{label}.ack"
+            try:
+                if action == "reset-start":
+                    reset_result = docker_exec(runtime_name, reset_command, stdout=subprocess.DEVNULL, timeout=control_timeout)
+                    if reset_result.returncode != 0:
+                        raise RuntimeError(f"candidate reset command failed during {label}")
+                candidate_process = start_runtime_candidate(runtime_name, start_command, logs / "candidate.start.log", ready_url)
+            except (OSError, RuntimeError, subprocess.TimeoutExpired) as exc:
+                candidate_process = None
+                ack.write_text(f"blocked: {exc}\n", encoding="utf-8")
+                handled.add(label)
+                continue
+            ack.write_text("ok\n", encoding="utf-8")
             handled.add(label)
         time.sleep(0.2)
     return candidate_process

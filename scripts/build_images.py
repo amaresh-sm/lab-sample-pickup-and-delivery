@@ -48,20 +48,6 @@ def build(tag: str, dockerfile: Path, *build_args: str) -> None:
     )
 
 
-def image_id(tag: str) -> str:
-    """Capture the immutable image id before BuildKit layers the next role."""
-    return subprocess.check_output(
-        ["docker", "image", "inspect", "--format", "{{.Id}}", tag],
-        cwd=REPOSITORY_ROOT,
-        text=True,
-    ).strip()
-
-
-def retain(tag: str, digest: str) -> None:
-    """Keep role tags addressable after Docker garbage-collects base tags."""
-    subprocess.run(["docker", "tag", digest, tag], cwd=REPOSITORY_ROOT, check=True)
-
-
 def main() -> int:
     args = parse_args()
     # The original task's environment/Dockerfile is the complete runtime image
@@ -69,22 +55,18 @@ def main() -> int:
     # it under the ASTRA runtime tag, then layer the generation and verifier
     # roles on top without making the candidate see private verifier files.
     build(args.runtime_tag, REPOSITORY_ROOT / "environment/Dockerfile")
-    runtime_id = image_id(args.runtime_tag)
     build(
         args.candidate_tag,
         REPOSITORY_ROOT / "environment/candidate-generation/Dockerfile",
         "--build-arg",
         f"BASE_IMAGE={args.runtime_tag}",
     )
-    candidate_id = image_id(args.candidate_tag)
     build(
         args.verifier_tag,
         REPOSITORY_ROOT / "environment/verifier/Dockerfile",
         "--build-arg",
         f"BASE_IMAGE={args.runtime_tag}",
     )
-    retain(args.runtime_tag, runtime_id)
-    retain(args.candidate_tag, candidate_id)
     print(f"candidate image: {args.candidate_tag}")
     print(f"candidate runtime image: {args.runtime_tag}")
     print(f"verifier image: {args.verifier_tag}")

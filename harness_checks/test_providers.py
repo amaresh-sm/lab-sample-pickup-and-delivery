@@ -16,7 +16,7 @@ class ProviderCommandTests(unittest.TestCase):
         self.assertNotIn("{prompt}", command.command)
 
     def test_all_advertised_providers_construct_a_command(self) -> None:
-        for provider in ("codex", "openai-compatible", "claude-code", "openhands"):
+        for provider in ("codex", "openai-compatible", "claude-code", "openhands", "pi-dev"):
             with self.subTest(provider=provider):
                 command = build_provider_command(provider, "example-model", "high")
                 self.assertTrue(command.command)
@@ -34,6 +34,15 @@ class ProviderCommandTests(unittest.TestCase):
             with self.subTest(provider=provider):
                 command = build_provider_command(provider, "example-model", "high")
                 self.assertIn("--json", command.command)
+
+    def test_pi_dev_uses_gateway_model_profile_and_instruction_file(self) -> None:
+        command = build_provider_command("pi-dev", "claude-sonnet-5", "high")
+
+        self.assertIn("/home/agent/.pi/agent/models.json", command.command)
+        self.assertIn("pi --model hackerrank/claude-sonnet-5", command.command)
+        self.assertIn("--thinking high", command.command)
+        self.assertIn("-p @/workspace/INSTRUCTION.md", command.command)
+        self.assertIn("ASTRA_GATEWAY_API_KEY", command.credential_env)
 
 
 if __name__ == "__main__":

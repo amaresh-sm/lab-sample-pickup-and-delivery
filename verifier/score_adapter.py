@@ -104,7 +104,9 @@ def artifact_score(candidate: Path, public_contract: Path) -> float:
         return 0.0
 
 
-def ui_audit_score(ui_contract: Path, ui_reward: dict[str, Any]) -> float:
+def ui_audit_score(ui_contract: Path, ui_reward: dict[str, Any]) -> float | None:
+    if ui_reward.get("status") == "blocked":
+        return None
     try:
         contract = load(ui_contract)
     except json.JSONDecodeError:

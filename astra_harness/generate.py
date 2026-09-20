@@ -25,7 +25,7 @@ def utc_now() -> str:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate a candidate in an isolated container")
     parser.add_argument("--task", type=Path, required=True)
-    parser.add_argument("--provider", choices=("codex", "openai-compatible", "claude-code", "openhands"), required=True)
+    parser.add_argument("--provider", choices=("codex", "openai-compatible", "claude-code", "openhands", "pi-dev"), required=True)
     parser.add_argument("--model", required=True)
     parser.add_argument("--reasoning", choices=("low", "medium", "high", "xhigh", "max"), default="medium")
     parser.add_argument("--run-id", default=None)
@@ -137,6 +137,7 @@ def ensure_image(args: argparse.Namespace) -> str | None:
         "openai-compatible": "codex",
         "claude-code": "claude",
         "openhands": "hackerrank-openhands",
+        "pi-dev": "pi",
     }[args.provider]
     if found.returncode == 0 and (
         args.provider != "openhands"
@@ -163,6 +164,8 @@ def ensure_image(args: argparse.Namespace) -> str | None:
     default_dockerfile = (
         repository_root / "environment/candidate-generation/Dockerfile.openhands"
         if args.provider == "openhands"
+        else repository_root / "environment/candidate-generation/Dockerfile.pi"
+        if args.provider == "pi-dev"
         else repository_root / "environment/candidate-generation/Dockerfile"
     )
     dockerfile = (args.dockerfile or default_dockerfile).resolve()
@@ -205,6 +208,8 @@ def task_identifier(task_dir: Path) -> str:
 
 
 def run(args: argparse.Namespace) -> int:
+    if args.provider == "pi-dev" and args.image == "astra-candidate-generation:latest":
+        args.image = "astra-candidate-generation-pi:latest"
     task_dir = args.task.resolve()
     task_id = task_identifier(task_dir)
     run_id = args.run_id or f"{args.provider}-{int(time.time())}"

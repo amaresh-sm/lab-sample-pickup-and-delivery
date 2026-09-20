@@ -54,7 +54,9 @@ The verifier supplies the administrator credentials and bounded operational time
 candidate runtime and the private verifier. Override them with the verifier CLI options or a
 private env file; never commit credentials.
 
-Candidate generation supports `codex`, `openai-compatible`, `claude-code`, and `openhands`. The
+Candidate generation supports `codex`, `openai-compatible`, `claude-code`, `openhands`, and `pi-dev`.
+The Pi Dev provider uses the official `@mariozechner/pi-coding-agent` CLI with a dedicated image
+and routes the configured model through the HackerRank Gateway's OpenAI-compatible endpoint. The
 OpenHands provider uses the HackerRank Gateway package from
 `--openhands-gateway-repo /path/to/hackerrank-openhands-gateway` (or
 `OPENHANDS_GATEWAY_REPO`). The harness fingerprints that source and rebuilds the generation image

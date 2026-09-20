@@ -10,6 +10,9 @@ USER root
 ARG CODEX_VERSION=0.144.6
 ARG CLAUDE_CODE_VERSION=latest
 
+RUN apt-get update -qq && apt-get install -y --no-install-recommends tmux \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN npm install --global --ignore-scripts --no-audit --no-fund "@openai/codex@${CODEX_VERSION}" \
     && npm install --global --no-audit --no-fund "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"
 

@@ -1,0 +1,13 @@
+# Dedicated Pi Dev candidate-generation image.  It intentionally does not
+# include OpenHands or the OpenHands Gateway package.
+ARG BASE_IMAGE=astra-candidate-runtime:latest
+FROM ${BASE_IMAGE}
+
+USER root
+ARG PI_CODING_AGENT_VERSION=0.73.1
+RUN npm install --global --ignore-scripts --no-audit --no-fund \
+      "@mariozechner/pi-coding-agent@${PI_CODING_AGENT_VERSION}" \
+    && install -d -m 0700 -o agent -g agent /home/agent/.pi/agent
+
+USER agent
+WORKDIR /workspace
