@@ -234,14 +234,103 @@ def _capture_gateway_response(
         )
 
 
+def _is_gemini_model(llm: Any) -> bool:
+    """Return whether an LLM instance targets a Gemini model."""
+    return "gemini" in str(getattr(llm, "model", "")).lower()
+
+
+def _field_value(value: Any, field: str) -> Any:
+    """Read a field from either a mapping or a LiteLLM model object."""
+    if isinstance(value, dict):
+        return value.get(field)
+    return getattr(value, field, None)
+
+
+def _thought_signature(tool_call: Any) -> str | None:
+    """Extract Gemini's provider-specific thought signature from a tool call."""
+    extra_content = _field_value(tool_call, "extra_content")
+    if not isinstance(extra_content, dict):
+        return None
+    google = extra_content.get("google")
+    if not isinstance(google, dict):
+        return None
+    signature = google.get("thought_signature")
+    return signature if isinstance(signature, str) and signature else None
+
+
+def _remember_gemini_signatures(llm: Any, response: Any) -> None:
+    """Cache provider metadata needed to replay Gemini tool-call turns."""
+    if not _is_gemini_model(llm):
+        return
+    signatures = getattr(llm, "_astra_gemini_thought_signatures", None)
+    if not isinstance(signatures, dict):
+        signatures = {}
+        setattr(llm, "_astra_gemini_thought_signatures", signatures)
+
+    for choice in getattr(response, "choices", None) or []:
+        message = _field_value(choice, "message")
+        for tool_call in _field_value(message, "tool_calls") or []:
+            call_id = _field_value(tool_call, "id")
+            signature = _thought_signature(tool_call)
+            if call_id and signature:
+                signatures[str(call_id)] = signature
+
+    # Bound this per-LLM cache because tool-call IDs are unique across a run.
+    if len(signatures) > 256:
+        for call_id in list(signatures)[:-256]:
+            del signatures[call_id]
+
+
+def _restore_gemini_signatures(llm: Any, messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Restore Gemini signatures that OpenHands omits when serializing history."""
+    if not _is_gemini_model(llm):
+        return messages
+    signatures = getattr(llm, "_astra_gemini_thought_signatures", None)
+    if not isinstance(signatures, dict) or not signatures:
+        return messages
+
+    restored_messages: list[dict[str, Any]] = []
+    for message in messages:
+        if not isinstance(message, dict) or not isinstance(message.get("tool_calls"), list):
+            restored_messages.append(message)
+            continue
+
+        restored_calls: list[Any] = []
+        message_changed = False
+        for tool_call in message["tool_calls"]:
+            if not isinstance(tool_call, dict):
+                restored_calls.append(tool_call)
+                continue
+            call_id = tool_call.get("id")
+            signature = signatures.get(str(call_id)) if call_id else None
+            if signature and not _thought_signature(tool_call):
+                extra_content = tool_call.get("extra_content")
+                extra_content = dict(extra_content) if isinstance(extra_content, dict) else {}
+                google = extra_content.get("google")
+                google = dict(google) if isinstance(google, dict) else {}
+                google["thought_signature"] = signature
+                extra_content["google"] = google
+                restored_call = dict(tool_call)
+                restored_call["extra_content"] = extra_content
+                restored_calls.append(restored_call)
+                message_changed = True
+            else:
+                restored_calls.append(tool_call)
+
+        if message_changed:
+            restored_message = dict(message)
+            restored_message["tool_calls"] = restored_calls
+            restored_messages.append(restored_message)
+        else:
+            restored_messages.append(message)
+    return restored_messages
+
+
 def install_gateway_fix(base_url: str) -> None:
     """Adapt OpenHands requests for the HackerRank Gateway, including Gemini."""
     parsed = urlparse(base_url)
-    if parsed.scheme != "https" or not parsed.netloc or parsed.username or parsed.password:
-        raise ValueError("Gateway base URL must be HTTPS and must not contain credentials")
-    if "gateway-central.ai.private.hackerrank.link" not in base_url:
-        return
-
+    if not parsed.netloc or parsed.username or parsed.password:
+        raise ValueError("Gateway base URL must contain a host and must not contain credentials")
     from openhands.sdk import LLM
 
     original_sync = LLM._transport_call
@@ -252,7 +341,8 @@ def install_gateway_fix(base_url: str) -> None:
         return
 
     def sync_call(self: Any, *, messages: list[dict[str, Any]], **kwargs: Any):
-        if "gemini" in str(getattr(self, "model", "")).lower():
+        if _is_gemini_model(self):
+            messages = _restore_gemini_signatures(self, messages)
             kwargs.pop("prompt_cache_key", None)
             extra = kwargs.get("extra_body")
             if isinstance(extra, dict):
@@ -264,11 +354,13 @@ def install_gateway_fix(base_url: str) -> None:
         except Exception as exc:
             _capture_gateway_response(self, error=exc, latency_ms=(time.perf_counter() - started) * 1000)
             raise
+        _remember_gemini_signatures(self, response)
         _capture_gateway_response(self, response=response, latency_ms=(time.perf_counter() - started) * 1000)
         return response
 
     async def async_call(self: Any, *, messages: list[dict[str, Any]], **kwargs: Any):
-        if "gemini" in str(getattr(self, "model", "")).lower():
+        if _is_gemini_model(self):
+            messages = _restore_gemini_signatures(self, messages)
             kwargs.pop("prompt_cache_key", None)
             extra = kwargs.get("extra_body")
             if isinstance(extra, dict):
@@ -280,6 +372,7 @@ def install_gateway_fix(base_url: str) -> None:
         except Exception as exc:
             _capture_gateway_response(self, error=exc, latency_ms=(time.perf_counter() - started) * 1000)
             raise
+        _remember_gemini_signatures(self, response)
         _capture_gateway_response(self, response=response, latency_ms=(time.perf_counter() - started) * 1000)
         return response
 
@@ -342,6 +435,7 @@ def run(
     gateway_base_url: str | None = None,
     env_file: Path | None = None,
     redact_output: bool = False,
+    max_iterations: int = 300,
 ) -> RunResult:
     """Run one OpenHands coding session and write JSONL event records."""
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -390,6 +484,8 @@ def run(
             workspace_snapshot_error = f"{exc.__class__.__name__}: {exc}"
 
         from openhands.sdk import Agent, Conversation, Event, LLM
+        from openhands.sdk.context.agent_context import AgentContext
+        from openhands.sdk.context.condenser import LLMSummarizingCondenser
         from openhands.sdk.tool import Tool
         from openhands.tools.file_editor import FileEditorTool
         from openhands.tools.terminal import TerminalTool
@@ -424,8 +520,17 @@ def run(
                     record["tool_name"] = str(tool_call.name)
                 write(record)
 
-            agent = Agent(llm=llm, tools=[Tool(name=TerminalTool.name), Tool(name=FileEditorTool.name)])
-            conversation = Conversation(agent=agent, callbacks=[callback], workspace=str(workspace))
+            agent = Agent(
+                llm=llm,
+                tools=[Tool(name=TerminalTool.name), Tool(name=FileEditorTool.name)],
+                agent_context=AgentContext(load_project_skills=True),
+                condenser=LLMSummarizingCondenser(
+                    llm=llm,
+                    keep_first=25,
+                    max_size=120,
+                ),
+            )
+            conversation = Conversation(agent=agent, callbacks=[callback], workspace=str(workspace), max_iteration_per_run=max_iterations)
             with capture_gateway_responses(gateway_responses_path):
                 conversation.send_message(instruction)
                 conversation.run()

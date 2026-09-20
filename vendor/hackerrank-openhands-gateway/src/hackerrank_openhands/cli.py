@@ -21,12 +21,13 @@ def main() -> int:
     parser.add_argument("--gateway-base-url")
     parser.add_argument("--env-file", type=Path, help="optional Gateway .env file; defaults to .env in the current directory")
     parser.add_argument("--redact", action="store_true", help="redact likely credentials from output artifacts")
+    parser.add_argument("--max-iterations", type=int, default=300, help="maximum agent iterations before the run is stopped (default: 300)")
     argv = sys.argv[1:]
     if argv and argv[0] == "run":
         argv = argv[1:]
     args = parser.parse_args(argv)
 
-    result = run(args.workspace, args.instruction_file, args.model, args.reasoning, args.output, args.gateway_base_url, args.env_file, args.redact)
+    result = run(args.workspace, args.instruction_file, args.model, args.reasoning, args.output, args.gateway_base_url, args.env_file, args.redact, args.max_iterations)
     collect(
         result.events_path,
         args.output / "telemetry.json",
