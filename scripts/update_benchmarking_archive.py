@@ -21,7 +21,7 @@ CODE_SUFFIXES = {
     ".cc", ".cpp", ".hpp", ".swift", ".vue", ".svelte", ".proto",
 }
 EXCLUDED_DIRS = {
-    ".git", "node_modules", ".npm-cache", ".cache", ".gocache", "__pycache__",
+    ".git", "node_modules", ".npm-cache", ".cache", ".gocache", ".gopath", "gopath", "__pycache__",
     ".pytest_cache", "dist", "build", "coverage", "target", "vendor", "logs",
     "tmp", "temp",
 }
@@ -75,8 +75,13 @@ def core_metrics(metadata: dict) -> dict:
         if not path.is_file():
             continue
         relative = path.relative_to(root)
-        parts = set(relative.parts[:-1])
-        if parts & EXCLUDED_DIRS or parts & EXCLUDED_PARTS:
+        relative_parts = relative.parts[:-1]
+        parts = set(relative_parts)
+        is_go_module_cache = any(
+            relative_parts[index:index + 2] == ("pkg", "mod")
+            for index in range(len(relative_parts) - 1)
+        )
+        if parts & EXCLUDED_DIRS or parts & EXCLUDED_PARTS or is_go_module_cache:
             continue
         if path.name in EXCLUDED_NAMES or path.suffix.lower() not in CODE_SUFFIXES:
             continue
