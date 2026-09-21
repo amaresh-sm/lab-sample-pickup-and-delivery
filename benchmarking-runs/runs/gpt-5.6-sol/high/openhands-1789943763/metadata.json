@@ -1,0 +1,24 @@
+{
+  "task_id": "lab-sample-pickup-and-delivery",
+  "run_id": "openhands-1789943763",
+  "provider": "openhands",
+  "model": "gpt-5.6-sol",
+  "reasoning": "high",
+  "image": "astra-candidate-generation:latest",
+  "started_at": "2026-09-20T22:36:07.477038+00:00",
+  "status": "completed",
+  "mounts": [
+    "candidate workspace:rw"
+  ],
+  "openhands_gateway_source_digest": "562f1cdc77d6b01231c3bf7f2d2308aa68ed21cbd8fe90f57319df60f045656b",
+  "exit_code": 0,
+  "finished_at": "2026-09-20T23:02:53.146359+00:00",
+  "duration_seconds": 1605.658,
+  "container_cleaned": true,
+  "score": 0.3140080121,
+  "hard_pass": false,
+  "score_source": "scores.json",
+  "source_run_path": "benchmarking-candidates/openhands-1789943763",
+  "archive_path": "benchmarking-runs/runs/gpt-5.6-sol/high/openhands-1789943763",
+  "archived_at": "2026-09-21T20:20:41.494247+00:00"
+}

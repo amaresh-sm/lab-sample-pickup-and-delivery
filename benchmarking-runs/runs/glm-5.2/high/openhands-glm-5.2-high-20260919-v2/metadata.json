@@ -1,0 +1,16 @@
+{
+  "task_id": "lab-sample-pickup-and-delivery",
+  "run_id": "openhands-glm-5.2-high-20260919-v2",
+  "provider": "openhands",
+  "model": "glm-5.2",
+  "reasoning": "high",
+  "source_run_id": "openhands-glm-5.2-high-20260919-v2",
+  "post_hoc_repair": true,
+  "repair": "Added lifecycle wrappers and manifest derived from the generated Go app, schema, routes, and public contract; original run is preserved unchanged.",
+  "score": 0.2501094057,
+  "hard_pass": false,
+  "score_source": "scores.json",
+  "source_run_path": "benchmarking-candidates/repaired/openhands-glm-5.2-high-20260919-v2",
+  "archive_path": "benchmarking-runs/runs/glm-5.2/high/openhands-glm-5.2-high-20260919-v2",
+  "archived_at": "2026-09-21T20:20:45.132505+00:00"
+}

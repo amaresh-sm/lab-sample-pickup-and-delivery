@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "harness": {
+    "name": "hackerrank-openhands-gateway",
+    "version": "0.1.1"
+  },
+  "run": {
+    "status": "completed",
+    "exit_code": 0,
+    "error": null
+  },
+  "model": "glm-5.2",
+  "timing": {
+    "started_at": "2026-09-20T15:29:27.011418Z",
+    "completed_at": "2026-09-20T15:59:28.960860Z",
+    "duration_ms": 1801949,
+    "llm_requests": {
+      "count": 302,
+      "with_latency": 302,
+      "successful": 302,
+      "failed": 0,
+      "total_latency_ms": 1549145.619,
+      "average_latency_ms": 5129.621,
+      "min_latency_ms": 899.777,
+      "max_latency_ms": 66581.008
+    }
+  },
+  "usage": {
+    "source": "gateway",
+    "requests": 302,
+    "input_tokens": 13417926,
+    "cached_input_tokens": 12642560,
+    "cache_read_tokens": 12642560,
+    "cache_write_tokens": 0,
+    "output_tokens": 139838,
+    "reasoning_tokens": 13488,
+    "total_tokens": 13557764
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": 4.987865200000003,
+      "currency": "USD",
+      "status": "reported",
+      "source": "gateway",
+      "responses_with_cost": 302
+    },
+    "openhands": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "openhands"
+    },
+    "custom_estimation": {
+      "amount_usd": 4.9878652,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "pricing_version": 1,
+      "model": "openai/glm-5.2",
+      "normalized_model": "glm-5.2",
+      "requests": 302,
+      "requests_with_usage": 302,
+      "requests_missing_usage": 0,
+      "usage_source": "gateway_usage",
+      "pricing": {
+        "input_usd_per_million": 1.4,
+        "output_usd_per_million": 4.4,
+        "cache_read_usd_per_million": 0.26,
+        "cache_write_usd_per_million": null,
+        "note": "Z.AI GLM-5.2 public API pricing"
+      }
+    }
+  },
+  "workspace": {
+    "type": "workspace_metrics",
+    "status": "available",
+    "files": {
+      "added": 43,
+      "modified": 0,
+      "deleted": 0,
+      "renamed": 0,
+      "total_changed": 43
+    },
+    "lines": {
+      "added": 19638,
+      "deleted": 0,
+      "changed": 19638
+    },
+    "renames": []
+  },
+  "tools": {
+    "total": 291,
+    "successful": 283,
+    "failed": 8,
+    "cancelled": 0,
+    "rejected": 0,
+    "unknown": 0,
+    "by_tool": {
+      "terminal": 217,
+      "file_editor": 73,
+      "think": 1
+    }
+  },
+  "trace": {
+    "events_path": "events.jsonl",
+    "event_count": 602,
+    "invalid_event_count": 0,
+    "integrity_sha256": "9191027992093422684299683bcba7ae49e6d012963df16e51aa8b575f01c27e"
+  },
+  "archive_source": "logs/openhands/telemetry.json",
+  "run_id": "openhands-glm-5.2-medium-20260920-prod-v1",
+  "reasoning": "medium"
+}

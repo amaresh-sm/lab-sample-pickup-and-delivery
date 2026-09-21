@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "tokens": {
+    "input": null,
+    "output": null,
+    "cached_input": null,
+    "total": null,
+    "source": "unavailable"
+  },
+  "tool_calls": {
+    "total": null,
+    "by_type": {
+      "read": null,
+      "shell": null,
+      "edit": null,
+      "write": null,
+      "other": null
+    },
+    "source": "unavailable"
+  },
+  "solution_size": {
+    "workspace_source_files": 24,
+    "workspace_source_lines": 3813,
+    "workspace_test_files": 0,
+    "workspace_test_lines": 0,
+    "agent_changed_files": 26,
+    "agent_changed_source_files": 24,
+    "agent_changed_source_lines": 3813
+  },
+  "duration_seconds": 6424.969,
+  "started_at": "2026-09-21T05:32:48.602178+00:00",
+  "finished_at": "2026-09-21T07:19:53.627687+00:00",
+  "archive_source": "telemetry.json",
+  "run_id": "repaired-openhands-1789968768",
+  "model": "claude-sonnet-5",
+  "reasoning": "high"
+}

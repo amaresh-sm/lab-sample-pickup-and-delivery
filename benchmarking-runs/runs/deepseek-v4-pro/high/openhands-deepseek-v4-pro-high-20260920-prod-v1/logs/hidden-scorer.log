@@ -1,0 +1,1905 @@
+run_id=openhands-deepseek-v4-pro-high-20260920-prod-v1
+score=0.1109551282
+hard_pass=false
+score_source=scores.json and reports/score.json
+
+--- verifier.stdout.log ---
+0 durability sentinel(s) written to /output/parts/dur-8.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: configure_capacity
+* configure_capacity               write      credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-9.json
+[--only] scoring 1 of 55 capabilities: decline_assignment
+  decline_assignment               write      credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-16.json
+0 durability sentinel(s) written to /output/parts/dur-16.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: qualified_collector_exhaustion_exception
+* qualified_collector_exhaustion_exception lifecycle  credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-26.json
+[--only] scoring 1 of 55 capabilities: record_laboratory_exception
+  record_laboratory_exception      write      credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-34.json
+0 durability sentinel(s) written to /output/parts/dur-34.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+FAIL set_worker_availability          post-restart ops-state worker=None
+
+durability: 0/1 survived the restart
+wrote /output/parts/dur-42.verify.json
+* accept_assignment_writes_through       AC-31        credit=0.000
+* audit_view_renders_and_searches        AC-70/AC-71/AC-73 credit=0.000
+* lab_worker_views_own_capacity          AC-91        credit=0.000
+* login_rejects_invalid_credentials      authentication (implicit) credit=0.000
+* map_renders_local_tiles_only           AC-83        credit=0.000
+* monitor_dashboard_renders_categories   AC-39/115/116/117/121/122 credit=0.000
+* request_form_surfaces_validation_error AC-9/AC-10   credit=0.000
+* role_switch_control_lists_and_applies_role AC-5/AC-7    credit=0.000
+* role_work_view_shows_current_and_past  AC-3         credit=0.000
+* sample_freshness_visible_to_owner      AC-68/AC-69  credit=0.000
+* sample_view_shows_location_custodian_progress AC-65/AC-66/AC-67 credit=0.000
+* sample_view_shows_ordered_status_history AC-4         credit=0.000
+* sample_view_surfaces_exception_flag    AC-90        credit=0.000
+* serviceability_dry_run_creates_nothing AC-37/AC-38  credit=0.000
+  sign_out_ends_authenticated_session    session-lifecycle (implicit) credit=0.000
+* worker_records_location_writes_through AC-113/AC-114 credit=0.000
+
+UI capabilities graded: 16
+UI overall score:       0.0000
+wrote /output/ui/ui-reward.json
+{
+  "schema_version": 1,
+  "criteria": {
+    "api-contract-artifact": {
+      "status": "fail",
+      "score": 0.0,
+      "source": "candidate:openapi-artifact"
+    },
+    "runtime-contract": {
+      "status": "partial",
+      "score": 0.6,
+      "source": "backend:contract.score"
+    },
+    "backend-behavior": {
+      "status": "partial",
+      "score": 0.12756410256410255,
+      "source": "backend:functional"
+    },
+    "ui-behavior": {
+      "status": "fail",
+      "score": 0.0,
+      "source": "ui:overall"
+    },
+    "ui-contract-audit": {
+      "status": "pass",
+      "score": 1.0,
+      "source": "ui:contract-audit"
+    },
+    "reliability": {
+      "status": "partial",
+      "score": 0.015625,
+      "source": "backend:reliability"
+    }
+  },
+  "evidence": {
+    "backend": "/output/backend/reward.json",
+    "ui": "/output/ui/ui-reward.json"
+  }
+}
+
+--- verifier.stderr.log ---
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! configure_capacity raised ApiError("create_location -> HTTP 400 (invalid_node_coverage): {'code': 'invalid_node_coverage', 'error': 'invalid coverage'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 316, in cmd_durability_verify
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 316, in cmd_durability_verify
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! decline_assignment raised ApiError("create_location -> HTTP 400 (invalid_node_coverage): {'code': 'invalid_node_coverage', 'error': 'invalid coverage'}")
+  !! decline_assignment durability_write raised ApiError("create_location -> HTTP 400 (invalid_node_coverage): {'code': 'invalid_node_coverage', 'error': 'invalid coverage'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 316, in cmd_durability_verify
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! record_laboratory_exception raised ApiError("create_location -> HTTP 400 (invalid_node_coverage): {'code': 'invalid_node_coverage', 'error': 'invalid coverage'}")
+  !! record_laboratory_exception durability_write raised ApiError("create_location -> HTTP 400 (invalid_node_coverage): {'code': 'invalid_node_coverage', 'error': 'invalid coverage'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 316, in cmd_durability_verify
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 316, in cmd_durability_verify
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! accept_assignment_writes_through raised ApiError("create_location -> HTTP 400 (invalid_node_coverage): {'code': 'invalid_node_coverage', 'error': 'invalid coverage'}")
+  !! audit_view_renders_and_searches raised ApiError("create_location -> HTTP 400 (invalid_node_coverage): {'code': 'invalid_node_coverage', 'error': 'invalid coverage'}")
+  !! lab_worker_views_own_capacity raised ApiError("create_location -> HTTP 400 (invalid_node_coverage): {'code': 'invalid_node_coverage', 'error': 'invalid coverage'}")
+  !! monitor_dashboard_renders_categories raised ApiError("authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! request_form_surfaces_validation_error raised ApiError("authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! role_switch_control_lists_and_applies_role raised ApiError("authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! role_work_view_shows_current_and_past raised ApiError("authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! sample_freshness_visible_to_owner raised ApiError("authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! sample_view_shows_location_custodian_progress raised ApiError("authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! sample_view_shows_ordered_status_history raised ApiError("authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! sample_view_surfaces_exception_flag raised ApiError("authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! serviceability_dry_run_creates_nothing raised ApiError("authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! worker_records_location_writes_through raised ApiError("authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")

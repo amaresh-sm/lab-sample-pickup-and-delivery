@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "harness": {
+    "name": "hackerrank-openhands-gateway",
+    "version": "0.1.1"
+  },
+  "run": {
+    "status": "completed",
+    "exit_code": 0,
+    "error": null
+  },
+  "model": "kimi-k3",
+  "timing": {
+    "started_at": "2026-09-19T08:16:39.110328Z",
+    "completed_at": "2026-09-19T09:32:52.728629Z",
+    "duration_ms": 4573618,
+    "llm_requests": {
+      "count": 411,
+      "with_latency": 411,
+      "successful": 411,
+      "failed": 0,
+      "total_latency_ms": 4227733.568,
+      "average_latency_ms": 10286.456,
+      "min_latency_ms": 1426.638,
+      "max_latency_ms": 343897.684
+    }
+  },
+  "usage": {
+    "source": "gateway",
+    "requests": 411,
+    "input_tokens": 14954206,
+    "cached_input_tokens": 14525833,
+    "cache_read_tokens": 14525833,
+    "cache_write_tokens": 0,
+    "output_tokens": 185840,
+    "reasoning_tokens": 24626,
+    "total_tokens": 15140046
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": 8.430468900000001,
+      "currency": "USD",
+      "status": "reported",
+      "source": "gateway",
+      "responses_with_cost": 411
+    },
+    "openhands": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "openhands"
+    },
+    "custom_estimation": {
+      "amount_usd": 8.4304689,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "pricing_version": 1,
+      "model": "openai/kimi-k3",
+      "normalized_model": "kimi-k3",
+      "requests": 411,
+      "requests_with_usage": 411,
+      "requests_missing_usage": 0,
+      "usage_source": "gateway_usage",
+      "pricing": {
+        "input_usd_per_million": 3.0,
+        "output_usd_per_million": 15.0,
+        "cache_read_usd_per_million": 0.3,
+        "cache_write_usd_per_million": null,
+        "note": "~Moonshot Kimi K3 public API pricing"
+      }
+    }
+  },
+  "workspace": {
+    "type": "workspace_metrics",
+    "status": "available",
+    "files": {
+      "added": 28,
+      "modified": 0,
+      "deleted": 0,
+      "renamed": 0,
+      "total_changed": 28
+    },
+    "lines": {
+      "added": 20938,
+      "deleted": 0,
+      "changed": 20938
+    },
+    "renames": []
+  },
+  "tools": {
+    "total": 395,
+    "successful": 372,
+    "failed": 23,
+    "cancelled": 0,
+    "rejected": 0,
+    "unknown": 0,
+    "by_tool": {
+      "terminal": 313,
+      "file_editor": 80,
+      "think": 1,
+      "finish": 1
+    }
+  },
+  "trace": {
+    "events_path": "events.jsonl",
+    "event_count": 813,
+    "invalid_event_count": 0,
+    "integrity_sha256": "9053008189a670ad0376794a7dcfeb797ad1035c736491811384330a00803d39"
+  },
+  "archive_source": "logs/openhands/telemetry.json",
+  "run_id": "openhands-kimi-k3-medium-20260919-v2",
+  "reasoning": "medium"
+}

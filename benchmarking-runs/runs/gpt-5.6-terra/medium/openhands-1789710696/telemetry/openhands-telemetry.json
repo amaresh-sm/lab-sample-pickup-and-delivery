@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "harness": {
+    "name": "hackerrank-openhands-gateway",
+    "version": "0.1.1"
+  },
+  "run": {
+    "status": "completed",
+    "exit_code": 0,
+    "error": null
+  },
+  "model": "gpt-5.6-terra",
+  "timing": {
+    "started_at": "2026-09-18T05:51:49.417140Z",
+    "completed_at": "2026-09-18T05:55:27.808671Z",
+    "duration_ms": 218391,
+    "llm_requests": {
+      "count": 28,
+      "with_latency": 28,
+      "successful": 28,
+      "failed": 0,
+      "total_latency_ms": 188048.365,
+      "average_latency_ms": 6716.013,
+      "min_latency_ms": 2102.139,
+      "max_latency_ms": 18188.16
+    }
+  },
+  "usage": {
+    "source": "gateway",
+    "requests": 28,
+    "input_tokens": 1151952,
+    "cached_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "output_tokens": 19831,
+    "reasoning_tokens": 0,
+    "total_tokens": 1171783
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "gateway",
+      "responses_with_cost": 0
+    },
+    "openhands": {
+      "amount_usd": 0.6118567,
+      "currency": "USD",
+      "status": "reported",
+      "source": "openhands"
+    },
+    "custom_estimation": {
+      "amount_usd": 1.63825,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "pricing_version": 1,
+      "model": "openai/gpt-5.6-terra",
+      "normalized_model": "gpt-5.6-terra",
+      "requests": 28,
+      "requests_with_usage": 28,
+      "requests_missing_usage": 0,
+      "usage_source": "gateway_usage",
+      "pricing": {
+        "input_usd_per_million": 1.25,
+        "output_usd_per_million": 10.0,
+        "cache_read_usd_per_million": 0.125,
+        "cache_write_usd_per_million": null,
+        "note": "~GPT-5 public tier"
+      }
+    }
+  },
+  "workspace": {
+    "type": "workspace_metrics",
+    "status": "available",
+    "files": {
+      "added": 10,
+      "modified": 1,
+      "deleted": 0,
+      "renamed": 0,
+      "total_changed": 11
+    },
+    "lines": {
+      "added": 12755,
+      "deleted": 3,
+      "changed": 12758
+    },
+    "renames": []
+  },
+  "tools": {
+    "total": 37,
+    "successful": 34,
+    "failed": 3,
+    "cancelled": 0,
+    "rejected": 0,
+    "unknown": 0,
+    "by_tool": {
+      "terminal": 17,
+      "file_editor": 20
+    }
+  },
+  "trace": {
+    "events_path": "events.jsonl",
+    "event_count": 81,
+    "invalid_event_count": 0,
+    "integrity_sha256": "e2a070ad0c5e1a8fc27cf68883d42029a0c7d2ea7e7b3689e887d210778f5505"
+  },
+  "archive_source": "logs/openhands/telemetry.json",
+  "run_id": "openhands-1789710696",
+  "reasoning": "medium"
+}

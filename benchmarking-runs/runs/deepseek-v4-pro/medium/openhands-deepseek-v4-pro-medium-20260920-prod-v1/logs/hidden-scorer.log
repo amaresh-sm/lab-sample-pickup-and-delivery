@@ -1,0 +1,1154 @@
+run_id=openhands-deepseek-v4-pro-medium-20260920-prod-v1
+score=0.0831235128
+hard_pass=false
+score_source=scores.json and reports/score.json
+
+--- verifier.stdout.log ---
+[--only] scoring 8 of 55 capabilities: collect_and_seal_sample, confirm_handoff, confirm_laboratory_receipt, edit_active_plan, initiate_handoff, record_handling_checkpoint, record_worker_location, update_assignment_progress
+  collect_and_seal_sample          lifecycle  credit=0.000
+* confirm_handoff                  lifecycle  credit=0.000
+  confirm_laboratory_receipt       lifecycle  credit=0.000
+* edit_active_plan                 lifecycle  credit=0.000
+* initiate_handoff                 lifecycle  credit=0.000
+  record_handling_checkpoint       lifecycle  credit=0.000
+  record_worker_location           lifecycle  credit=0.000
+  update_assignment_progress       lifecycle  credit=0.000
+
+capabilities graded: 8
+overall score:       0.0000
+wrote /output/parts/part-1.json
+0 durability sentinel(s) written to /output/parts/dur-1.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: accept_assignment
+* accept_assignment                lifecycle  credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-2.json
+[--only] scoring 1 of 55 capabilities: cancel_journey
+  cancel_journey                   write      credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-4.json
+0 durability sentinel(s) written to /output/parts/dur-4.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: check_serviceability
+* check_serviceability             write      credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-5.json
+0 durability sentinel(s) written to /output/parts/dur-5.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+0 durability sentinel(s) written to /output/parts/dur-6.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: concurrent_capacity_exhaustion_race_safety
+* concurrent_capacity_exhaustion_race_safety concurrency credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-7.json
+0 durability sentinel(s) written to /output/parts/dur-8.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: configure_capacity
+* configure_capacity               write      credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-9.json
+wrote sentinel for configure_capacity
+1 durability sentinel(s) written to /output/parts/dur-9.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+OK  configure_capacity               post-restart ops-state capacity={'capacityUnits': 41, 'reservedUnits': 0, 'availableUnits': 41, 'cooledCapacityUnits': 13, 'cooledReservedUnits': 0, 'cooledAvailableUnits': 13}
+
+durability: 1/1 survived the restart
+wrote /output/parts/dur-9.verify.json
+wrote sentinel for configure_laboratory_acceptance
+1 durability sentinel(s) written to /output/parts/dur-10.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+OK  configure_laboratory_acceptance  post-restart check_serviceability serviceable=True reason=serviceable
+
+durability: 1/1 survived the restart
+wrote /output/parts/dur-10.verify.json
+wrote sentinel for create_connection
+1 durability sentinel(s) written to /output/parts/dur-12.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+OK  create_connection                post-restart observe via=audit-trail
+
+durability: 1/1 survived the restart
+wrote /output/parts/dur-12.verify.json
+[--only] scoring 1 of 55 capabilities: create_location
+  create_location                  write      credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-13.json
+wrote sentinel for create_location
+1 durability sentinel(s) written to /output/parts/dur-13.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+FAIL create_location                  post-restart ops-state found=False via=None
+
+durability: 0/1 survived the restart
+wrote /output/parts/dur-13.verify.json
+FAIL create_sample_type               post-restart observe via=None
+
+durability: 0/1 survived the restart
+wrote /output/parts/dur-14.verify.json
+[--only] scoring 1 of 55 capabilities: create_user
+  create_user                      write      credit=0.500
+
+capabilities graded: 1
+overall score:       0.5000
+wrote /output/parts/part-15.json
+0 durability sentinel(s) written to /output/parts/dur-15.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+0 durability sentinel(s) written to /output/parts/dur-16.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: fairness_recency_disparity
+* fairness_recency_disparity       fairness   credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-18.json
+0 durability sentinel(s) written to /output/parts/dur-18.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: frost_cooled_route_enforcement
+* frost_cooled_route_enforcement   write      credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-20.json
+0 durability sentinel(s) written to /output/parts/dur-21.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: list_role_work
+* list_role_work                   read       credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-22.json
+[--only] scoring 1 of 55 capabilities: merge_journeys
+  merge_journeys                   write      credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-23.json
+0 durability sentinel(s) written to /output/parts/dur-24.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: openapi_json_well_formed
+  openapi_json_well_formed         artifact   credit=1.000
+
+capabilities graded: 1
+overall score:       1.0000
+wrote /output/parts/part-25.json
+0 durability sentinel(s) written to /output/parts/dur-25.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: qualified_collector_exhaustion_exception
+* qualified_collector_exhaustion_exception lifecycle  credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-26.json
+0 durability sentinel(s) written to /output/parts/dur-26.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: read_operations_state
+  read_operations_state            read       credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-28.json
+0 durability sentinel(s) written to /output/parts/dur-28.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: read_sample_lifecycle
+  read_sample_lifecycle            read       credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-29.json
+0 durability sentinel(s) written to /output/parts/dur-29.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: read_ui_bootstrap
+  read_ui_bootstrap                read       credit=0.500
+
+capabilities graded: 1
+overall score:       0.5000
+wrote /output/parts/part-32.json
+0 durability sentinel(s) written to /output/parts/dur-32.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: read_user
+  read_user                        read       credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-33.json
+0 durability sentinel(s) written to /output/parts/dur-33.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: record_laboratory_exception
+  record_laboratory_exception      write      credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-34.json
+0 durability sentinel(s) written to /output/parts/dur-36.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: search_audit_trail
+* search_audit_trail               read       credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-37.json
+0 durability sentinel(s) written to /output/parts/dur-37.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: select_active_role
+* select_active_role               write      credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-38.json
+[--only] scoring 1 of 55 capabilities: set_location_function_status
+  set_location_function_status     write      credit=0.500
+
+capabilities graded: 1
+overall score:       0.5000
+wrote /output/parts/part-40.json
+wrote sentinel for set_location_function_status
+1 durability sentinel(s) written to /output/parts/dur-40.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+OK  set_location_function_status     post-restart ops-state enabled_functions={'laboratory'}
+
+durability: 1/1 survived the restart
+wrote /output/parts/dur-40.verify.json
+[--only] scoring 1 of 55 capabilities: set_location_status
+  set_location_status              write      credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-41.json
+wrote sentinel for set_location_status
+1 durability sentinel(s) written to /output/parts/dur-41.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+OK  set_location_status              post-restart ops-state active=False
+
+durability: 1/1 survived the restart
+wrote /output/parts/dur-41.verify.json
+FAIL set_worker_availability          post-restart ops-state worker=None
+
+durability: 0/1 survived the restart
+wrote /output/parts/dur-42.verify.json
+[--only] scoring 1 of 55 capabilities: split_journey
+  split_journey                    write      credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-43.json
+0 durability sentinel(s) written to /output/parts/dur-43.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+0 durability sentinel(s) written to /output/parts/dur-44.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: system_readiness
+  system_readiness                 read       credit=1.000
+
+capabilities graded: 1
+overall score:       1.0000
+wrote /output/parts/part-45.json
+FAIL update_location                  post-restart ops-state name=None expected='4fahn0001-ulocdur-renameddur-1'
+
+durability: 0/1 survived the restart
+wrote /output/parts/dur-46.verify.json
+[--only] scoring 1 of 55 capabilities: update_sample_type
+* update_sample_type               write      credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-47.json
+0 durability sentinel(s) written to /output/parts/dur-47.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+[--only] scoring 1 of 55 capabilities: update_user_access
+  update_user_access               write      credit=0.000
+
+capabilities graded: 1
+overall score:       0.0000
+wrote /output/parts/part-48.json
+wrote sentinel for update_user_access
+1 durability sentinel(s) written to /output/parts/dur-48.json
+Now restart the application under test (start-only, do NOT reset), then run durability-verify.
+OK  update_user_access               post-restart read_user status=200 roles=['dispatcher'] (expected exactly ['dispatcher'])
+
+durability: 1/1 survived the restart
+wrote /output/parts/dur-48.verify.json
+{
+  "schema_version": 1,
+  "criteria": {
+    "api-contract-artifact": {
+      "status": "fail",
+      "score": 0.0,
+      "source": "candidate:openapi-artifact"
+    },
+    "runtime-contract": {
+      "status": "partial",
+      "score": 0.5238,
+      "source": "backend:contract.score"
+    },
+    "backend-behavior": {
+      "status": "partial",
+      "score": 0.07275641025641025,
+      "source": "backend:functional"
+    },
+    "ui-behavior": {
+      "status": "blocked",
+      "score": 0.0,
+      "source": "ui:overall"
+    },
+    "ui-contract-audit": {
+      "status": "blocked",
+      "score": 0.0,
+      "source": "ui:contract-audit"
+    },
+    "reliability": {
+      "status": "partial",
+      "score": 0.0546875,
+      "source": "backend:reliability"
+    }
+  },
+  "evidence": {
+    "backend": "/output/backend/reward.json",
+    "ui": "/output/ui/ui-reward.json"
+  }
+}
+
+--- verifier.stderr.log ---
+  !! collect_and_seal_sample raised ApiError("authenticate_user -> HTTP 401 (invalid_credentials): {'error': 'Invalid credentials', 'code': 'invalid_credentials'}")
+  !! collect_and_seal_sample durability_write raised ApiError("create_user -> HTTP 0 (transport_error): {'error': 'Remote end closed connection without response', 'code': 'transport_error'}")
+  !! record_handling_checkpoint durability_write raised ApiError("create_sample_type -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! record_worker_location durability_write raised ApiError("create_sample_type -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! initiate_handoff durability_write raised ApiError("create_sample_type -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! confirm_handoff durability_write raised ApiError("create_sample_type -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! update_assignment_progress durability_write raised ApiError("create_sample_type -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! confirm_laboratory_receipt durability_write raised ApiError("create_sample_type -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! edit_active_plan durability_write raised ApiError("create_sample_type -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! accept_assignment raised ApiError("create_user -> HTTP 0 (transport_error): {'error': 'Remote end closed connection without response', 'code': 'transport_error'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! cancel_journey raised ApiError("authenticate_user -> HTTP 401 (invalid_credentials): {'error': 'Invalid credentials', 'code': 'invalid_credentials'}")
+  !! cancel_journey durability_write raised ApiError("authenticate_user -> HTTP 401 (invalid_credentials): {'error': 'Invalid credentials', 'code': 'invalid_credentials'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! concurrent_capacity_exhaustion_race_safety raised ApiError("authenticate_user -> HTTP 0 (transport_error): {'error': 'Remote end closed connection without response', 'code': 'transport_error'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! configure_capacity raised ApiError("authenticate_user -> HTTP 401 (invalid_credentials): {'error': 'Invalid credentials', 'code': 'invalid_credentials'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! create_location raised ApiError("create_user -> HTTP 0 (transport_error): {'error': 'Remote end closed connection without response', 'code': 'transport_error'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! create_user durability_write raised ApiError("create_user -> HTTP 0 (transport_error): {'error': 'Remote end closed connection without response', 'code': 'transport_error'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! decline_assignment durability_write raised ApiError("create_user -> HTTP 0 (transport_error): {'error': 'Remote end closed connection without response', 'code': 'transport_error'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! fairness_recency_disparity raised ApiError("authenticate_user -> HTTP 401 (invalid_credentials): {'error': 'Invalid credentials', 'code': 'invalid_credentials'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': 'Remote end closed connection without response', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! frost_cooled_route_enforcement raised ApiError("authenticate_user -> HTTP 0 (transport_error): {'error': 'Remote end closed connection without response', 'code': 'transport_error'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! ingest_presealed_sample durability_write raised ApiError("authenticate_user -> HTTP 401 (invalid_credentials): {'error': 'Invalid credentials', 'code': 'invalid_credentials'}")
+  !! list_role_work raised ApiError("authenticate_user -> HTTP 0 (transport_error): {'error': 'Remote end closed connection without response', 'code': 'transport_error'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! merge_journeys raised ApiError("authenticate_user -> HTTP 0 (transport_error): {'error': 'Remote end closed connection without response', 'code': 'transport_error'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! qualified_collector_exhaustion_exception durability_write raised ApiError("create_sample_type -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! read_operations_state raised ApiError("authenticate_user -> HTTP 401 (invalid_credentials): {'error': 'Invalid credentials', 'code': 'invalid_credentials'}")
+  !! read_sample_lifecycle raised ApiError("create_sample_type -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': 'Remote end closed connection without response', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! read_user raised ApiError("create_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! record_laboratory_exception raised ApiError("create_user -> HTTP 0 (transport_error): {'error': 'Remote end closed connection without response', 'code': 'transport_error'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! reroute_journey durability_write raised ApiError("authenticate_user -> HTTP 401 (invalid_credentials): {'error': 'Invalid credentials', 'code': 'invalid_credentials'}")
+  !! search_audit_trail raised ApiError("create_user -> HTTP 0 (transport_error): {'error': 'Remote end closed connection without response', 'code': 'transport_error'}")
+  !! select_active_role raised ApiError("authenticate_user -> HTTP 0 (transport_error): {'error': 'Remote end closed connection without response', 'code': 'transport_error'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 316, in cmd_durability_verify
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! set_location_status raised ApiError("authenticate_user -> HTTP 401 (invalid_credentials): {'error': 'Invalid credentials', 'code': 'invalid_credentials'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! split_journey raised ApiError("authenticate_user -> HTTP 401 (invalid_credentials): {'error': 'Invalid credentials', 'code': 'invalid_credentials'}")
+  !! split_journey durability_write raised ApiError("authenticate_user -> HTTP 401 (invalid_credentials): {'error': 'Invalid credentials', 'code': 'invalid_credentials'}")
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': 'Remote end closed connection without response', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 148, in cmd_score
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+Traceback (most recent call last):
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 395, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 391, in main
+    return args.func(args)
+           ^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/run.py", line 285, in cmd_durability_write
+    admin = make_admin_session(args.base_url, contract, args.admin_user, args.admin_pass)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 321, in make_admin_session
+    return anon.login(username, password)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 297, in login
+    data = self.call("authenticate_user", {"username": username, "password": password})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/input/verifier/hidden-tests/backend/legacy-engine/client.py", line 280, in call
+    raise ApiError(operation_id, status, payload)
+client.ApiError: authenticate_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}
+  !! update_sample_type raised KeyError('containerType')
+  !! update_sample_type durability_write raised KeyError('temperatureMinC')
+  !! update_user_access raised ApiError("create_user -> HTTP 0 (transport_error): {'error': '<urlopen error [Errno 111] Connection refused>', 'code': 'transport_error'}")
+  !! role_work_view_shows_current_and_past raised ApiError("authenticate_user -> HTTP 401 (invalid_credentials): {'error': 'Invalid credentials', 'code': 'invalid_credentials'}")

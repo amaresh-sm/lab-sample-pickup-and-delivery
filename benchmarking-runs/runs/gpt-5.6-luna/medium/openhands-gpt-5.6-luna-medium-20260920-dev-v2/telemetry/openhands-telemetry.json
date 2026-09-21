@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "harness": {
+    "name": "hackerrank-openhands-gateway",
+    "version": "0.1.1"
+  },
+  "run": {
+    "status": "completed",
+    "exit_code": 0,
+    "error": null
+  },
+  "model": "gpt-5.6-luna",
+  "timing": {
+    "started_at": "2026-09-20T08:33:00.821867Z",
+    "completed_at": "2026-09-20T08:35:34.690060Z",
+    "duration_ms": 153868,
+    "llm_requests": {
+      "count": 21,
+      "with_latency": 21,
+      "successful": 21,
+      "failed": 0,
+      "total_latency_ms": 136658.348,
+      "average_latency_ms": 6507.54,
+      "min_latency_ms": 2453.425,
+      "max_latency_ms": 35684.742
+    }
+  },
+  "usage": {
+    "source": "gateway",
+    "requests": 21,
+    "input_tokens": 751225,
+    "cached_input_tokens": 751162,
+    "cache_read_tokens": 703916,
+    "cache_write_tokens": 47246,
+    "output_tokens": 14287,
+    "reasoning_tokens": 1058,
+    "total_tokens": 765512
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "gateway",
+      "responses_with_cost": 0
+    },
+    "openhands": {
+      "amount_usd": 0.043046820000000006,
+      "currency": "USD",
+      "status": "reported",
+      "source": "openhands"
+    },
+    "custom_estimation": {
+      "amount_usd": 0.28999575,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "pricing_version": 1,
+      "model": "openai/gpt-5.6-luna",
+      "normalized_model": "gpt-5.6-luna",
+      "requests": 21,
+      "requests_with_usage": 21,
+      "requests_missing_usage": 0,
+      "usage_source": "gateway_usage",
+      "pricing": {
+        "input_usd_per_million": 1.25,
+        "output_usd_per_million": 10.0,
+        "cache_read_usd_per_million": 0.125,
+        "cache_write_usd_per_million": null,
+        "note": "~GPT-5 public tier"
+      }
+    }
+  },
+  "workspace": {
+    "type": "workspace_metrics",
+    "status": "available",
+    "files": {
+      "added": 11,
+      "modified": 0,
+      "deleted": 0,
+      "renamed": 0,
+      "total_changed": 11
+    },
+    "lines": {
+      "added": 12935,
+      "deleted": 0,
+      "changed": 12935
+    },
+    "renames": []
+  },
+  "tools": {
+    "total": 30,
+    "successful": 27,
+    "failed": 3,
+    "cancelled": 0,
+    "rejected": 0,
+    "unknown": 0,
+    "by_tool": {
+      "terminal": 13,
+      "file_editor": 16,
+      "finish": 1
+    }
+  },
+  "trace": {
+    "events_path": "events.jsonl",
+    "event_count": 66,
+    "invalid_event_count": 0,
+    "integrity_sha256": "03b52b18f2751e85a9b0cee05f17e4afed55094c1aa96c31e5228634720a93d7"
+  },
+  "archive_source": "logs/openhands/telemetry.json",
+  "run_id": "openhands-gpt-5.6-luna-medium-20260920-dev-v2",
+  "reasoning": "medium"
+}

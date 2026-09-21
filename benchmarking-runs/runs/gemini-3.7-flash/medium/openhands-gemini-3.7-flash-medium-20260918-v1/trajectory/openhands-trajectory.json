@@ -1,0 +1,10 @@
+{
+  "run_id": "openhands-gemini-3.7-flash-medium-20260918-v1",
+  "model": "gemini-3.7-flash",
+  "reasoning": "medium",
+  "source": "unavailable",
+  "data": {
+    "available": false,
+    "reason": "No trajectory artifact was present in the source run."
+  }
+}

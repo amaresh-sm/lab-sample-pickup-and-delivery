@@ -1,0 +1,10 @@
+{
+  "run_id": "codex-1789497895",
+  "model": "gpt-5.6-terra",
+  "reasoning": "medium",
+  "source": "unavailable",
+  "data": {
+    "available": false,
+    "reason": "No trajectory artifact was present in the source run."
+  }
+}

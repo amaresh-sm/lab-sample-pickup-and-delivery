@@ -1,0 +1,10 @@
+{
+  "run_id": "openhands-kimi-k3-high-20260919-v1",
+  "model": "kimi-k3",
+  "reasoning": "high",
+  "source": "unavailable",
+  "data": {
+    "available": false,
+    "reason": "No trajectory artifact was present in the source run."
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "harness": {
+    "name": "hackerrank-openhands-gateway",
+    "version": "0.1.1"
+  },
+  "run": {
+    "status": "completed",
+    "exit_code": 0,
+    "error": null
+  },
+  "model": "grok-4.5",
+  "timing": {
+    "started_at": "2026-09-20T19:21:44.048802Z",
+    "completed_at": "2026-09-20T20:19:35.330394Z",
+    "duration_ms": 3471281,
+    "llm_requests": {
+      "count": 233,
+      "with_latency": 233,
+      "successful": 233,
+      "failed": 0,
+      "total_latency_ms": 3226186.196,
+      "average_latency_ms": 13846.293,
+      "min_latency_ms": 1553.288,
+      "max_latency_ms": 158786.959
+    }
+  },
+  "usage": {
+    "source": "gateway",
+    "requests": 233,
+    "input_tokens": 13462521,
+    "cached_input_tokens": 12317568,
+    "cache_read_tokens": 12317568,
+    "cache_write_tokens": 0,
+    "output_tokens": 217671,
+    "reasoning_tokens": 13309,
+    "total_tokens": 13680192
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": 7.291202399999999,
+      "currency": "USD",
+      "status": "reported",
+      "source": "gateway",
+      "responses_with_cost": 233
+    },
+    "openhands": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "openhands"
+    },
+    "custom_estimation": {
+      "amount_usd": 7.2912024,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "pricing_version": 1,
+      "model": "openai/grok-4.5",
+      "normalized_model": "grok-4.5",
+      "requests": 233,
+      "requests_with_usage": 233,
+      "requests_missing_usage": 0,
+      "usage_source": "gateway_usage",
+      "pricing": {
+        "input_usd_per_million": 2.0,
+        "output_usd_per_million": 6.0,
+        "cache_read_usd_per_million": 0.3,
+        "cache_write_usd_per_million": null,
+        "note": "xAI API pricing; long context >= 200K tokens",
+        "long_context_threshold_tokens": 200000,
+        "long_context": {
+          "input_usd_per_million": 4.0,
+          "output_usd_per_million": 12.0,
+          "cache_read_usd_per_million": 0.6
+        }
+      }
+    }
+  },
+  "workspace": {
+    "type": "workspace_metrics",
+    "status": "available",
+    "files": {
+      "added": 43,
+      "modified": 1,
+      "deleted": 0,
+      "renamed": 0,
+      "total_changed": 44
+    },
+    "lines": {
+      "added": 23535,
+      "deleted": 3,
+      "changed": 23538
+    },
+    "renames": []
+  },
+  "tools": {
+    "total": 240,
+    "successful": 202,
+    "failed": 38,
+    "cancelled": 0,
+    "rejected": 0,
+    "unknown": 0,
+    "by_tool": {
+      "terminal": 158,
+      "file_editor": 82
+    }
+  },
+  "trace": {
+    "events_path": "events.jsonl",
+    "event_count": 497,
+    "invalid_event_count": 0,
+    "integrity_sha256": "f242377aa7432103c2c39a33414c5efed677bf93a7ab6a1472d6d6ca75c89448"
+  },
+  "archive_source": "logs/openhands/telemetry.json",
+  "run_id": "openhands-grok-4.5-medium-20260921-prod-v1",
+  "reasoning": "medium"
+}

@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "harness": {
+    "name": "hackerrank-openhands-gateway",
+    "version": "0.1.1"
+  },
+  "run": {
+    "status": "completed",
+    "exit_code": 0,
+    "error": null
+  },
+  "model": "deepseek-v4-pro",
+  "timing": {
+    "started_at": "2026-09-20T11:45:18.820113Z",
+    "completed_at": "2026-09-20T12:18:31.178812Z",
+    "duration_ms": 1992358,
+    "llm_requests": {
+      "count": 184,
+      "with_latency": 184,
+      "successful": 184,
+      "failed": 0,
+      "total_latency_ms": 1724639.81,
+      "average_latency_ms": 9373.042,
+      "min_latency_ms": 1716.048,
+      "max_latency_ms": 328800.355
+    }
+  },
+  "usage": {
+    "source": "gateway",
+    "requests": 184,
+    "input_tokens": 6299040,
+    "cached_input_tokens": 4228608,
+    "cache_read_tokens": 4228608,
+    "cache_write_tokens": 0,
+    "output_tokens": 114206,
+    "reasoning_tokens": 33557,
+    "total_tokens": 6413246
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": 5.06851138,
+      "currency": "USD",
+      "status": "reported",
+      "source": "gateway",
+      "responses_with_cost": 184
+    },
+    "openhands": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "openhands"
+    },
+    "custom_estimation": {
+      "amount_usd": 1.685642376,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "pricing_version": 1,
+      "model": "openai/deepseek-v4-pro",
+      "normalized_model": "deepseek-v4-pro",
+      "requests": 184,
+      "requests_with_usage": 184,
+      "requests_missing_usage": 0,
+      "usage_source": "gateway_usage",
+      "pricing": {
+        "input_usd_per_million": 0.66,
+        "output_usd_per_million": 1.98,
+        "cache_read_usd_per_million": 0.022,
+        "cache_write_usd_per_million": null,
+        "note": "DeepSeek V4 Pro off-peak pricing; peak rates are 2x"
+      }
+    }
+  },
+  "workspace": {
+    "type": "workspace_metrics",
+    "status": "available",
+    "files": {
+      "added": 27,
+      "modified": 0,
+      "deleted": 0,
+      "renamed": 0,
+      "total_changed": 27
+    },
+    "lines": {
+      "added": 6218,
+      "deleted": 0,
+      "changed": 6218
+    },
+    "renames": []
+  },
+  "tools": {
+    "total": 198,
+    "successful": 188,
+    "failed": 10,
+    "cancelled": 0,
+    "rejected": 0,
+    "unknown": 0,
+    "by_tool": {
+      "file_editor": 90,
+      "terminal": 106,
+      "think": 2
+    }
+  },
+  "trace": {
+    "events_path": "events.jsonl",
+    "event_count": 411,
+    "invalid_event_count": 0,
+    "integrity_sha256": "73659f8703692dcb5d4243d95158fd9088a715110773c38e7a5bbbffcc0c2a49"
+  },
+  "archive_source": "logs/openhands/telemetry.json",
+  "run_id": "openhands-deepseek-v4-pro-medium-20260920-prod-v2",
+  "reasoning": "medium"
+}

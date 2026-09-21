@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "tokens": {
+    "input": null,
+    "output": null,
+    "cached_input": null,
+    "total": null,
+    "source": "unavailable"
+  },
+  "tool_calls": {
+    "total": null,
+    "by_type": {
+      "read": null,
+      "shell": null,
+      "edit": null,
+      "write": null,
+      "other": null
+    },
+    "source": "unavailable"
+  },
+  "solution_size": {
+    "workspace_source_files": 19,
+    "workspace_source_lines": 6098,
+    "workspace_test_files": 0,
+    "workspace_test_lines": 0,
+    "agent_changed_files": 29,
+    "agent_changed_source_files": 19,
+    "agent_changed_source_lines": 6098
+  },
+  "duration_seconds": 5094.985,
+  "started_at": "2026-09-20T20:59:47.212354+00:00",
+  "finished_at": "2026-09-20T22:24:42.235042+00:00",
+  "archive_source": "telemetry.json",
+  "run_id": "openhands-deepseek-v4-pro-high-20260921-prod-v2",
+  "model": "deepseek-v4-pro",
+  "reasoning": "high"
+}

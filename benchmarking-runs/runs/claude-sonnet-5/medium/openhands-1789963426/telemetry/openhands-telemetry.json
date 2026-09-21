@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "harness": {
+    "name": "hackerrank-openhands-gateway",
+    "version": "0.1.1"
+  },
+  "run": {
+    "status": "completed",
+    "exit_code": 0,
+    "error": null
+  },
+  "model": "claude-sonnet-5",
+  "timing": {
+    "started_at": "2026-09-21T04:05:50.732916Z",
+    "completed_at": "2026-09-21T04:55:36.936889Z",
+    "duration_ms": 2986203,
+    "llm_requests": {
+      "count": 326,
+      "with_latency": 326,
+      "successful": 326,
+      "failed": 0,
+      "total_latency_ms": 2683426.82,
+      "average_latency_ms": 8231.371,
+      "min_latency_ms": 2671.247,
+      "max_latency_ms": 50378.279
+    }
+  },
+  "usage": {
+    "source": "gateway",
+    "requests": 326,
+    "input_tokens": 22229156,
+    "cached_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "output_tokens": 209392,
+    "reasoning_tokens": 26403,
+    "total_tokens": 22438548
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "gateway",
+      "responses_with_cost": 0
+    },
+    "openhands": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "openhands"
+    },
+    "custom_estimation": {
+      "amount_usd": 69.828348,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "pricing_version": 1,
+      "model": "openai/claude-sonnet-5",
+      "normalized_model": "claude-sonnet-5",
+      "requests": 326,
+      "requests_with_usage": 326,
+      "requests_missing_usage": 0,
+      "usage_source": "gateway_usage",
+      "pricing": {
+        "input_usd_per_million": 3.0,
+        "output_usd_per_million": 15.0,
+        "cache_read_usd_per_million": 0.3,
+        "cache_write_usd_per_million": null,
+        "note": "~Claude Sonnet public tier"
+      }
+    }
+  },
+  "workspace": {
+    "type": "workspace_metrics",
+    "status": "available",
+    "files": {
+      "added": 505,
+      "modified": 0,
+      "deleted": 0,
+      "renamed": 0,
+      "total_changed": 505
+    },
+    "lines": {
+      "added": 24240,
+      "deleted": 0,
+      "changed": 24240
+    },
+    "renames": []
+  },
+  "tools": {
+    "total": 317,
+    "successful": 298,
+    "failed": 19,
+    "cancelled": 0,
+    "rejected": 0,
+    "unknown": 0,
+    "by_tool": {
+      "terminal": 216,
+      "file_editor": 98,
+      "think": 2,
+      "finish": 1
+    }
+  },
+  "trace": {
+    "events_path": "events.jsonl",
+    "event_count": 649,
+    "invalid_event_count": 0,
+    "integrity_sha256": "c655c3a798cc9ae3c4c49360dec0acf74f7053db8d2cd87bc6a95466956c1833"
+  },
+  "archive_source": "logs/openhands/telemetry.json",
+  "run_id": "openhands-1789963426",
+  "reasoning": "medium"
+}

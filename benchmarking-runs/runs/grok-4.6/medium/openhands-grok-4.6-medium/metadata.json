@@ -1,0 +1,22 @@
+{
+  "task_id": "lab-sample-pickup-and-delivery",
+  "run_id": "openhands-grok-4.6-medium",
+  "provider": "openhands",
+  "model": "grok-4.6",
+  "reasoning": "medium",
+  "image": "astra-candidate-generation:latest",
+  "started_at": "2026-09-15T19:46:34.580594+00:00",
+  "status": "interrupted",
+  "exit_code": 130,
+  "error": "OpenHands generation was interrupted after the agent stalled during frontend dependency installation; generated candidate workspace preserved.",
+  "mounts": [
+    "candidate workspace:rw"
+  ],
+  "openhands_gateway_source_digest": "e1f8d2c7551d611e6e0a995a9046efa8488c2c566ede6e0b6f78d8295ff3f21b",
+  "score": 0.6975803167,
+  "hard_pass": false,
+  "score_source": "scores.json",
+  "source_run_path": "benchmarking-candidates/openhands-grok-4.6-medium",
+  "archive_path": "benchmarking-runs/runs/grok-4.6/medium/openhands-grok-4.6-medium",
+  "archived_at": "2026-09-21T20:20:31.796593+00:00"
+}

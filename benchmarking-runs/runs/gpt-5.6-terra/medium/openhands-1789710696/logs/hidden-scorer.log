@@ -1,0 +1,23 @@
+run_id=openhands-1789710696
+score=0.0375000000
+hard_pass=false
+score_source=scores.json and reports/score.json
+
+--- verifier.stdout.log ---
+
+--- verifier.stderr.log ---
+FATAL: could not authenticate the admin account
+Traceback (most recent call last):
+  File "/input/verifier/run.py", line 324, in <module>
+    raise SystemExit(run(args()))
+                     ^^^^^^^^^^^
+  File "/input/verifier/run.py", line 229, in run
+    if json.loads(part.read_text(encoding="utf-8")).get("capabilities") and all(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/output/parts/part-1.json'

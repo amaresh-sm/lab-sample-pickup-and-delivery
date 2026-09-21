@@ -1,0 +1,10 @@
+{
+  "run_id": "openhands-minimax-m3-medium-20260920-prod-v3",
+  "model": "minimax-m3",
+  "reasoning": "medium",
+  "source": "unavailable",
+  "data": {
+    "available": false,
+    "reason": "No trajectory artifact was present in the source run."
+  }
+}

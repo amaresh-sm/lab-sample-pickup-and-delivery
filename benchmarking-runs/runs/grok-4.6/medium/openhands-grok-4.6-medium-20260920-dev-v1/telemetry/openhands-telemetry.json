@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "harness": {
+    "name": "hackerrank-openhands-gateway",
+    "version": "0.1.1"
+  },
+  "run": {
+    "status": "failed",
+    "exit_code": 1,
+    "error": {
+      "type": "ConversationRunError",
+      "message": "Conversation run failed for id=b61a6327-4870-4b3c-a185-0aaffe6c7baf: litellm.APIError: APIError: OpenAIException - cost budget exceeded"
+    }
+  },
+  "model": "grok-4.6",
+  "timing": {
+    "started_at": "2026-09-20T06:38:51.344425Z",
+    "completed_at": "2026-09-20T09:49:36.381279Z",
+    "duration_ms": 11445036,
+    "llm_requests": {
+      "count": 771,
+      "with_latency": 771,
+      "successful": 770,
+      "failed": 1,
+      "total_latency_ms": 11030615.873,
+      "average_latency_ms": 14306.895,
+      "min_latency_ms": 2225.616,
+      "max_latency_ms": 152392.754
+    }
+  },
+  "usage": {
+    "source": "gateway",
+    "requests": 770,
+    "input_tokens": 56160748,
+    "cached_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "output_tokens": 1110839,
+    "reasoning_tokens": 0,
+    "total_tokens": 57271587
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "gateway",
+      "responses_with_cost": 0
+    },
+    "openhands": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "openhands"
+    },
+    "custom_estimation": {
+      "amount_usd": 118.98653,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "pricing_version": 1,
+      "model": "openai/grok-4.6",
+      "normalized_model": "grok-4.6",
+      "requests": 770,
+      "requests_with_usage": 770,
+      "requests_missing_usage": 0,
+      "usage_source": "gateway_usage",
+      "pricing": {
+        "input_usd_per_million": 2.0,
+        "output_usd_per_million": 6.0,
+        "cache_read_usd_per_million": 0.5,
+        "cache_write_usd_per_million": null,
+        "note": "xAI API pricing; long context >= 200K tokens",
+        "long_context_threshold_tokens": 200000,
+        "long_context": {
+          "input_usd_per_million": 4.0,
+          "output_usd_per_million": 12.0,
+          "cache_read_usd_per_million": 1.0
+        }
+      }
+    }
+  },
+  "workspace": {
+    "type": "workspace_metrics",
+    "status": "available",
+    "files": {
+      "added": 18,
+      "modified": 0,
+      "deleted": 0,
+      "renamed": 0,
+      "total_changed": 18
+    },
+    "lines": {
+      "added": 7003,
+      "deleted": 0,
+      "changed": 7003
+    },
+    "renames": []
+  },
+  "tools": {
+    "total": 2660,
+    "successful": 2646,
+    "failed": 14,
+    "cancelled": 0,
+    "rejected": 0,
+    "unknown": 0,
+    "by_tool": {
+      "terminal": 530,
+      "file_editor": 2126,
+      "think": 4
+    }
+  },
+  "trace": {
+    "events_path": "events.jsonl",
+    "event_count": 5434,
+    "invalid_event_count": 0,
+    "integrity_sha256": "0c1cff9a95737255b17509ce0e3a266536a488ab2f2172c35af37445cf92125f"
+  },
+  "archive_source": "logs/openhands/telemetry.json",
+  "run_id": "openhands-grok-4.6-medium-20260920-dev-v1",
+  "reasoning": "medium"
+}

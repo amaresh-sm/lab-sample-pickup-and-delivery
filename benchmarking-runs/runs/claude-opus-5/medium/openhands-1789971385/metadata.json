@@ -1,0 +1,24 @@
+{
+  "task_id": "lab-sample-pickup-and-delivery",
+  "run_id": "openhands-1789971385",
+  "provider": "openhands",
+  "model": "claude-opus-5",
+  "reasoning": "medium",
+  "image": "astra-candidate-generation:latest",
+  "started_at": "2026-09-21T06:16:26.120915+00:00",
+  "status": "failed",
+  "mounts": [
+    "candidate workspace:rw"
+  ],
+  "openhands_gateway_source_digest": "562f1cdc77d6b01231c3bf7f2d2308aa68ed21cbd8fe90f57319df60f045656b",
+  "exit_code": 1,
+  "finished_at": "2026-09-21T08:00:23.349261+00:00",
+  "duration_seconds": 6237.196,
+  "container_cleaned": true,
+  "score": 0.6545644796,
+  "hard_pass": false,
+  "score_source": "scores.json",
+  "source_run_path": "benchmarking-candidates/openhands-1789971385",
+  "archive_path": "benchmarking-runs/runs/claude-opus-5/medium/openhands-1789971385",
+  "archived_at": "2026-09-21T20:20:32.914253+00:00"
+}

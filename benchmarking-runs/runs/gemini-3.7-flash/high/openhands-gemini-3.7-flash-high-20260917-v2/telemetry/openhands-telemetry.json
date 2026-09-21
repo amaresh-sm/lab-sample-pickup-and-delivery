@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "harness": {
+    "name": "hackerrank-openhands-gateway",
+    "version": "0.1.1"
+  },
+  "run": {
+    "status": "completed",
+    "exit_code": 0,
+    "error": null
+  },
+  "model": "gemini-3.7-flash",
+  "timing": {
+    "started_at": "2026-09-17T10:11:03.069305Z",
+    "completed_at": "2026-09-17T10:40:13.325256Z",
+    "duration_ms": 1750255,
+    "llm_requests": {
+      "count": 276,
+      "with_latency": 276,
+      "successful": 276,
+      "failed": 0,
+      "total_latency_ms": 1497652.421,
+      "average_latency_ms": 5426.277,
+      "min_latency_ms": 1154.638,
+      "max_latency_ms": 33522.568
+    }
+  },
+  "usage": {
+    "source": "gateway",
+    "requests": 276,
+    "input_tokens": 36354457,
+    "cached_input_tokens": 33141493,
+    "cache_read_tokens": 33141493,
+    "cache_write_tokens": 0,
+    "output_tokens": 191023,
+    "reasoning_tokens": 0,
+    "total_tokens": 36597987
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "gateway",
+      "responses_with_cost": 0
+    },
+    "openhands": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "openhands"
+    },
+    "custom_estimation": {
+      "amount_usd": 3.927058675,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "pricing_version": 1,
+      "model": "openai/gemini-3.7-flash",
+      "normalized_model": "gemini-3.7-flash",
+      "requests": 276,
+      "requests_with_usage": 276,
+      "requests_missing_usage": 0,
+      "usage_source": "gateway_usage",
+      "pricing": {
+        "input_usd_per_million": 0.3,
+        "output_usd_per_million": 2.5,
+        "cache_read_usd_per_million": 0.075,
+        "cache_write_usd_per_million": null,
+        "note": "~Gemini Flash public tier"
+      }
+    }
+  },
+  "workspace": {
+    "type": "workspace_metrics",
+    "status": "available",
+    "files": {
+      "added": 58,
+      "modified": 0,
+      "deleted": 0,
+      "renamed": 0,
+      "total_changed": 58
+    },
+    "lines": {
+      "added": 29189,
+      "deleted": 0,
+      "changed": 29189
+    },
+    "renames": []
+  },
+  "tools": {
+    "total": 273,
+    "successful": 264,
+    "failed": 9,
+    "cancelled": 0,
+    "rejected": 0,
+    "unknown": 0,
+    "by_tool": {
+      "terminal": 117,
+      "think": 1,
+      "file_editor": 154,
+      "finish": 1
+    }
+  },
+  "trace": {
+    "events_path": "events.jsonl",
+    "event_count": 555,
+    "invalid_event_count": 0,
+    "integrity_sha256": "700a23b1c092800b4d0ffa15a8c76c70f1d70ba98aff1df7cda8a15f770f2c21"
+  },
+  "archive_source": "logs/openhands/telemetry.json",
+  "run_id": "openhands-gemini-3.7-flash-high-20260917-v2",
+  "reasoning": "high"
+}

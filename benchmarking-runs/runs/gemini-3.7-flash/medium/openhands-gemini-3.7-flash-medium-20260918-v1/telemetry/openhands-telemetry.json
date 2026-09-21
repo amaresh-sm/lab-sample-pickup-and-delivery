@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "tokens": {
+    "input": null,
+    "output": null,
+    "cached_input": null,
+    "total": null,
+    "source": "unavailable"
+  },
+  "tool_calls": {
+    "total": null,
+    "by_type": {
+      "read": null,
+      "shell": null,
+      "edit": null,
+      "write": null,
+      "other": null
+    },
+    "source": "unavailable"
+  },
+  "solution_size": {
+    "workspace_source_files": 43,
+    "workspace_source_lines": 13075,
+    "workspace_test_files": 0,
+    "workspace_test_lines": 0,
+    "agent_changed_files": 1032,
+    "agent_changed_source_files": 43,
+    "agent_changed_source_lines": 13075
+  },
+  "duration_seconds": 1786.019,
+  "started_at": "2026-09-17T21:51:13.960291+00:00",
+  "finished_at": "2026-09-17T22:21:00.001328+00:00",
+  "archive_source": "telemetry.json",
+  "run_id": "openhands-gemini-3.7-flash-medium-20260918-v1",
+  "model": "gemini-3.7-flash",
+  "reasoning": "medium"
+}

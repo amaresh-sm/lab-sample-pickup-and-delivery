@@ -1,0 +1,10 @@
+{
+  "run_id": "openhands-deepseek-v4-pro-high-20260921-prod-v2",
+  "model": "deepseek-v4-pro",
+  "reasoning": "high",
+  "source": "unavailable",
+  "data": {
+    "available": false,
+    "reason": "No trajectory artifact was present in the source run."
+  }
+}

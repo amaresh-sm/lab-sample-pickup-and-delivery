@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "harness": {
+    "name": "hackerrank-openhands-gateway",
+    "version": "0.1.1"
+  },
+  "run": {
+    "status": "completed",
+    "exit_code": 0,
+    "error": null
+  },
+  "model": "gpt-5.6-sol",
+  "timing": {
+    "started_at": "2026-09-20T08:33:00.651994Z",
+    "completed_at": "2026-09-20T09:05:23.539954Z",
+    "duration_ms": 1942887,
+    "llm_requests": {
+      "count": 156,
+      "with_latency": 156,
+      "successful": 156,
+      "failed": 0,
+      "total_latency_ms": 1671198.376,
+      "average_latency_ms": 10712.81,
+      "min_latency_ms": 2939.092,
+      "max_latency_ms": 104310.154
+    }
+  },
+  "usage": {
+    "source": "gateway",
+    "requests": 156,
+    "input_tokens": 6997173,
+    "cached_input_tokens": 6996705,
+    "cache_read_tokens": 6488947,
+    "cache_write_tokens": 507758,
+    "output_tokens": 107187,
+    "reasoning_tokens": 15741,
+    "total_tokens": 7104360
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "gateway",
+      "responses_with_cost": 0
+    },
+    "openhands": {
+      "amount_usd": 7.279980799999998,
+      "currency": "USD",
+      "status": "reported",
+      "source": "openhands"
+    },
+    "custom_estimation": {
+      "amount_usd": 2.518270875,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "pricing_version": 1,
+      "model": "openai/gpt-5.6-sol",
+      "normalized_model": "gpt-5.6-sol",
+      "requests": 156,
+      "requests_with_usage": 156,
+      "requests_missing_usage": 0,
+      "usage_source": "gateway_usage",
+      "pricing": {
+        "input_usd_per_million": 1.25,
+        "output_usd_per_million": 10.0,
+        "cache_read_usd_per_million": 0.125,
+        "cache_write_usd_per_million": null,
+        "note": "~GPT-5 public tier"
+      }
+    }
+  },
+  "workspace": {
+    "type": "workspace_metrics",
+    "status": "available",
+    "files": {
+      "added": 403,
+      "modified": 1,
+      "deleted": 0,
+      "renamed": 0,
+      "total_changed": 404
+    },
+    "lines": {
+      "added": 19587,
+      "deleted": 3,
+      "changed": 19590
+    },
+    "renames": []
+  },
+  "tools": {
+    "total": 193,
+    "successful": 183,
+    "failed": 10,
+    "cancelled": 0,
+    "rejected": 0,
+    "unknown": 0,
+    "by_tool": {
+      "file_editor": 83,
+      "terminal": 108,
+      "think": 1,
+      "finish": 1
+    }
+  },
+  "trace": {
+    "events_path": "events.jsonl",
+    "event_count": 400,
+    "invalid_event_count": 0,
+    "integrity_sha256": "e2037518f457d4aa4cfdff16896e7038423b57351126d5dc18b5726043bccab6"
+  },
+  "archive_source": "logs/openhands/telemetry.json",
+  "run_id": "openhands-gpt-5.6-sol-high-20260920-prod-v2",
+  "reasoning": "high"
+}

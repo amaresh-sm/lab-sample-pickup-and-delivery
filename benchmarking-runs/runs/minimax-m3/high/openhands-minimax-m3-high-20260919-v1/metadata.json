@@ -1,0 +1,16 @@
+{
+  "task_id": "lab-sample-pickup-and-delivery",
+  "run_id": "openhands-minimax-m3-high-20260919-v1",
+  "provider": "openhands",
+  "model": "minimax-m3",
+  "reasoning": "high",
+  "source_run_id": "openhands-minimax-m3-high-20260919-v1",
+  "post_hoc_repair": true,
+  "repair": "Derived app-setup/manifest.json from the candidate's existing lifecycle scripts and contract; original run is preserved unchanged.",
+  "score": 0.099051,
+  "hard_pass": false,
+  "score_source": "scores.json",
+  "source_run_path": "benchmarking-candidates/repaired/openhands-minimax-m3-high-20260919-v1",
+  "archive_path": "benchmarking-runs/runs/minimax-m3/high/openhands-minimax-m3-high-20260919-v1",
+  "archived_at": "2026-09-21T20:20:50.001925+00:00"
+}

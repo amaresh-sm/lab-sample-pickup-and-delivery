@@ -1,0 +1,49 @@
+{
+  "task_id": "lab-sample-pickup-and-delivery",
+  "score": 0.3392741961,
+  "hard_pass": false,
+  "criteria": {
+    "api-contract-artifact": {
+      "status": "fail",
+      "score": 0.0,
+      "weight": 0.02,
+      "blocked_policy": "zero",
+      "awarded": 0.0
+    },
+    "runtime-contract": {
+      "status": "partial",
+      "score": 0.9714,
+      "weight": 0.06,
+      "blocked_policy": "zero",
+      "awarded": 0.058284
+    },
+    "backend-behavior": {
+      "status": "partial",
+      "score": 0.4,
+      "weight": 0.47,
+      "blocked_policy": "zero",
+      "awarded": 0.188
+    },
+    "ui-behavior": {
+      "status": "fail",
+      "score": 0.0,
+      "weight": 0.12,
+      "blocked_policy": "zero",
+      "awarded": 0.0
+    },
+    "ui-contract-audit": {
+      "status": "pass",
+      "score": 1.0,
+      "weight": 0.01,
+      "blocked_policy": "zero",
+      "awarded": 0.01
+    },
+    "reliability": {
+      "status": "partial",
+      "score": 0.2593443627,
+      "weight": 0.32,
+      "blocked_policy": "zero",
+      "awarded": 0.0829901961
+    }
+  }
+}

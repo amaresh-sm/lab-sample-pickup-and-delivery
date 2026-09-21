@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "harness": {
+    "name": "hackerrank-openhands-gateway",
+    "version": "0.1.1"
+  },
+  "run": {
+    "status": "completed",
+    "exit_code": 0,
+    "error": null
+  },
+  "model": "minimax-m3",
+  "timing": {
+    "started_at": "2026-09-19T11:28:23.211460Z",
+    "completed_at": "2026-09-19T11:54:28.501978Z",
+    "duration_ms": 1565290,
+    "llm_requests": {
+      "count": 234,
+      "with_latency": 234,
+      "successful": 234,
+      "failed": 0,
+      "total_latency_ms": 1459627.585,
+      "average_latency_ms": 6237.725,
+      "min_latency_ms": 1111.659,
+      "max_latency_ms": 129680.443
+    }
+  },
+  "usage": {
+    "source": "gateway",
+    "requests": 234,
+    "input_tokens": 8559001,
+    "cached_input_tokens": 8096640,
+    "cache_read_tokens": 8096640,
+    "cache_write_tokens": 0,
+    "output_tokens": 102927,
+    "reasoning_tokens": 2282,
+    "total_tokens": 8661928
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": 0.7480191000000003,
+      "currency": "USD",
+      "status": "reported",
+      "source": "gateway",
+      "responses_with_cost": 234
+    },
+    "openhands": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "openhands"
+    },
+    "custom_estimation": {
+      "amount_usd": 1.4960382,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "pricing_version": 1,
+      "model": "openai/minimax-m3",
+      "normalized_model": "minimax-m3",
+      "requests": 234,
+      "requests_with_usage": 234,
+      "requests_missing_usage": 0,
+      "usage_source": "gateway_usage",
+      "pricing": {
+        "input_usd_per_million": 0.6,
+        "output_usd_per_million": 2.4,
+        "cache_read_usd_per_million": 0.12,
+        "cache_write_usd_per_million": null,
+        "note": "MiniMax public API pricing; long context > 512K tokens",
+        "long_context_threshold_tokens": 512001,
+        "long_context": {
+          "input_usd_per_million": 1.2,
+          "output_usd_per_million": 4.8,
+          "cache_read_usd_per_million": 0.24
+        }
+      }
+    }
+  },
+  "workspace": {
+    "type": "workspace_metrics",
+    "status": "available",
+    "files": {
+      "added": 23,
+      "modified": 0,
+      "deleted": 0,
+      "renamed": 0,
+      "total_changed": 23
+    },
+    "lines": {
+      "added": 18690,
+      "deleted": 0,
+      "changed": 18690
+    },
+    "renames": []
+  },
+  "tools": {
+    "total": 225,
+    "successful": 220,
+    "failed": 5,
+    "cancelled": 0,
+    "rejected": 0,
+    "unknown": 0,
+    "by_tool": {
+      "terminal": 146,
+      "think": 4,
+      "file_editor": 74,
+      "finish": 1
+    }
+  },
+  "trace": {
+    "events_path": "events.jsonl",
+    "event_count": 465,
+    "invalid_event_count": 0,
+    "integrity_sha256": "61b0d5a14bbd6b56c78a89cde31856260d60704acf32941c8480c8f7ec1a1e1d"
+  },
+  "archive_source": "logs/openhands/telemetry.json",
+  "run_id": "openhands-1789817282",
+  "reasoning": "high"
+}

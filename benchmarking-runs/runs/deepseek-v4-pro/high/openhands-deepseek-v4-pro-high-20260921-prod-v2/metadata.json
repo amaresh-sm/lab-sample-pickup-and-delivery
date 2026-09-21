@@ -1,0 +1,24 @@
+{
+  "task_id": "lab-sample-pickup-and-delivery",
+  "run_id": "openhands-deepseek-v4-pro-high-20260921-prod-v2",
+  "provider": "openhands",
+  "model": "deepseek-v4-pro",
+  "reasoning": "high",
+  "image": "astra-candidate-generation:latest",
+  "started_at": "2026-09-20T20:59:47.212354+00:00",
+  "status": "failed",
+  "mounts": [
+    "candidate workspace:rw"
+  ],
+  "openhands_gateway_source_digest": "562f1cdc77d6b01231c3bf7f2d2308aa68ed21cbd8fe90f57319df60f045656b",
+  "exit_code": 137,
+  "finished_at": "2026-09-20T22:24:42.235042+00:00",
+  "duration_seconds": 5094.985,
+  "container_cleaned": true,
+  "score": 0.070650359,
+  "hard_pass": false,
+  "score_source": "scores.json",
+  "source_run_path": "benchmarking-candidates/openhands-deepseek-v4-pro-high-20260921-prod-v2",
+  "archive_path": "benchmarking-runs/runs/deepseek-v4-pro/high/openhands-deepseek-v4-pro-high-20260921-prod-v2",
+  "archived_at": "2026-09-21T20:20:51.430480+00:00"
+}

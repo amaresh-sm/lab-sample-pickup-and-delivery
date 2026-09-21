@@ -1,0 +1,24 @@
+{
+  "task_id": "lab-sample-pickup-and-delivery",
+  "run_id": "openhands-grok-4.6-medium-20260920-dev-queue-v1",
+  "provider": "openhands",
+  "model": "grok-4.6",
+  "reasoning": "medium",
+  "image": "astra-candidate-generation:latest",
+  "started_at": "2026-09-20T06:24:50.492188+00:00",
+  "status": "failed",
+  "mounts": [
+    "candidate workspace:rw"
+  ],
+  "openhands_gateway_source_digest": "30a97c1ababe79f0334f64b6529ffd7e1ebb6b0378a7f901ebfbcf89fd4278d5",
+  "exit_code": 1,
+  "finished_at": "2026-09-20T09:49:28.943456+00:00",
+  "duration_seconds": 12278.427,
+  "container_cleaned": true,
+  "score": 0.3108759985,
+  "hard_pass": false,
+  "score_source": "scores.json",
+  "source_run_path": "benchmarking-candidates/openhands-grok-4.6-medium-20260920-dev-queue-v1",
+  "archive_path": "benchmarking-runs/runs/grok-4.6/medium/openhands-grok-4.6-medium-20260920-dev-queue-v1",
+  "archived_at": "2026-09-21T20:20:41.743281+00:00"
+}

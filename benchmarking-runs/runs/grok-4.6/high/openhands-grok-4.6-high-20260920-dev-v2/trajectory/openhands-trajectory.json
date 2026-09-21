@@ -1,0 +1,10 @@
+{
+  "run_id": "openhands-grok-4.6-high-20260920-dev-v2",
+  "model": "grok-4.6",
+  "reasoning": "high",
+  "source": "unavailable",
+  "data": {
+    "available": false,
+    "reason": "No trajectory artifact was present in the source run."
+  }
+}
