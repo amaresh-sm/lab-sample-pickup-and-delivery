@@ -1,6 +1,4 @@
-# Benchmarking Data
-
-Generated only from `benchmarking-runs` metadata, telemetry, and score artifacts. Token is normalized input + output; cached input is already included in input. Estimated cost is the archived custom estimate calculated from normalized input, output, cache-read, and cache-write token usage. `unavailable` means the original archived run retained no evidence for that metric and has not been inferred. Core file metrics exclude generated/dependency/cache output, lockfiles, logs, database dumps/migrations, and contracts.
+# Benchmarking Data - Lab Sample Pickup and Delivery
 
 | Run-name (unique Id) | Model Name | Reasoning | score | Token (input/output/reasoning/cache-read) | tool calls | Iteration steps | Est cost | Reported cost | Duration | Total Files | Loc | deps | largest file |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
