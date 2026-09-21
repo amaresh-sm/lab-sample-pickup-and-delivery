@@ -39,12 +39,12 @@
   },
   "core_metrics": {
     "status": "available",
-    "files": 2104,
-    "loc": 1231919,
-    "dependencies": 70,
+    "files": 23,
+    "loc": 7221,
+    "dependencies": 28,
     "largest_file": {
-      "path": ".gopath/pkg/mod/golang.org/x/text@v0.21.0/date/tables.go",
-      "loc": 75291
+      "path": "backend/internal/service/ops.go",
+      "loc": 1184
     }
   }
 }

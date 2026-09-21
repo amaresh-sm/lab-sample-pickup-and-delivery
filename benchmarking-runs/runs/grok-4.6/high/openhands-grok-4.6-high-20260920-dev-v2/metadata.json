@@ -15,7 +15,7 @@
   "finished_at": "2026-09-20T18:19:37.486614+00:00",
   "duration_seconds": 10202.445,
   "container_cleaned": false,
-  "error": "manually killed after 3+ hours \u2014 condensation loop on compile error; no max_iterations cap",
+  "error": "manually killed after 3+ hours — condensation loop on compile error; no max_iterations cap",
   "score": 0.682358727,
   "hard_pass": false,
   "score_source": "scores.json",

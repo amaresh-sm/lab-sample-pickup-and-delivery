@@ -17,7 +17,7 @@ Generated only from `benchmarking-runs` metadata, telemetry, and score artifacts
 | openhands-1789739130 | gpt-5.6-sol | high | 0.4720 | 8.7M/117.7K/16.0K/8.1M | 254 | 201 | $2.97 | unavailable | 2827.0s | 19 | 2,869 | 19 | backend/handlers_workflow.go (670 LOC) |
 | openhands-1789963426 | claude-sonnet-5 | medium | 0.4322 | 22.2M/209.4K/26.4K/21.1M | 317 | 326 | $12.82 | unavailable | 2986.2s | 57 | 6,828 | 22 | backend/internal/server/handlers_sample_lifecycle.go (332 LOC) |
 | openhands-gpt-5.6-sol-medium-20260919-v2 | gpt-5.6-sol | medium | 0.4239 | 2.6M/53.9K/3.8K/2.4M | 75 | 60 | $1.05 | unavailable | 873.1s | 9 | 1,945 | 17 | backend/main.go (1867 LOC) |
-| openhands-1789931908 | grok-4.5 | high | 0.4095 | 10.6M/161.8K/7.0K/9.7M | 155 | 162 | $5.56 | $5.56 | 2711.5s | 2,104 | 1,231,919 | 70 | .gopath/pkg/mod/golang.org/x/text@v0.21.0/date/tables.go (75291 LOC) |
+| openhands-1789931908 | grok-4.5 | high | 0.4095 | 10.6M/161.8K/7.0K/9.7M | 155 | 162 | $5.56 | $5.56 | 2711.5s | 23 | 7,221 | 28 | backend/internal/service/ops.go (1184 LOC) |
 | openhands-grok-4.6-medium-20260920-dev-v1 | grok-4.6 | medium | 0.3970 | 56.2M/1.1M/0/53.3M | 2,660 | 771 | $38.97 | unavailable | 11445.0s | 16 | 6,584 | 24 | backend/handlers_ops.go (1966 LOC) |
 | openhands-kimi-k3-high-20260919-v2 | kimi-k3 | high | 0.3829 | 23.2M/299.2K/75.6K/22.5M | 515 | 518 | $13.38 | $13.38 | 5500.1s | 32 | 9,563 | 18 | server/dispatch.go (989 LOC) |
 | openhands-gpt-5.6-sol-high-20260920-prod-v2 | gpt-5.6-sol | high | 0.3745 | 7.0M/107.2K/15.7K/6.5M | 193 | 156 | $2.52 | unavailable | 1942.9s | 14 | 3,382 | 17 | backend/actions.go (840 LOC) |
