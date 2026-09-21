@@ -15,6 +15,22 @@ from __future__ import annotations
 from oracle import Capability, CapabilityReport, Verdict, retry_durability_write
 
 
+def _read_capacity_disr(session, resource_id: str) -> dict:
+    """Read a resource's live Capacity object via read_operations_state.
+    Mirrors the identical helper in custody_lifecycle.py and concurrency.py --
+    this engine never queries a datastore directly, only the app's HTTP reads.
+    """
+    status, payload = session.raw("read_operations_state", {"filters": {}})
+    data = session.data(status, payload)
+    for loc in data.get("locations", []) or []:
+        if loc.get("locationId") == resource_id:
+            return loc.get("capacity") or {}
+    for conn in data.get("connections", []) or []:
+        if conn.get("connectionId") == resource_id:
+            return conn.get("capacity") or {}
+    return {}
+
+
 def _seed_network(engine, tag: str):
     world = engine.new_world(tag)
     st = world.sample_type("ST")
@@ -30,7 +46,7 @@ def _seed_network(engine, tag: str):
     # mutating call in this module goes through a dispatcher session, not
     # engine.admin directly.
     world.user("dispatcher", ["dispatcher"])
-    return world, st, pickup, lab
+    return world, st, pickup, lab, conn
 
 
 def _plan(world, st, pickup, **overrides) -> dict:
@@ -54,8 +70,14 @@ def _plan(world, st, pickup, **overrides) -> dict:
 
 
 def _run_cancel_journey(engine) -> CapabilityReport:
-    world, st, pickup, lab = _seed_network(engine, "cancel")
+    world, st, pickup, lab, conn = _seed_network(engine, "cancel")
     dispatcher = world.session("dispatcher")
+
+    # AC-47/48/49 (Item 2a): snapshot reservedUnits on every route resource
+    # BEFORE planning so we can prove cancel_journey releases them.
+    resource_ids = (pickup["locationId"], lab["locationId"], conn["connectionId"])
+    cap_before = {rid: _read_capacity_disr(engine.admin, rid) for rid in resource_ids}
+
     created = _plan(world, st, pickup)
     journey_id = created.get("journeyId")
     if not journey_id:
@@ -65,7 +87,28 @@ def _run_cancel_journey(engine) -> CapabilityReport:
     status, payload = dispatcher.raw("cancel_journey", cancel_body)
     data = dispatcher.data(status, payload)
     via = engine.observe(engine.admin, journey_id, entity_type="journey")
-    positive = Verdict(ok=status == 201 and data.get("status") == "cancelled" and via is not None, detail=f"status={status} journeyStatus={data.get('status')} via={via}")
+    base_ok = status == 201 and data.get("status") == "cancelled" and via is not None
+
+    # Item 2a: capacity release check -- cancel must release all reservations
+    # this journey held. Compare reservedUnits/cooledReservedUnits after cancel
+    # against the pre-plan baseline: any field that is HIGHER than baseline is
+    # a leak (mirrors _confirm_laboratory_receipt_extra's identical check).
+    cap_after = {rid: _read_capacity_disr(engine.admin, rid) for rid in resource_ids}
+    cap_leaks = {}
+    for rid, before_cap in cap_before.items():
+        after_cap = cap_after.get(rid) or {}
+        for field in ("reservedUnits", "cooledReservedUnits"):
+            b, a = before_cap.get(field), after_cap.get(field)
+            if isinstance(b, (int, float)) and isinstance(a, (int, float)) and a > b:
+                cap_leaks[f"{rid}.{field}"] = {"before": b, "after": a}
+    positive = Verdict(
+        ok=base_ok and not cap_leaks,
+        detail=(
+            f"status={status} journeyStatus={data.get('status')} via={via}; "
+            f"capacity reserve/release: before={cap_before} after={cap_after} leaks={cap_leaks or 'none'}"
+        ),
+        evidence={"capacity_before": cap_before, "capacity_after": cap_after},
+    )
 
     stale_status, stale_payload = dispatcher.raw("cancel_journey", {"journeyId": journey_id, "expectedPlanVersion": 1, "reason": "double cancel", "idempotencyKey": world.key("cxl2")})
     negative = Verdict(
@@ -89,7 +132,7 @@ def _run_cancel_journey(engine) -> CapabilityReport:
 
 
 def _run_reroute_journey(engine) -> CapabilityReport:
-    world, st, pickup, lab = _seed_network(engine, "reroute")
+    world, st, pickup, lab, _conn = _seed_network(engine, "reroute")
     dispatcher = world.session("dispatcher")
     hub = world.location("hub", ["transfer_point", "hub"], 72.02, 72.02)
     alt1 = world.connection(pickup["locationId"], hub["locationId"], travelMinutes=6, costUnits=3, cooled=True)
@@ -144,7 +187,7 @@ def _run_split_journey(engine) -> CapabilityReport:
     # journey (golden-mongo: plan_changes.go's splitJourneyState), so a
     # single-sample journey can never be split -- merge two plans first to
     # get a 2-sample journey, then split one back out.
-    world, st, pickup, lab = _seed_network(engine, "split")
+    world, st, pickup, lab, _conn = _seed_network(engine, "split")
     dispatcher = world.session("dispatcher")
     a = _plan(world, st, pickup)
     b = _plan(world, st, pickup, idempotencyKey=world.key("plan2"))
@@ -188,7 +231,7 @@ def _run_split_journey(engine) -> CapabilityReport:
 
 
 def _run_merge_journeys(engine) -> CapabilityReport:
-    world, st, pickup, lab = _seed_network(engine, "merge")
+    world, st, pickup, lab, _conn = _seed_network(engine, "merge")
     dispatcher = world.session("dispatcher")
     a = _plan(world, st, pickup)
     b = _plan(world, st, pickup, idempotencyKey=world.key("plan2"))
@@ -234,7 +277,7 @@ def _run_merge_journeys(engine) -> CapabilityReport:
 
 
 def _durability_write_cancel_journey(engine) -> dict:
-    world, st, pickup, lab = _seed_network(engine, "canceldur")
+    world, st, pickup, lab, _conn = _seed_network(engine, "canceldur")
     dispatcher = world.session("dispatcher")
     created = _plan(world, st, pickup)
     journey_id = created.get("journeyId")
@@ -253,7 +296,7 @@ def _durability_verify_cancel_journey(engine, sentinel: dict) -> Verdict:
 
 
 def _durability_write_reroute_journey(engine) -> dict:
-    world, st, pickup, lab = _seed_network(engine, "reroutedur")
+    world, st, pickup, lab, _conn = _seed_network(engine, "reroutedur")
     dispatcher = world.session("dispatcher")
     hub = world.location("hub", ["transfer_point", "hub"], 72.02, 72.02)
     alt1 = world.connection(pickup["locationId"], hub["locationId"], travelMinutes=6, costUnits=3, cooled=True)
@@ -277,7 +320,7 @@ def _durability_verify_reroute_journey(engine, sentinel: dict) -> Verdict:
 
 
 def _durability_write_split_journey_once(engine) -> dict:
-    world, st, pickup, lab = _seed_network(engine, "splitdur")
+    world, st, pickup, lab, _conn = _seed_network(engine, "splitdur")
     dispatcher = world.session("dispatcher")
     a = _plan(world, st, pickup)
     b = _plan(world, st, pickup, idempotencyKey=world.key("plan2dur"))
@@ -310,7 +353,7 @@ def _durability_verify_split_journey(engine, sentinel: dict) -> Verdict:
 
 
 def _durability_write_merge_journeys_once(engine) -> dict:
-    world, st, pickup, lab = _seed_network(engine, "mergedur")
+    world, st, pickup, lab, _conn = _seed_network(engine, "mergedur")
     dispatcher = world.session("dispatcher")
     a = _plan(world, st, pickup)
     b = _plan(world, st, pickup, idempotencyKey=world.key("plan2mdur"))

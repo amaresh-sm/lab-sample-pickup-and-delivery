@@ -173,7 +173,7 @@ def _drive_happy_path(engine) -> dict:
 
     world, st, pickup, lab, conn = _seed_lifecycle_world(engine, "lc")
     steps: dict[str, dict] = {}
-    result = {"world": world, "steps": steps, "driven": False, "pickup": pickup, "laboratory": lab}
+    result = {"world": world, "steps": steps, "driven": False, "pickup": pickup, "laboratory": lab, "_engine": engine}
     engine.shared["lc_happy"] = result
 
     # capacity-leak-on-receipt: capacity.py's own docstring claims the
@@ -564,7 +564,7 @@ def _step_idempotency(cap_id: str):
     return check
 
 
-def _make_step_capability(cap_id: str, description: str, extra_check=None, idempotency_check=None, durability_write=None, durability_verify=None) -> Capability:
+def _make_step_capability(cap_id: str, description: str, extra_check=None, idempotency_check=None, durability_write=None, durability_verify=None, negative_check=None) -> Capability:
     def run(engine) -> CapabilityReport:
         drive = _drive_happy_path(engine)
         if not drive.get("planning_ok"):
@@ -573,7 +573,8 @@ def _make_step_capability(cap_id: str, description: str, extra_check=None, idemp
         if positive.ok and extra_check:
             positive = extra_check(drive, positive)
         idempotency = idempotency_check(drive) if (positive.ok and idempotency_check) else None
-        return CapabilityReport(positive=positive, idempotency=idempotency, notes="graded from the shared, discovery-driven happy-path lifecycle drive")
+        negative = negative_check(drive) if negative_check else None
+        return CapabilityReport(positive=positive, negative=negative, idempotency=idempotency, notes="graded from the shared, discovery-driven happy-path lifecycle drive")
 
     return Capability(
         cap_id, "lifecycle", description, run,
@@ -581,6 +582,230 @@ def _make_step_capability(cap_id: str, description: str, extra_check=None, idemp
         group=LIFECYCLE_DRIVE_GROUP,
         durability_write=durability_write,
         durability_verify=durability_verify,
+    )
+
+
+def _checkpoint_temperature_exception_extra(drive: dict, positive: Verdict) -> Verdict:
+    """AC-90: a checkpoint with observedTemperatureC outside the sample's
+    required [min, max] range must transition the sample to 'exception' state.
+
+    Runs a FRESH, independent scenario (cannot reuse the shared drive's
+    sample -- it is already past the checkpoint phase and in a later state).
+    Uses drive["_engine"] to create the new world.
+    """
+    engine = drive.get("_engine")
+    if engine is None:
+        return Verdict(
+            ok=positive.ok,
+            detail=f"{positive.detail}; AC-90 temperature-exception check skipped: no engine ref in drive dict",
+        )
+    try:
+        world, st, pickup, lab, conn = _seed_lifecycle_world(engine, "lc-te")
+        created = _plan_serviceable(engine, world, st, pickup)
+        if not planned_journey_ok(created):
+            # Cannot set up the check; do not penalise the main positive
+            return Verdict(
+                ok=positive.ok,
+                detail=(
+                    f"{positive.detail}; AC-90 temperature-exception check skipped: "
+                    f"fresh journey planning failed (serviceability="
+                    f"{created.get('serviceability') if isinstance(created, dict) else 'n/a'})"
+                ),
+            )
+        sample_id = created.get("sampleId")
+        assignment_ids = created.get("activeAssignmentIds") or []
+        owners = _classify_assignments(world, assignment_ids, WORKER_ALIASES)
+        collection_aid = next((aid for aid, a in owners.items() if a in ("collector", "collector2")), None)
+        if not (sample_id and collection_aid):
+            return Verdict(
+                ok=positive.ok,
+                detail=f"{positive.detail}; AC-90 temperature-exception check skipped: could not classify collection leg",
+            )
+        collector_alias = owners[collection_aid]
+        collector = world.session(collector_alias)
+        collector.raw("accept_assignment", {"assignmentId": collection_aid, "idempotencyKey": world.key("te-acc")})
+
+        # Record a checkpoint whose temperature is OUTSIDE [2, 8]°C (the range
+        # set in _plan_request_body). Use 25°C -- clearly over the maximum.
+        te_status, te_payload = collector.raw(
+            "record_handling_checkpoint",
+            {
+                "sampleId": sample_id,
+                "assignmentId": collection_aid,
+                "locationId": pickup["locationId"],
+                "containerType": "sealed-tube",
+                "observedTemperatureC": 25,
+                "recordedAt": world.moment(),
+                "idempotencyKey": world.key("te-chk"),
+            },
+        )
+
+        # The sample should now be in "exception" state (AC-90)
+        ss_status, ss_payload = engine.admin.raw("read_sample_state", path_param=sample_id)
+        ss_data = engine.admin.data(ss_status, ss_payload)
+        sample_state = (ss_data.get("state") or {}).get("status", "") if ss_status == 200 else ""
+        temp_exception_ok = ss_status == 200 and sample_state == "exception"
+
+        return Verdict(
+            ok=positive.ok and temp_exception_ok,
+            detail=(
+                f"{positive.detail}; AC-90 temperature-exception: "
+                f"checkpoint at 25°C (outside [2,8]) -> checkpoint_status={te_status}; "
+                f"read_sample_state status={ss_status} state.status={sample_state!r} "
+                f"(expected 'exception')"
+            ),
+            evidence={"te_checkpoint_status": te_status, "sample_state_data": ss_data},
+        )
+    except Exception as exc:
+        return Verdict(
+            ok=False,
+            detail=f"{positive.detail}; AC-90 temperature-exception check raised {type(exc).__name__}: {exc}",
+        )
+
+
+def _checkpoint_inactive_assignment_negative(drive: dict) -> Verdict:
+    """AC-88: a checkpoint on an INACTIVE assignment (one whose collection
+    step has already completed via collect_and_seal_sample) must be refused
+    with >=400.
+
+    Uses data from the shared drive: collect_and_seal_sample already ran,
+    making collection_aid inactive.
+    """
+    world = drive.get("world")
+    collection_aid = drive.get("collection_aid")
+    owners = drive.get("owners") or {}
+    sample_id = drive.get("sample_id")
+    pickup = drive.get("pickup")
+    if not (world and collection_aid and sample_id and pickup):
+        return Verdict(ok=False, detail="inactive-checkpoint negative probe skipped: drive did not complete (missing world/collection_aid/sample_id/pickup)")
+    collector_alias = owners.get(collection_aid)
+    if not collector_alias:
+        return Verdict(ok=False, detail="inactive-checkpoint negative probe skipped: no collector alias found in drive owners")
+    collect_step = drive.get("steps", {}).get("collect_and_seal_sample", {})
+    collect_ok = isinstance(collect_step.get("status"), int) and 200 <= collect_step["status"] < 300
+    if not collect_ok:
+        return Verdict(ok=False, detail="inactive-checkpoint negative probe skipped: collect_and_seal_sample did not succeed in the drive")
+    collector = world.session(collector_alias)
+    bad_status, bad_payload = collector.raw(
+        "record_handling_checkpoint",
+        {
+            "sampleId": sample_id,
+            "assignmentId": collection_aid,
+            "locationId": pickup["locationId"],
+            "containerType": "sealed-tube",
+            "observedTemperatureC": 5,
+            "recordedAt": world.moment(),
+            "idempotencyKey": world.key("chk-inactive"),
+        },
+    )
+    code = collector.code(bad_payload)
+    return Verdict(
+        ok=bad_status >= 400,
+        detail=f"checkpoint on now-inactive collection assignment -> status={bad_status} code={code!r} (expected >=400, assignment is inactive after collect_and_seal_sample)",
+    )
+
+
+def _initiate_handoff_non_holder_negative(drive: dict) -> Verdict:
+    """AC-50: a worker who is NOT the current holder must be refused when
+    attempting to initiate a handoff.
+
+    Uses collector2 (seeded in the lifecycle world but never offered the
+    collection leg) as the non-holder. By the time this runs the journey is
+    complete, so any attempt by a non-holder also fails on state grounds --
+    the combined 403/409 gate captures both the authorization and state checks.
+    """
+    world = drive.get("world")
+    collection_aid = drive.get("collection_aid")
+    transport_aid = drive.get("transport_aid")
+    owners = drive.get("owners") or {}
+    sample_id = drive.get("sample_id")
+    if not (world and collection_aid and transport_aid and sample_id):
+        return Verdict(ok=False, detail="non-holder initiate_handoff negative probe skipped: drive did not complete")
+    # collector2 is seeded in _seed_lifecycle_world but was never the offered holder
+    collector_alias = owners.get(collection_aid)
+    non_holder_alias = "collector2" if collector_alias != "collector2" else "collector"
+    non_holder = world.session(non_holder_alias)
+    bad_status, bad_payload = non_holder.raw(
+        "initiate_handoff",
+        {
+            "sampleId": sample_id,
+            "fromAssignmentId": collection_aid,
+            "toAssignmentId": transport_aid,
+            "receiverId": world.user_id(owners.get(transport_aid, "courier") or "courier"),
+            "initiatedAt": world.moment(),
+            "idempotencyKey": world.key("iho-nonholder"),
+        },
+    )
+    code = non_holder.code(bad_payload)
+    return Verdict(
+        ok=bad_status in (403, 409, 400),
+        detail=f"non-holder ({non_holder_alias}) initiates handoff -> status={bad_status} code={code!r} (expected 403/409/400, AC-50)",
+    )
+
+
+def _update_assignment_progress_wrong_worker_negative(drive: dict) -> Verdict:
+    """A worker who does NOT own the transport assignment must be refused when
+    attempting to update its progress.
+
+    Uses the collector (who owns the collection leg, not the transport leg)
+    as the wrong worker.
+    """
+    world = drive.get("world")
+    transport_aid = drive.get("transport_aid")
+    collection_aid = drive.get("collection_aid")
+    owners = drive.get("owners") or {}
+    if not (world and transport_aid and collection_aid):
+        return Verdict(ok=False, detail="wrong-worker progress negative probe skipped: drive did not complete")
+    collector_alias = owners.get(collection_aid)
+    if not collector_alias:
+        return Verdict(ok=False, detail="wrong-worker progress negative probe skipped: no collector alias in drive")
+    wrong_worker = world.session(collector_alias)
+    bad_status, bad_payload = wrong_worker.raw(
+        "update_assignment_progress",
+        {
+            "assignmentId": transport_aid,
+            "status": "in_transit",
+            "occurredAt": world.moment(),
+            "idempotencyKey": world.key("prg-wrong"),
+        },
+    )
+    code = wrong_worker.code(bad_payload)
+    return Verdict(
+        ok=bad_status in (403, 409, 400),
+        detail=f"wrong worker ({collector_alias}, owns collection not transport) updates transport progress -> status={bad_status} code={code!r} (expected 403/409/400)",
+    )
+
+
+def _confirm_handoff_wrong_party_negative(drive: dict) -> Verdict:
+    """A third party who is neither the handoff sender nor receiver must be
+    refused when attempting to confirm the handoff.
+
+    Uses collector2 as the third party (seeded but not involved in the
+    handoff). The handoff is already confirmed by the time this runs; the
+    combined 403/409 gate covers both wrong-actor and already-confirmed cases.
+    """
+    world = drive.get("world")
+    handoff_id = drive.get("handoff_id")
+    if not (world and handoff_id):
+        return Verdict(ok=False, detail="wrong-party confirm negative probe skipped: no world/handoff_id in drive")
+    owners = drive.get("owners") or {}
+    collection_aid = drive.get("collection_aid")
+    collector_alias = owners.get(collection_aid)
+    third_party_alias = "collector2" if collector_alias != "collector2" else "collector"
+    third_party = world.session(third_party_alias)
+    bad_status, bad_payload = third_party.raw(
+        "confirm_handoff",
+        {
+            "handoffId": handoff_id,
+            "confirmationSide": "receiver",
+            "confirmedAt": world.moment(),
+            "idempotencyKey": world.key("cf-wrong"),
+        },
+    )
+    code = third_party.code(bad_payload)
+    return Verdict(
+        ok=bad_status in (403, 409),
+        detail=f"third-party ({third_party_alias}) confirms handoff -> status={bad_status} code={code!r} (expected 403 or 409, AC-50/non-party check)",
     )
 
 
@@ -657,6 +882,20 @@ def _confirm_laboratory_receipt_extra(drive: dict, positive: Verdict) -> Verdict
         detail=f"{positive.detail}; capacity reserve/release (AC-47/48/49): before={before} after={after} leaks={leaks or 'none'}",
         evidence={"capacity_before": before, "capacity_after": after},
     )
+
+
+def _run_confirm_handoff(engine) -> CapabilityReport:
+    """confirm_handoff grader: custody transfers only once BOTH sides confirm
+    (AC-51..53); a replay must not double-transfer (AC-54); and a third party
+    who is neither sender nor receiver must be refused (AC-50 / Item 6).
+    """
+    d = _drive_happy_path(engine)
+    if not d.get("planning_ok"):
+        return planning_failure_report("confirm_handoff", d.get("created"))
+    positive = _confirm_handoff_extra(d, _accepted(d["steps"], "confirm_handoff"))
+    idempotency = _confirm_handoff_idempotency(d) if positive.ok else None
+    negative = _confirm_handoff_wrong_party_negative(d)
+    return CapabilityReport(positive=positive, negative=negative, idempotency=idempotency)
 
 
 def _run_record_laboratory_exception(engine) -> CapabilityReport:
@@ -1394,7 +1633,10 @@ CAPABILITIES = [
         durability_write=_durability_write_lifecycle_drive, durability_verify=_durability_verify_collect_and_seal_sample,
     ),
     _make_step_capability(
-        "record_handling_checkpoint", "A handling checkpoint is recorded en route.",
+        "record_handling_checkpoint",
+        "A handling checkpoint is recorded en route; an out-of-range temperature transitions the sample to 'exception' (AC-90); a checkpoint on an inactive assignment is refused (AC-88).",
+        extra_check=_checkpoint_temperature_exception_extra,
+        negative_check=_checkpoint_inactive_assignment_negative,
         idempotency_check=_step_idempotency("record_handling_checkpoint"),
         durability_write=_durability_write_lifecycle_drive, durability_verify=_durability_verify_record_handling_checkpoint,
     ),
@@ -1403,26 +1645,26 @@ CAPABILITIES = [
         durability_write=_durability_write_lifecycle_drive, durability_verify=_durability_verify_record_worker_location,
     ),
     _make_step_capability(
-        "initiate_handoff", "Collector initiates a handoff to the discovered transport-leg worker.",
+        "initiate_handoff",
+        "Collector initiates a handoff to the discovered transport-leg worker; a non-holder must be refused (AC-50).",
+        negative_check=_initiate_handoff_non_holder_negative,
         idempotency_check=_step_idempotency("initiate_handoff"),
         durability_write=_durability_write_lifecycle_drive, durability_verify=_durability_verify_initiate_handoff,
     ),
     Capability(
         "confirm_handoff",
         "lifecycle",
-        "Custody transfers only once BOTH sides confirm; a one-sided confirm must not move/duplicate custody (AC-51..53); a replay (AC-54) must not double-transfer.",
-        lambda engine: (lambda d: (
-            planning_failure_report("confirm_handoff", d.get("created")) if not d.get("planning_ok") else
-            (lambda positive: CapabilityReport(positive=positive, idempotency=_confirm_handoff_idempotency(d) if positive.ok else None))
-            (_confirm_handoff_extra(d, _accepted(d["steps"], "confirm_handoff")))
-        ))(_drive_happy_path(engine)),
+        "Custody transfers only once BOTH sides confirm (AC-51..53); a replay must not double-transfer (AC-54); a third party who is neither sender nor receiver must be refused (AC-50).",
+        _run_confirm_handoff,
         priority=True,
         group=LIFECYCLE_DRIVE_GROUP,  # calls _drive_happy_path directly
         durability_write=_durability_write_lifecycle_drive,
         durability_verify=_durability_verify_confirm_handoff,
     ),
     _make_step_capability(
-        "update_assignment_progress", "Transport-leg worker advances their assignment to delivered.",
+        "update_assignment_progress",
+        "Transport-leg worker advances their assignment to delivered; a worker who does not own the assignment must be refused.",
+        negative_check=_update_assignment_progress_wrong_worker_negative,
         idempotency_check=_step_idempotency("update_assignment_progress"),
         durability_write=_durability_write_lifecycle_drive, durability_verify=_durability_verify_update_assignment_progress,
     ),
