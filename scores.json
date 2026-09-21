@@ -1,0 +1,3579 @@
+{
+  "generated_at": "2026-09-21T22:19:24.031478",
+  "verifier_commit": "post-hardening-6-lifecycle-tests",
+  "scoring_weights": {
+    "api-contract-artifact": 0.02,
+    "runtime-contract": 0.06,
+    "backend-behavior": 0.47,
+    "ui-behavior": 0.12,
+    "ui-contract-audit": 0.01,
+    "reliability": 0.32
+  },
+  "total_candidates": 66,
+  "candidates": [
+    {
+      "run_id": "openhands-grok-4.6-medium",
+      "run_path": "benchmarking-candidates/openhands-grok-4.6-medium",
+      "model": "grok-4.6",
+      "reasoning": "medium",
+      "score": 0.6975803167,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.7352564103,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.3455705128
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.8187806373,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.2620098039
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-grok-4.6-high-20260920-dev-v2",
+      "run_path": "benchmarking-candidates/openhands-grok-4.6-high-20260920-dev-v2",
+      "model": "grok-4.6",
+      "reasoning": "high",
+      "score": 0.682358727,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.8837,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.053022
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.7301282051,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.3431602564
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.8005514706,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.2561764706
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789971385",
+      "run_path": "benchmarking-candidates/openhands-1789971385",
+      "model": "claude-opus-5",
+      "reasoning": "medium",
+      "score": 0.6545644796,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.6891025641,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.3238782051
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.0625,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0075
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.7287071078,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.2331862745
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-grok-4.5-medium-20260916-v2",
+      "run_path": "benchmarking-candidates/openhands-grok-4.5-medium-20260916-v2",
+      "model": "grok-4.5",
+      "reasoning": "medium",
+      "score": 0.57495719,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.8864,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.053184
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.6586538462,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.3095673077
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.6318933824,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.2022058824
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-grok-4.5-high-20260916-v3",
+      "run_path": "benchmarking-candidates/openhands-grok-4.5-high-20260916-v3",
+      "model": "grok-4.5",
+      "reasoning": "high",
+      "score": 0.5251534555,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.7222,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.043332
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.5445512821,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.2559391026
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.6121323529,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1958823529
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789967852",
+      "run_path": "benchmarking-candidates/openhands-1789967852",
+      "model": "claude-opus-5",
+      "reasoning": "high",
+      "score": 0.524938537,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.533974359,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.2509679487
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.5749080882,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1839705882
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-kimi-k3-high-20260920-prod-v3",
+      "run_path": "benchmarking-candidates/openhands-kimi-k3-high-20260920-prod-v3",
+      "model": "kimi-k3",
+      "reasoning": "high",
+      "score": 0.4872194087,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.9706,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.058236
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.5230769231,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.2458461538
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.25,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.03
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.3848039216,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1231372549
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-glm-5.2-high-20260917-v2",
+      "run_path": "benchmarking-candidates/openhands-glm-5.2-high-20260917-v2",
+      "model": "glm-5.2",
+      "reasoning": "high",
+      "score": 0.4824439442,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.907,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.05442
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.6477564103,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.3044455128
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.354932598,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1135784314
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-kimi-k3-high-20260919-v1",
+      "run_path": "benchmarking-candidates/openhands-kimi-k3-high-20260919-v1",
+      "model": "kimi-k3",
+      "reasoning": "high",
+      "score": 0.4774601559,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.9375,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.05625
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.541025641,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.2542820513
+        },
+        "ui-behavior": {
+          "status": "blocked",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "blocked",
+          "score": 0.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.4591503268,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1469281046
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-gpt-5.6-sol-medium-20260919-queue-v1",
+      "run_path": "benchmarking-candidates/openhands-gpt-5.6-sol-medium-20260919-queue-v1",
+      "model": "gpt-5.6-sol",
+      "reasoning": "medium",
+      "score": 0.4723717949,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.925,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.0555
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.5358974359,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.2518717949
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.421875,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.135
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789739130",
+      "run_path": "benchmarking-candidates/openhands-1789739130",
+      "model": "gpt-5.6-sol",
+      "reasoning": "high",
+      "score": 0.4720347436,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.8095,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.04857
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.5907051282,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.2776314103
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.3619791667,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1158333333
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789963426",
+      "run_path": "benchmarking-candidates/openhands-1789963426",
+      "model": "claude-sonnet-5",
+      "reasoning": "medium",
+      "score": 0.4322335973,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.75,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.045
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.4849358974,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.2279198718
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.5,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.2791053922,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0893137255
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-gpt-5.6-sol-medium-20260919-v2",
+      "run_path": "benchmarking-candidates/openhands-gpt-5.6-sol-medium-20260919-v2",
+      "model": "gpt-5.6-sol",
+      "reasoning": "medium",
+      "score": 0.4238665158,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.675,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.0405
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.5205128205,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.2446410256
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.0625,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0075
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.3163296569,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1012254902
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789931908",
+      "run_path": "benchmarking-candidates/openhands-1789931908",
+      "model": "grok-4.5",
+      "reasoning": "high",
+      "score": 0.4095292971,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.8333,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.049998
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.4185897436,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1967371795
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.4774816176,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1527941176
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-grok-4.6-medium-20260920-dev-v1",
+      "run_path": "benchmarking-candidates/openhands-grok-4.6-medium-20260920-dev-v1",
+      "model": "grok-4.6",
+      "reasoning": "medium",
+      "score": 0.3969707632,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.7222,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.043332
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.4615384615,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.2169230769
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.3334865196,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1067156863
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-kimi-k3-high-20260919-v2",
+      "run_path": "benchmarking-candidates/openhands-kimi-k3-high-20260919-v2",
+      "model": "kimi-k3",
+      "reasoning": "high",
+      "score": 0.3828795249,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.3804487179,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1788108974
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.3564644608,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1140686275
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-gpt-5.6-sol-high-20260920-prod-v2",
+      "run_path": "benchmarking-candidates/openhands-gpt-5.6-sol-high-20260920-prod-v2",
+      "model": "gpt-5.6-sol",
+      "reasoning": "high",
+      "score": 0.3745385551,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.9429,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.056574
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.3705128205,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1741410256
+        },
+        "ui-behavior": {
+          "status": "blocked",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "blocked",
+          "score": 0.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.3869485294,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1238235294
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789936188",
+      "run_path": "benchmarking-candidates/openhands-1789936188",
+      "model": "claude-sonnet-5",
+      "reasoning": "medium",
+      "score": 0.3734761146,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.8788,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.052728
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.4397435897,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.2066794872
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.3252144608,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1040686275
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-kimi-k3-medium-20260920-prod-v1",
+      "run_path": "benchmarking-candidates/openhands-kimi-k3-medium-20260920-prod-v1",
+      "model": "kimi-k3",
+      "reasoning": "medium",
+      "score": 0.3705468446,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.6486,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.038916
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.3301282051,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1551602564
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.25,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.03
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.3639705882,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1164705882
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-grok-4.5-medium-20260921-prod-v1",
+      "run_path": "benchmarking-candidates/openhands-grok-4.5-medium-20260921-prod-v1",
+      "model": "grok-4.5",
+      "reasoning": "medium",
+      "score": 0.3544574389,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.7419,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.044514
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.358974359,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1687179487
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.3475796569,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1112254902
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-kimi-k3-medium-20260920-prod-queue-v1",
+      "run_path": "benchmarking-candidates/openhands-kimi-k3-medium-20260920-prod-queue-v1",
+      "model": "kimi-k3",
+      "reasoning": "medium",
+      "score": 0.3512305249,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.8621,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.051726
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.4512820513,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.2121025641
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.2418811275,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0774019608
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-grok-4.5-medium-20260916-retry",
+      "run_path": "benchmarking-candidates/openhands-grok-4.5-medium-20260916-retry",
+      "model": "grok-4.5",
+      "reasoning": "medium",
+      "score": 0.3392741961,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.9714,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.058284
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.4,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.188
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.2593443627,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0829901961
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789940522",
+      "run_path": "benchmarking-candidates/openhands-1789940522",
+      "model": "claude-sonnet-5",
+      "reasoning": "medium",
+      "score": 0.3347927979,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.5,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.03
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.3586538462,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1685673077
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.3319546569,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1062254902
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-glm-5.2-high-20260920-prod-v1",
+      "run_path": "benchmarking-candidates/openhands-glm-5.2-high-20260920-prod-v1",
+      "model": "glm-5.2",
+      "reasoning": "high",
+      "score": 0.3302580256,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.6207,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.037242
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.3663461538,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1721826923
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.2838541667,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0908333333
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789943763",
+      "run_path": "benchmarking-candidates/openhands-1789943763",
+      "model": "gpt-5.6-sol",
+      "reasoning": "high",
+      "score": 0.3140080121,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.9429,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.056574
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.3493589744,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1641987179
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.125,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.015
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.1507352941,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0482352941
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-grok-4.6-medium-20260920-dev-queue-v1",
+      "run_path": "benchmarking-candidates/openhands-grok-4.6-medium-20260920-dev-queue-v1",
+      "model": "grok-4.6",
+      "reasoning": "medium",
+      "score": 0.3108759985,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.6129,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.036774
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.3407051282,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1601314103
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.2624080882,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0839705882
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-grok-4.5-high-20260919-v1",
+      "run_path": "benchmarking-candidates/openhands-grok-4.5-high-20260919-v1",
+      "model": "grok-4.5",
+      "reasoning": "high",
+      "score": 0.2792188929,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.5517,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.033102
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.3192307692,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1500384615
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.206495098,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0660784314
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-gpt-5.6-terra-high-v2",
+      "run_path": "benchmarking-candidates/openhands-gpt-5.6-terra-high-v2",
+      "model": "gpt-5.6-terra",
+      "reasoning": "high",
+      "score": 0.2770816923,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.6129,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.036774
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.3038461538,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1428076923
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.1875,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0225
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.140625,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.045
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "codex-1789497895",
+      "run_path": "benchmarking-candidates/codex-1789497895",
+      "model": "gpt-5.6-terra",
+      "reasoning": "medium",
+      "score": 0.2761978718,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.5588,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.033528
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.2432692308,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1143365385
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.4375,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0525
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.1432291667,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0458333333
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-gpt-5.6-sol-high-20260919-v1",
+      "run_path": "benchmarking-candidates/openhands-gpt-5.6-sol-high-20260919-v1",
+      "model": "gpt-5.6-sol",
+      "reasoning": "high",
+      "score": 0.2693885762,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.5517,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.033102
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.3256410256,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1530512821
+        },
+        "ui-behavior": {
+          "status": "blocked",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "blocked",
+          "score": 0.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.1976102941,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0632352941
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-glm-5.2-medium-20260919-v3",
+      "run_path": "benchmarking-candidates/openhands-glm-5.2-medium-20260919-v3",
+      "model": "glm-5.2",
+      "reasoning": "medium",
+      "score": 0.2659426109,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.8667,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.052002
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.3394230769,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1595288462
+        },
+        "ui-behavior": {
+          "status": "blocked",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "blocked",
+          "score": 0.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.1075367647,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0344117647
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-kimi-k3-medium-20260919-v2",
+      "run_path": "benchmarking-candidates/openhands-kimi-k3-medium-20260919-v2",
+      "model": "kimi-k3",
+      "reasoning": "medium",
+      "score": 0.2631919698,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.7692,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.046152
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.3141025641,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1476282051
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.1231617647,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0394117647
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-glm-5.2-high-20260919-v2",
+      "run_path": "benchmarking-candidates/repaired/openhands-glm-5.2-high-20260919-v2",
+      "model": "glm-5.2",
+      "reasoning": "high",
+      "score": 0.2501094057,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.5862,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.035172
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.2794871795,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1313589744
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.167432598,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0535784314
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-gpt-5.6-luna-high",
+      "run_path": "benchmarking-candidates/openhands-gpt-5.6-luna-high",
+      "model": "gpt-5.6-luna",
+      "reasoning": "high",
+      "score": 0.2449525415,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.4595,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.02757
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.1868589744,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0878237179
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.375,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.045
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.2329963235,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0745588235
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-gpt-5.6-sol-medium-20260920-prod-v1",
+      "run_path": "benchmarking-candidates/openhands-gpt-5.6-sol-medium-20260920-prod-v1",
+      "model": "gpt-5.6-sol",
+      "reasoning": "medium",
+      "score": 0.2315693077,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.9167,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.055002
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.2586538462,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1215673077
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.078125,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.025
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-gpt-5.6-terra-high",
+      "run_path": "benchmarking-candidates/openhands-gpt-5.6-terra-high",
+      "model": "gpt-5.6-terra",
+      "reasoning": "high",
+      "score": 0.2236756018,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.2333,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.013998
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.2211538462,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1039423077
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.125,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.015
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.1897977941,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0607352941
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789710691",
+      "run_path": "benchmarking-candidates/openhands-1789710691",
+      "model": "gpt-5.6-luna",
+      "reasoning": "high",
+      "score": 0.2190956621,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.5333,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.031998
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.2096153846,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0985192308
+        },
+        "ui-behavior": {
+          "status": "blocked",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "blocked",
+          "score": 0.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.214307598,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0685784314
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789709196",
+      "run_path": "benchmarking-candidates/openhands-1789709196",
+      "model": "gpt-5.6-terra",
+      "reasoning": "high",
+      "score": 0.2132936667,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.2667,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.016002
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.2708333333,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1272916667
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.0625,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0075
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.1015625,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0325
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789710694",
+      "run_path": "benchmarking-candidates/openhands-1789710694",
+      "model": "gpt-5.6-luna",
+      "reasoning": "high",
+      "score": 0.1871572308,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.7273,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.043638
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.2096153846,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0985192308
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.046875,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.015
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-gemini-3.7-flash-high-20260918-v3",
+      "run_path": "benchmarking-candidates/openhands-gemini-3.7-flash-high-20260918-v3",
+      "model": "gemini-3.7-flash",
+      "reasoning": "high",
+      "score": 0.1802927391,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.3462,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.020772
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.1544871795,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0726089744
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.1875,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0225
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.1075367647,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0344117647
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "repaired-openhands-1789968768",
+      "run_path": "benchmarking-candidates/repaired/repaired-openhands-1789968768",
+      "model": "claude-sonnet-5",
+      "reasoning": "high",
+      "score": 0.1695929487,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.9,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.054
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.171474359,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0805929487
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.015625,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.005
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-gpt-5.6-luna-medium-20260920-dev-v1",
+      "run_path": "benchmarking-candidates/openhands-gpt-5.6-luna-medium-20260920-dev-v1",
+      "model": "gpt-5.6-luna",
+      "reasoning": "medium",
+      "score": 0.1680863665,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.4062,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.024372
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.1086538462,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0510673077
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.1957720588,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0626470588
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789932080",
+      "run_path": "benchmarking-candidates/openhands-1789932080",
+      "model": "glm-5.2",
+      "reasoning": "medium",
+      "score": 0.1627327692,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.6667,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.040002
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.1653846154,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0777307692
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.046875,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.015
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-gemini-3.7-flash-high-20260918-v4",
+      "run_path": "benchmarking-candidates/openhands-gemini-3.7-flash-high-20260918-v4",
+      "model": "gemini-3.7-flash",
+      "reasoning": "high",
+      "score": 0.1477591538,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.6923,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.041538
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.1355769231,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0637211538
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.0390625,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0125
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-gemini-3.7-flash-high-20260917-v2",
+      "run_path": "benchmarking-candidates/openhands-gemini-3.7-flash-high-20260917-v2",
+      "model": "gemini-3.7-flash",
+      "reasoning": "high",
+      "score": 0.1448032821,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.9167,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.055002
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.1006410256,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0473012821
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.0625,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0075
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.015625,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.005
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789716816",
+      "run_path": "benchmarking-candidates/openhands-1789716816",
+      "model": "gemini-3.7-flash",
+      "reasoning": "medium",
+      "score": 0.1415791538,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.7143,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.042858
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.1355769231,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0637211538
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.015625,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.005
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-glm-5.2-medium-20260920-prod-v1",
+      "run_path": "benchmarking-candidates/openhands-glm-5.2-medium-20260920-prod-v1",
+      "model": "glm-5.2",
+      "reasoning": "medium",
+      "score": 0.1386160256,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.56,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.0336
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.1330128205,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0625160256
+        },
+        "ui-behavior": {
+          "status": "blocked",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "blocked",
+          "score": 0.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.0703125,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0225
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-minimax-m3-high-20260920-prod-v1",
+      "run_path": "benchmarking-candidates/openhands-minimax-m3-high-20260920-prod-v1",
+      "model": "minimax-m3",
+      "reasoning": "high",
+      "score": 0.1315910769,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.7778,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.046668
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.1115384615,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0524230769
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.0078125,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0025
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-gpt-5.6-terra-medium",
+      "run_path": "benchmarking-candidates/openhands-gpt-5.6-terra-medium",
+      "model": "gpt-5.6-terra",
+      "reasoning": "medium",
+      "score": 0.1276290724,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.44,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.0264
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.0836538462,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0393173077
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.125,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.015
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.0528492647,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0169117647
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-deepseek-v4-pro-high-20260920-prod-v1",
+      "run_path": "benchmarking-candidates/openhands-deepseek-v4-pro-high-20260920-prod-v1",
+      "model": "deepseek-v4-pro",
+      "reasoning": "high",
+      "score": 0.1109551282,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.6,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.036
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.1275641026,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0599551282
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.015625,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.005
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789817282",
+      "run_path": "benchmarking-candidates/openhands-1789817282",
+      "model": "minimax-m3",
+      "reasoning": "high",
+      "score": 0.1049134615,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.0317307692,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0149134615
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789926104",
+      "run_path": "benchmarking-candidates/openhands-1789926104",
+      "model": "deepseek-v4-pro",
+      "reasoning": "high",
+      "score": 0.1027724359,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.4,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.024
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.0612179487,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0287724359
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.0625,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-gemini-3.7-flash-medium-20260918-v1",
+      "run_path": "benchmarking-candidates/openhands-gemini-3.7-flash-medium-20260918-v1",
+      "model": "gemini-3.7-flash",
+      "reasoning": "medium",
+      "score": 0.1014250769,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.6667,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.040002
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.0615384615,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0289230769
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.0078125,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0025
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-minimax-m3-high-20260919-v1",
+      "run_path": "benchmarking-candidates/repaired/openhands-minimax-m3-high-20260919-v1",
+      "model": "minimax-m3",
+      "reasoning": "high",
+      "score": 0.099051,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.8571,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.051426
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.0375,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.017625
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789720533",
+      "run_path": "benchmarking-candidates/openhands-1789720533",
+      "model": "gemini-3.7-flash",
+      "reasoning": "medium",
+      "score": 0.0953076923,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.5,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.03
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.0538461538,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0253076923
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.03125,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-minimax-m3-medium-20260920-prod-v2",
+      "run_path": "benchmarking-candidates/openhands-minimax-m3-medium-20260920-prod-v2",
+      "model": "minimax-m3",
+      "reasoning": "medium",
+      "score": 0.0889827692,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.6667,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.040002
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.0403846154,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0189807692
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-deepseek-v4-pro-medium-20260920-prod-v2",
+      "run_path": "benchmarking-candidates/openhands-deepseek-v4-pro-medium-20260920-prod-v2",
+      "model": "deepseek-v4-pro",
+      "reasoning": "medium",
+      "score": 0.0871070256,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.4286,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.025716
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.0455128205,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0213910256
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.03125,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-minimax-m3-medium-20260920-prod-v3",
+      "run_path": "benchmarking-candidates/openhands-minimax-m3-medium-20260920-prod-v3",
+      "model": "minimax-m3",
+      "reasoning": "medium",
+      "score": 0.0858461538,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.75,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.045
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.0230769231,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0108461538
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-deepseek-v4-pro-medium-20260920-prod-v1",
+      "run_path": "benchmarking-candidates/openhands-deepseek-v4-pro-medium-20260920-prod-v1",
+      "model": "deepseek-v4-pro",
+      "reasoning": "medium",
+      "score": 0.0831235128,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.5238,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.031428
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.0727564103,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0341955128
+        },
+        "ui-behavior": {
+          "status": "blocked",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "blocked",
+          "score": 0.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.0546875,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0175
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-gpt-5.6-luna-medium-20260920-dev-v2",
+      "run_path": "benchmarking-candidates/openhands-gpt-5.6-luna-medium-20260920-dev-v2",
+      "model": "gpt-5.6-luna",
+      "reasoning": "medium",
+      "score": 0.0773127692,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.2222,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.013332
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.0403846154,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0189807692
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.125,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.015
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-deepseek-v4-pro-high-20260921-prod-v2",
+      "run_path": "benchmarking-candidates/openhands-deepseek-v4-pro-high-20260921-prod-v2",
+      "model": "deepseek-v4-pro",
+      "reasoning": "high",
+      "score": 0.070650359,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.3571,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.021426
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.0621794872,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.029224359
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.03125,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789709204",
+      "run_path": "benchmarking-candidates/openhands-1789709204",
+      "model": "gpt-5.6-luna",
+      "reasoning": "medium",
+      "score": 0.0665416667,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.25,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.015
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.0458333333,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0215416667
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-minimax-m3-high-20260919-v2",
+      "run_path": "benchmarking-candidates/openhands-minimax-m3-high-20260919-v2",
+      "model": "minimax-m3",
+      "reasoning": "high",
+      "score": 0.0589807692,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.5,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.03
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.0403846154,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0189807692
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789710696",
+      "run_path": "benchmarking-candidates/openhands-1789710696",
+      "model": "gpt-5.6-terra",
+      "reasoning": "medium",
+      "score": 0.0375,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "backend-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.0625,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0075
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-minimax-m3-medium-20260920-prod-v7",
+      "run_path": "benchmarking-candidates/openhands-minimax-m3-medium-20260920-prod-v7",
+      "model": "minimax-m3",
+      "reasoning": "medium",
+      "score": 0.03,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "backend-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-deepseek-v4-pro-medium-20260920-prod-v3",
+      "run_path": "benchmarking-candidates/openhands-deepseek-v4-pro-medium-20260920-prod-v3",
+      "model": "deepseek-v4-pro",
+      "reasoning": "medium",
+      "score": 0.03,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "backend-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        }
+      },
+      "duration_s": null,
+      "changed_files": null
+    }
+  ]
+}
