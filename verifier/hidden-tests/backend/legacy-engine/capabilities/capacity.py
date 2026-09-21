@@ -57,16 +57,16 @@ def _run_configure_capacity(engine) -> CapabilityReport:
     )
 
     bad_status, bad_payload = engine.admin.raw("configure_capacity", {"resourceId": loc["locationId"], "capacityUnits": -5})
-    negative = Verdict(
-        ok=bad_status == 400 and engine.admin.code(bad_payload) == "invalid_capacity",
-        detail=f"negative capacityUnits -> status={bad_status} code={engine.admin.code(bad_payload)!r}",
-    )
-
+    input_ok = bad_status == 400 and engine.admin.code(bad_payload) == "invalid_capacity"
+    # administrator-only per instruction.md: a requester must be rejected on the write itself
     world.user("plainrequester", ["requester"])
     req_sess = world.session("plainrequester")
-    rbac_status, rbac_payload = req_sess.raw("read_operations_state", {"filters": {}})
+    rbac_status, rbac_payload = req_sess.raw("configure_capacity", {"resourceId": loc["locationId"], "capacityUnits": 10})
     rbac_ok = rbac_status == 403 and req_sess.code(rbac_payload) == "forbidden"
-    negative = Verdict(ok=negative.ok and rbac_ok, detail=negative.detail + f"; requester read_operations_state -> {rbac_status} (RBAC-gated capacity view)")
+    negative = Verdict(
+        ok=input_ok and rbac_ok,
+        detail=f"negative capacityUnits -> {bad_status} {engine.admin.code(bad_payload)!r}; requester configure_capacity -> {rbac_status} {req_sess.code(rbac_payload)!r}",
+    )
 
     return CapabilityReport(positive=positive, negative=negative)
 

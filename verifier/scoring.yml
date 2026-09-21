@@ -4,17 +4,17 @@ criteria:
     weight: 0.02
     blocked_policy: zero
   - id: runtime-contract
-    weight: 0.08
+    weight: 0.06
     blocked_policy: zero
   - id: backend-behavior
-    weight: 0.54
+    weight: 0.47
     blocked_policy: zero
   - id: ui-behavior
-    weight: 0.07
+    weight: 0.12
     blocked_policy: zero
   - id: ui-contract-audit
     weight: 0.01
     blocked_policy: zero
   - id: reliability
-    weight: 0.28
+    weight: 0.32
     blocked_policy: zero

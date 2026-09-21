@@ -47,11 +47,15 @@ def load(path: Path) -> dict[str, Any]:
 
 
 def functional_credit(cap: dict[str, Any]) -> float:
-    values = [cap.get("positiveOk")]
-    if cap.get("negativeOk") is not None:
-        values.append(cap["negativeOk"])
-    values = [value for value in values if value is not None]
-    return sum(bool(value) for value in values) / len(values) if values else 0.0
+    pos = cap.get("positiveOk")
+    neg = cap.get("negativeOk")
+    if neg is not None and pos is not None:
+        # Failing the negative test (auth/error-handling) costs more than failing the positive:
+        # a working happy path with broken access control is a security defect.
+        if pos is True and neg is False:
+            return 0.25
+        return (bool(pos) + bool(neg)) / 2
+    return float(bool(pos)) if pos is not None else 0.0
 
 
 def backend_scores(reward: dict[str, Any]) -> tuple[float, float, float]:
@@ -60,11 +64,11 @@ def backend_scores(reward: dict[str, Any]) -> tuple[float, float, float]:
     supporting = [cap for cap in caps if cap.get("id") not in CONCURRENCY and cap.get("id") in SUPPORTING]
     core_mean = sum(functional_credit(cap) for cap in core) / len(core) if core else 0.0
     supporting_mean = sum(functional_credit(cap) for cap in supporting) / len(supporting) if supporting else 0.0
-    functional = 0.8 * core_mean + 0.2 * supporting_mean
+    functional = 0.85 * core_mean + 0.15 * supporting_mean
     durability = sum(cap.get("durabilityOk") is True for cap in caps) / DURABILITY_TOTAL
     idempotency = sum(cap.get("id") in IDEMPOTENCY and cap.get("idempotencyOk") is True for cap in caps) / len(IDEMPOTENCY)
     concurrency = sum(float(cap.get("credit") or 0.0) for cap in caps if cap.get("id") in CONCURRENCY) / len(CONCURRENCY)
-    reliability = (durability + idempotency + concurrency) / 3
+    reliability = (durability + 2 * idempotency + concurrency) / 4
     contract = float((reward.get("contract") or {}).get("score") or 0.0)
     return functional, reliability, contract
 

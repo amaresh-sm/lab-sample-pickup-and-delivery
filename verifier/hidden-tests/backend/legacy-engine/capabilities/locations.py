@@ -67,9 +67,18 @@ def _run_create_location(engine) -> CapabilityReport:
             "functions": ["not_a_real_function"],
         },
     )
+    input_ok = bad_status == 400 and engine.admin.code(bad_payload) == "invalid_location_function"
+    # administrator-only per instruction.md: a requester must be rejected
+    world.user("nonadmin", ["requester"])
+    nonadmin_sess = world.session("nonadmin")
+    auth_status, auth_payload = nonadmin_sess.raw(
+        "create_location",
+        {"name": world.key("auth-loc"), "active": True, "coordinate": {"latitude": 2.0, "longitude": 2.0}, "handlingMinutes": 0, "functions": ["collection_point"]},
+    )
+    auth_ok = auth_status == 403 and nonadmin_sess.code(auth_payload) == "forbidden"
     negative = Verdict(
-        ok=bad_status == 400 and engine.admin.code(bad_payload) == "invalid_location_function",
-        detail=f"status={bad_status} code={engine.admin.code(bad_payload)!r}",
+        ok=input_ok and auth_ok,
+        detail=f"invalid-function->{bad_status} {engine.admin.code(bad_payload)!r}; requester->{auth_status} {nonadmin_sess.code(auth_payload)!r}",
     )
     return CapabilityReport(positive=positive, negative=negative)
 
@@ -96,7 +105,18 @@ def _run_update_location(engine) -> CapabilityReport:
     bad_status, bad_payload = engine.admin.raw(
         "update_location", {"locationId": "00000000-0000-0000-0000-000000000000", "name": "x", "coordinate": {"latitude": 1.0, "longitude": 1.0}}
     )
-    negative = Verdict(ok=bad_status == 404, detail=f"status={bad_status} code={engine.admin.code(bad_payload)!r}")
+    notfound_ok = bad_status == 404
+    # administrator-only per instruction.md: a requester must be rejected
+    world.user("nonadmin", ["requester"])
+    nonadmin_sess = world.session("nonadmin")
+    auth_status, auth_payload = nonadmin_sess.raw(
+        "update_location", {"locationId": created["locationId"], "name": world.key("auth-rename"), "coordinate": {"latitude": 21.9, "longitude": 21.9}}
+    )
+    auth_ok = auth_status == 403 and nonadmin_sess.code(auth_payload) == "forbidden"
+    negative = Verdict(
+        ok=notfound_ok and auth_ok,
+        detail=f"unknown-id->{bad_status}; requester->{auth_status} {nonadmin_sess.code(auth_payload)!r}",
+    )
     return CapabilityReport(positive=positive, negative=negative)
 
 
@@ -118,7 +138,16 @@ def _run_set_location_status(engine) -> CapabilityReport:
     )
 
     bad_status, bad_payload = engine.admin.raw("set_location_status", {"locationId": "00000000-0000-0000-0000-000000000000", "active": False})
-    negative = Verdict(ok=bad_status == 404, detail=f"status={bad_status}")
+    notfound_ok = bad_status == 404
+    # administrator-only per instruction.md: a requester must be rejected
+    world.user("nonadmin", ["requester"])
+    nonadmin_sess = world.session("nonadmin")
+    auth_status, auth_payload = nonadmin_sess.raw("set_location_status", {"locationId": created["locationId"], "active": True})
+    auth_ok = auth_status == 403 and nonadmin_sess.code(auth_payload) == "forbidden"
+    negative = Verdict(
+        ok=notfound_ok and auth_ok,
+        detail=f"unknown-id->{bad_status}; requester->{auth_status} {nonadmin_sess.code(auth_payload)!r}",
+    )
     return CapabilityReport(positive=positive, negative=negative)
 
 
@@ -197,7 +226,16 @@ def _run_set_connection_status(engine) -> CapabilityReport:
     positive = Verdict(ok=updated.get("active") is False and reflected, detail=f"active={updated.get('active')}; ops-state independent read reflects={reflected}")
 
     bad_status, bad_payload = engine.admin.raw("set_connection_status", {"connectionId": "00000000-0000-0000-0000-000000000000", "active": False})
-    negative = Verdict(ok=bad_status == 404, detail=f"status={bad_status}")
+    notfound_ok = bad_status == 404
+    # administrator-only per instruction.md: a requester must be rejected
+    world.user("nonadmin", ["requester"])
+    nonadmin_sess = world.session("nonadmin")
+    auth_status, auth_payload = nonadmin_sess.raw("set_connection_status", {"connectionId": created["connectionId"], "active": True})
+    auth_ok = auth_status == 403 and nonadmin_sess.code(auth_payload) == "forbidden"
+    negative = Verdict(
+        ok=notfound_ok and auth_ok,
+        detail=f"unknown-id->{bad_status}; requester->{auth_status} {nonadmin_sess.code(auth_payload)!r}",
+    )
     return CapabilityReport(positive=positive, negative=negative)
 
 
