@@ -20,5 +20,31 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-kimi-k3-medium-20260920-prod-v1",
   "archive_path": "benchmarking-runs/runs/kimi-k3/medium/openhands-kimi-k3-medium-20260920-prod-v1",
-  "archived_at": "2026-09-21T20:20:39.830707+00:00"
+  "archived_at": "2026-09-21T20:20:39.830707+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 660,
+    "input_tokens": 21756913,
+    "cached_input_tokens": 20139423,
+    "cache_read_tokens": 20139423,
+    "cache_write_tokens": 0,
+    "output_tokens": 242152,
+    "reasoning_tokens": 38624,
+    "total_tokens": 21999065
+  },
+  "cost": {
+    "estimated_usd": 14.5265769,
+    "reported_usd": 14.5265769,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 23,
+    "loc": 6263,
+    "dependencies": 11,
+    "largest_file": {
+      "path": "web/src/App.tsx",
+      "loc": 1060
+    }
+  }
 }

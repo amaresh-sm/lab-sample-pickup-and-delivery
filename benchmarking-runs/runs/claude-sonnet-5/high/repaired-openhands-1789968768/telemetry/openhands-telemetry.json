@@ -33,5 +33,61 @@
   "archive_source": "telemetry.json",
   "run_id": "repaired-openhands-1789968768",
   "model": "claude-sonnet-5",
-  "reasoning": "high"
+  "reasoning": "high",
+  "usage": {
+    "source": "archived_gateway_responses",
+    "requests": 660,
+    "input_tokens": 69905164,
+    "cached_input_tokens": 66399260,
+    "cache_read_tokens": 66399260,
+    "cache_write_tokens": 0,
+    "output_tokens": 353003,
+    "reasoning_tokens": 128915,
+    "total_tokens": 70258167
+  },
+  "tools": {
+    "total": 640,
+    "source": "archived_gateway_responses"
+  },
+  "timing": {
+    "duration_ms": 6424969,
+    "llm_requests": {
+      "count": 660,
+      "source": "archived_gateway_responses"
+    }
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "archived_gateway_responses",
+      "responses_with_cost": 0
+    },
+    "custom_estimation": {
+      "amount_usd": 35.732535,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "model": "openai/claude-sonnet-5",
+      "normalized_model": "claude-sonnet-5",
+      "requests": 660,
+      "requests_with_usage": 660,
+      "requests_missing_usage": 0,
+      "usage_source": "archived_gateway_responses",
+      "pricing": {
+        "input_usd_per_million": 3.0,
+        "output_usd_per_million": 15.0,
+        "cache_read_usd_per_million": 0.3,
+        "cache_write_usd_per_million": null,
+        "note": "~Claude Sonnet public tier"
+      }
+    }
+  },
+  "legacy_telemetry_normalization": {
+    "status": "applied",
+    "usage_source": "archived_gateway_responses",
+    "cache_read_source": "model_median_backfill",
+    "cache_read_ratio": 0.9498477135164286
+  }
 }

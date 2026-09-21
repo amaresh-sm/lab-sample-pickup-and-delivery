@@ -20,5 +20,31 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-1789716816",
   "archive_path": "benchmarking-runs/runs/gemini-3.7-flash/medium/openhands-1789716816",
-  "archived_at": "2026-09-21T20:20:47.742660+00:00"
+  "archived_at": "2026-09-21T20:20:47.742660+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 504,
+    "input_tokens": 22853070,
+    "cached_input_tokens": 18139422,
+    "cache_read_tokens": 18139422,
+    "cache_write_tokens": 0,
+    "output_tokens": 221004,
+    "reasoning_tokens": 0,
+    "total_tokens": 23127630
+  },
+  "cost": {
+    "estimated_usd": 3.32706105,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 31,
+    "loc": 10771,
+    "dependencies": 17,
+    "largest_file": {
+      "path": "internal/handlers/handlers.go",
+      "loc": 2088
+    }
+  }
 }

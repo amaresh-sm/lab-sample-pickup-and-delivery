@@ -33,5 +33,61 @@
   "archive_source": "telemetry.json",
   "run_id": "openhands-deepseek-v4-pro-high-20260921-prod-v2",
   "model": "deepseek-v4-pro",
-  "reasoning": "high"
+  "reasoning": "high",
+  "usage": {
+    "source": "archived_gateway_responses",
+    "requests": 422,
+    "input_tokens": 22260341,
+    "cached_input_tokens": 14110464,
+    "cache_read_tokens": 14110464,
+    "cache_write_tokens": 0,
+    "output_tokens": 271271,
+    "reasoning_tokens": 133728,
+    "total_tokens": 22531612
+  },
+  "tools": {
+    "total": 503,
+    "source": "archived_gateway_responses"
+  },
+  "timing": {
+    "duration_ms": 5094985,
+    "llm_requests": {
+      "count": 422,
+      "source": "archived_gateway_responses"
+    }
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": 18.86290724,
+      "currency": "USD",
+      "status": "reported",
+      "source": "archived_gateway_responses",
+      "responses_with_cost": 422
+    },
+    "custom_estimation": {
+      "amount_usd": 6.226465608,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "model": "openai/deepseek-v4-pro",
+      "normalized_model": "deepseek-v4-pro",
+      "requests": 422,
+      "requests_with_usage": 422,
+      "requests_missing_usage": 0,
+      "usage_source": "archived_gateway_responses",
+      "pricing": {
+        "input_usd_per_million": 0.66,
+        "output_usd_per_million": 1.98,
+        "cache_read_usd_per_million": 0.022,
+        "cache_write_usd_per_million": null,
+        "note": "DeepSeek V4 Pro off-peak pricing; peak rates are 2x"
+      }
+    }
+  },
+  "legacy_telemetry_normalization": {
+    "status": "applied",
+    "usage_source": "archived_gateway_responses",
+    "cache_read_source": "gateway_reported",
+    "cache_read_ratio": 0.6338835510201754
+  }
 }

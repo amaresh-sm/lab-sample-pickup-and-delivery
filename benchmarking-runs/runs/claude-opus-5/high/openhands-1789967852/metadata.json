@@ -20,5 +20,39 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-1789967852",
   "archive_path": "benchmarking-runs/runs/claude-opus-5/high/openhands-1789967852",
-  "archived_at": "2026-09-21T20:20:33.806990+00:00"
+  "archived_at": "2026-09-21T20:20:33.806990+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 567,
+    "input_tokens": 41857479,
+    "cached_input_tokens": 39758230,
+    "cache_read_tokens": 39758230,
+    "cache_write_tokens": 0,
+    "output_tokens": 535841,
+    "reasoning_tokens": 154601,
+    "total_tokens": 42393320
+  },
+  "cost": {
+    "estimated_usd": 131.314155,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "cache_backfill": {
+    "status": "applied",
+    "ratio": 0.94984772,
+    "ratio_source": "global_median_fallback",
+    "previous_cached_input_tokens": 0,
+    "previous_cache_read_tokens": 0,
+    "updated_at": "2026-09-21T20:46:23.853933Z"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 35,
+    "loc": 11916,
+    "dependencies": 6,
+    "largest_file": {
+      "path": "backend/internal/core/replan.go",
+      "loc": 1051
+    }
+  }
 }

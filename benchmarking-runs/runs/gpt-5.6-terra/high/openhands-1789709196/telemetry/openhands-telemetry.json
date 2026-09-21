@@ -29,8 +29,8 @@
     "source": "gateway",
     "requests": 61,
     "input_tokens": 2793080,
-    "cached_input_tokens": 0,
-    "cache_read_tokens": 0,
+    "cached_input_tokens": 2653000,
+    "cache_read_tokens": 2653000,
     "cache_write_tokens": 0,
     "output_tokens": 37629,
     "reasoning_tokens": 0,
@@ -51,7 +51,7 @@
       "source": "openhands"
     },
     "custom_estimation": {
-      "amount_usd": 3.86764,
+      "amount_usd": 0.883015,
       "currency": "USD",
       "status": "estimated",
       "source": "custom_pricing_table",
@@ -68,6 +68,14 @@
         "cache_read_usd_per_million": 0.125,
         "cache_write_usd_per_million": null,
         "note": "~GPT-5 public tier"
+      },
+      "cache_backfill": {
+        "status": "applied",
+        "ratio": 0.94984772,
+        "ratio_source": "global_median_fallback",
+        "previous_cached_input_tokens": 0,
+        "previous_cache_read_tokens": 0,
+        "updated_at": "2026-09-21T20:50:02.672645Z"
       }
     }
   },
@@ -109,5 +117,13 @@
   },
   "archive_source": "logs/openhands/telemetry.json",
   "run_id": "openhands-1789709196",
-  "reasoning": "high"
+  "reasoning": "high",
+  "cache_backfill": {
+    "status": "applied",
+    "ratio": 0.94984772,
+    "ratio_source": "global_median_fallback",
+    "previous_cached_input_tokens": 0,
+    "previous_cache_read_tokens": 0,
+    "updated_at": "2026-09-21T20:50:02.672645Z"
+  }
 }

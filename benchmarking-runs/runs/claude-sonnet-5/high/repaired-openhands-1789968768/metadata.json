@@ -20,5 +20,31 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/repaired/repaired-openhands-1789968768",
   "archive_path": "benchmarking-runs/runs/claude-sonnet-5/high/repaired-openhands-1789968768",
-  "archived_at": "2026-09-21T20:20:46.377438+00:00"
+  "archived_at": "2026-09-21T20:20:46.377438+00:00",
+  "usage": {
+    "source": "archived_gateway_responses",
+    "requests": 660,
+    "input_tokens": 69905164,
+    "cached_input_tokens": 66399260,
+    "cache_read_tokens": 66399260,
+    "cache_write_tokens": 0,
+    "output_tokens": 353003,
+    "reasoning_tokens": 128915,
+    "total_tokens": 70258167
+  },
+  "cost": {
+    "estimated_usd": 35.732535,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 27,
+    "loc": 3528,
+    "dependencies": 16,
+    "largest_file": {
+      "path": "backend/planner.go",
+      "loc": 435
+    }
+  }
 }

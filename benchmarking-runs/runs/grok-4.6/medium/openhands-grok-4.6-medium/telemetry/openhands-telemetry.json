@@ -5,5 +5,74 @@
   "archive_source": "unavailable",
   "run_id": "openhands-grok-4.6-medium",
   "model": "grok-4.6",
-  "reasoning": "medium"
+  "reasoning": "medium",
+  "usage": {
+    "source": "openhands_cli_summary_rounded",
+    "requests": 99,
+    "input_tokens": 6730000,
+    "cached_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "output_tokens": 133080,
+    "reasoning_tokens": null,
+    "total_tokens": 6863080,
+    "precision": "rounded_cli_summary",
+    "approximate_fields": [
+      "input_tokens",
+      "output_tokens"
+    ]
+  },
+  "tools": {
+    "total": 95,
+    "source": "openhands_cli_summary_rounded"
+  },
+  "timing": {
+    "duration_ms": 3561419,
+    "llm_requests": {
+      "count": 99,
+      "source": "openhands_cli_summary_rounded"
+    }
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "archived_gateway_responses",
+      "responses_with_cost": 0
+    },
+    "custom_estimation": {
+      "amount_usd": 14.25848,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "model": "openai/grok-4.6",
+      "normalized_model": "grok-4.6",
+      "requests": 99,
+      "requests_with_usage": 99,
+      "requests_missing_usage": 0,
+      "usage_source": "openhands_cli_summary_rounded",
+      "pricing": {
+        "input_usd_per_million": 2.0,
+        "output_usd_per_million": 6.0,
+        "cache_read_usd_per_million": 0.5,
+        "cache_write_usd_per_million": null,
+        "note": "xAI API pricing; long context >= 200K tokens",
+        "long_context_threshold_tokens": 200000,
+        "long_context": {
+          "input_usd_per_million": 4.0,
+          "output_usd_per_million": 12.0,
+          "cache_read_usd_per_million": 1.0
+        }
+      }
+    }
+  },
+  "legacy_telemetry_normalization": {
+    "status": "applied",
+    "usage_source": "openhands_cli_summary_rounded",
+    "cache_read_source": "cli_summary_reported_zero_hit",
+    "cache_read_ratio": 0.0
+  },
+  "duration_seconds": 3561.419406,
+  "duration_source": "inferred_from_candidate_lifecycle"
 }

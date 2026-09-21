@@ -33,5 +33,61 @@
   "archive_source": "telemetry.json",
   "run_id": "codex-1789497895",
   "model": "gpt-5.6-terra",
-  "reasoning": "medium"
+  "reasoning": "medium",
+  "usage": {
+    "source": "legacy_provider_telemetry",
+    "requests": null,
+    "input_tokens": 1321433,
+    "cached_input_tokens": 1255159,
+    "cache_read_tokens": 1255159,
+    "cache_write_tokens": 0,
+    "output_tokens": 19178,
+    "reasoning_tokens": null,
+    "total_tokens": 1340611
+  },
+  "tools": {
+    "total": 70,
+    "source": "legacy_provider_telemetry"
+  },
+  "timing": {
+    "duration_ms": 409727,
+    "llm_requests": {
+      "count": null,
+      "source": "legacy_provider_telemetry"
+    }
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "archived_gateway_responses",
+      "responses_with_cost": 0
+    },
+    "custom_estimation": {
+      "amount_usd": 0.431517375,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "model": "openai/gpt-5.6-terra",
+      "normalized_model": "gpt-5.6-terra",
+      "requests": null,
+      "requests_with_usage": null,
+      "requests_missing_usage": 0,
+      "usage_source": "legacy_provider_telemetry",
+      "pricing": {
+        "input_usd_per_million": 1.25,
+        "output_usd_per_million": 10.0,
+        "cache_read_usd_per_million": 0.125,
+        "cache_write_usd_per_million": null,
+        "note": "~GPT-5 public tier"
+      }
+    }
+  },
+  "legacy_telemetry_normalization": {
+    "status": "applied",
+    "usage_source": "legacy_provider_telemetry",
+    "cache_read_source": "model_median_backfill",
+    "cache_read_ratio": 0.9498474802010684
+  }
 }

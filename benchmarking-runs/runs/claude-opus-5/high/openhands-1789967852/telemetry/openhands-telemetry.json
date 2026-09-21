@@ -29,8 +29,8 @@
     "source": "gateway",
     "requests": 567,
     "input_tokens": 41857479,
-    "cached_input_tokens": 0,
-    "cache_read_tokens": 0,
+    "cached_input_tokens": 39758230,
+    "cache_read_tokens": 39758230,
     "cache_write_tokens": 0,
     "output_tokens": 535841,
     "reasoning_tokens": 154601,
@@ -51,7 +51,7 @@
       "source": "openhands"
     },
     "custom_estimation": {
-      "amount_usd": 668.05026,
+      "amount_usd": 131.314155,
       "currency": "USD",
       "status": "estimated",
       "source": "custom_pricing_table",
@@ -68,6 +68,14 @@
         "cache_read_usd_per_million": 1.5,
         "cache_write_usd_per_million": null,
         "note": "~Claude Opus public tier"
+      },
+      "cache_backfill": {
+        "status": "applied",
+        "ratio": 0.94984772,
+        "ratio_source": "global_median_fallback",
+        "previous_cached_input_tokens": 0,
+        "previous_cache_read_tokens": 0,
+        "updated_at": "2026-09-21T20:46:23.853933Z"
       }
     }
   },
@@ -109,5 +117,13 @@
   },
   "archive_source": "logs/openhands/telemetry.json",
   "run_id": "openhands-1789967852",
-  "reasoning": "high"
+  "reasoning": "high",
+  "cache_backfill": {
+    "status": "applied",
+    "ratio": 0.94984772,
+    "ratio_source": "global_median_fallback",
+    "previous_cached_input_tokens": 0,
+    "previous_cache_read_tokens": 0,
+    "updated_at": "2026-09-21T20:46:23.853933Z"
+  }
 }

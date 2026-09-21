@@ -20,5 +20,31 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-gpt-5.6-luna-medium-20260920-dev-v1",
   "archive_path": "benchmarking-runs/runs/gpt-5.6-luna/medium/openhands-gpt-5.6-luna-medium-20260920-dev-v1",
-  "archived_at": "2026-09-21T20:20:46.766288+00:00"
+  "archived_at": "2026-09-21T20:20:46.766288+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 24,
+    "input_tokens": 992257,
+    "cached_input_tokens": 992185,
+    "cache_read_tokens": 935880,
+    "cache_write_tokens": 56305,
+    "output_tokens": 17737,
+    "reasoning_tokens": 1386,
+    "total_tokens": 1009994
+  },
+  "cost": {
+    "estimated_usd": 0.36482625,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 5,
+    "loc": 728,
+    "dependencies": 0,
+    "largest_file": {
+      "path": "cmd/server/main.go",
+      "loc": 714
+    }
+  }
 }

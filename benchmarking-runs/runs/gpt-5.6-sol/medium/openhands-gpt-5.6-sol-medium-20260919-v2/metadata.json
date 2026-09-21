@@ -20,5 +20,31 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-gpt-5.6-sol-medium-20260919-v2",
   "archive_path": "benchmarking-runs/runs/gpt-5.6-sol/medium/openhands-gpt-5.6-sol-medium-20260919-v2",
-  "archived_at": "2026-09-21T20:20:37.050569+00:00"
+  "archived_at": "2026-09-21T20:20:37.050569+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 60,
+    "input_tokens": 2572521,
+    "cached_input_tokens": 2572341,
+    "cache_read_tokens": 2404922,
+    "cache_write_tokens": 167419,
+    "output_tokens": 53903,
+    "reasoning_tokens": 3761,
+    "total_tokens": 2626424
+  },
+  "cost": {
+    "estimated_usd": 1.049144,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 9,
+    "loc": 1945,
+    "dependencies": 17,
+    "largest_file": {
+      "path": "backend/main.go",
+      "loc": 1867
+    }
+  }
 }

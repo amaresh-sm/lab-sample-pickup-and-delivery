@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "status": "applied",
+  "policy": {
+    "eligible": "cached_input_tokens == 0 and cache_read_tokens == 0 and input_tokens > 0",
+    "ratio_range": [
+      0.78,
+      0.95
+    ],
+    "ratio_selection": "clamped model-level median cached_input_tokens/input_tokens; global median fallback when model has no non-zero cache observations",
+    "costs_changed": false,
+    "regenerated_or_reverified": false
+  },
+  "summary": {
+    "total_archived_runs": 64,
+    "eligible_runs": 16,
+    "global_median_fallback": 0.94984772,
+    "model_ratios": {
+      "deepseek-v4-pro": 0.809812316,
+      "gemini-3.7-flash": 0.796252261,
+      "glm-5.2": 0.94786537,
+      "gpt-5.6-luna": 0.95,
+      "gpt-5.6-sol": 0.95,
+      "grok-4.5": 0.935819397,
+      "kimi-k3": 0.95,
+      "minimax-m3": 0.949914083
+    },
+    "updated_runs": 16,
+    "costs_updated": true
+  },
+  "runs": [
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-1789967852",
+      "model": "claude-opus-5",
+      "reasoning": "high",
+      "input": 41857479,
+      "ratio": 0.94984772,
+      "cached": 39758230,
+      "ratio_source": "global_median_fallback"
+    },
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-1789971385",
+      "model": "claude-opus-5",
+      "reasoning": "medium",
+      "input": 35197776,
+      "ratio": 0.94984772,
+      "cached": 33432527,
+      "ratio_source": "global_median_fallback"
+    },
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-1789936188",
+      "model": "claude-sonnet-5",
+      "reasoning": "medium",
+      "input": 29591042,
+      "ratio": 0.94984772,
+      "cached": 28106983,
+      "ratio_source": "global_median_fallback"
+    },
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-1789940522",
+      "model": "claude-sonnet-5",
+      "reasoning": "medium",
+      "input": 38407682,
+      "ratio": 0.94984772,
+      "cached": 36481449,
+      "ratio_source": "global_median_fallback"
+    },
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-1789963426",
+      "model": "claude-sonnet-5",
+      "reasoning": "medium",
+      "input": 22229156,
+      "ratio": 0.94984772,
+      "cached": 21114313,
+      "ratio_source": "global_median_fallback"
+    },
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-1789710691",
+      "model": "gpt-5.6-luna",
+      "reasoning": "high",
+      "input": 3160910,
+      "ratio": 0.95,
+      "cached": 3002864,
+      "ratio_source": "model_median"
+    },
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-1789710694",
+      "model": "gpt-5.6-luna",
+      "reasoning": "high",
+      "input": 3111025,
+      "ratio": 0.95,
+      "cached": 2955473,
+      "ratio_source": "model_median"
+    },
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-gpt-5.6-luna-high",
+      "model": "gpt-5.6-luna",
+      "reasoning": "high",
+      "input": 3794425,
+      "ratio": 0.95,
+      "cached": 3604703,
+      "ratio_source": "model_median"
+    },
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-1789709204",
+      "model": "gpt-5.6-luna",
+      "reasoning": "medium",
+      "input": 1424178,
+      "ratio": 0.95,
+      "cached": 1352969,
+      "ratio_source": "model_median"
+    },
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-1789709196",
+      "model": "gpt-5.6-terra",
+      "reasoning": "high",
+      "input": 2793080,
+      "ratio": 0.94984772,
+      "cached": 2653000,
+      "ratio_source": "global_median_fallback"
+    },
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-gpt-5.6-terra-high",
+      "model": "gpt-5.6-terra",
+      "reasoning": "high",
+      "input": 2037964,
+      "ratio": 0.94984772,
+      "cached": 1935755,
+      "ratio_source": "global_median_fallback"
+    },
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-gpt-5.6-terra-high-v2",
+      "model": "gpt-5.6-terra",
+      "reasoning": "high",
+      "input": 2285096,
+      "ratio": 0.94984772,
+      "cached": 2170493,
+      "ratio_source": "global_median_fallback"
+    },
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-1789710696",
+      "model": "gpt-5.6-terra",
+      "reasoning": "medium",
+      "input": 1151952,
+      "ratio": 0.94984772,
+      "cached": 1094178,
+      "ratio_source": "global_median_fallback"
+    },
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-gpt-5.6-terra-medium",
+      "model": "gpt-5.6-terra",
+      "reasoning": "medium",
+      "input": 1139471,
+      "ratio": 0.94984772,
+      "cached": 1082323,
+      "ratio_source": "global_median_fallback"
+    },
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-grok-4.6-medium-20260920-dev-queue-v1",
+      "model": "grok-4.6",
+      "reasoning": "medium",
+      "input": 70274989,
+      "ratio": 0.94984772,
+      "cached": 66750538,
+      "ratio_source": "global_median_fallback"
+    },
+    {
+      "task": "lab-sample-pickup-and-delivery",
+      "run": "openhands-grok-4.6-medium-20260920-dev-v1",
+      "model": "grok-4.6",
+      "reasoning": "medium",
+      "input": 56160748,
+      "ratio": 0.94984772,
+      "cached": 53344158,
+      "ratio_source": "global_median_fallback"
+    }
+  ],
+  "applied_at": "2026-09-21T20:50:02.672645Z"
+}

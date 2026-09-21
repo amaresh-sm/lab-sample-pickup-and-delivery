@@ -20,5 +20,31 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-minimax-m3-high-20260920-prod-v1",
   "archive_path": "benchmarking-runs/runs/minimax-m3/high/openhands-minimax-m3-high-20260920-prod-v1",
-  "archived_at": "2026-09-21T20:20:48.372919+00:00"
+  "archived_at": "2026-09-21T20:20:48.372919+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 323,
+    "input_tokens": 11113780,
+    "cached_input_tokens": 10641920,
+    "cache_read_tokens": 10641920,
+    "cache_write_tokens": 0,
+    "output_tokens": 131358,
+    "reasoning_tokens": 3250,
+    "total_tokens": 11245138
+  },
+  "cost": {
+    "estimated_usd": 1.8754056,
+    "reported_usd": 0.9377027999999996,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 31,
+    "loc": 6269,
+    "dependencies": 38,
+    "largest_file": {
+      "path": "backend/internal/api/handlers_requests.go",
+      "loc": 737
+    }
+  }
 }

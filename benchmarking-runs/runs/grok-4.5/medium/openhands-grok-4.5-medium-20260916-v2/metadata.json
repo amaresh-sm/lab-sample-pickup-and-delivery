@@ -20,5 +20,30 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-grok-4.5-medium-20260916-v2",
   "archive_path": "benchmarking-runs/runs/grok-4.5/medium/openhands-grok-4.5-medium-20260916-v2",
-  "archived_at": "2026-09-21T20:20:33.332566+00:00"
+  "archived_at": "2026-09-21T20:20:33.332566+00:00",
+  "usage": {
+    "source": "openhands",
+    "input_tokens": 10873882,
+    "cached_input_tokens": 10533120,
+    "cache_read_tokens": 10533120,
+    "cache_write_tokens": 0,
+    "output_tokens": 108824,
+    "reasoning_tokens": 1990,
+    "total_tokens": 10982706
+  },
+  "cost": {
+    "estimated_usd": 8.988808,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 35,
+    "loc": 14075,
+    "dependencies": 27,
+    "largest_file": {
+      "path": "scripts/write_service_read.py",
+      "loc": 1528
+    }
+  }
 }

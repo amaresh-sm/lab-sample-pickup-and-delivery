@@ -20,5 +20,31 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-gemini-3.7-flash-high-20260917-v2",
   "archive_path": "benchmarking-runs/runs/gemini-3.7-flash/high/openhands-gemini-3.7-flash-high-20260917-v2",
-  "archived_at": "2026-09-21T20:20:47.494218+00:00"
+  "archived_at": "2026-09-21T20:20:47.494218+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 276,
+    "input_tokens": 36354457,
+    "cached_input_tokens": 33141493,
+    "cache_read_tokens": 33141493,
+    "cache_write_tokens": 0,
+    "output_tokens": 191023,
+    "reasoning_tokens": 0,
+    "total_tokens": 36597987
+  },
+  "cost": {
+    "estimated_usd": 3.927058675,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 49,
+    "loc": 13408,
+    "dependencies": 18,
+    "largest_file": {
+      "path": "backend/internal/services/operations.go",
+      "loc": 736
+    }
+  }
 }

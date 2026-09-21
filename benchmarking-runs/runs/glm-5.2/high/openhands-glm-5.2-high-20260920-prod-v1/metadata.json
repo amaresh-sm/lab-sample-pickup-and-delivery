@@ -20,5 +20,31 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-glm-5.2-high-20260920-prod-v1",
   "archive_path": "benchmarking-runs/runs/glm-5.2/high/openhands-glm-5.2-high-20260920-prod-v1",
-  "archived_at": "2026-09-21T20:20:41.273969+00:00"
+  "archived_at": "2026-09-21T20:20:41.273969+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 260,
+    "input_tokens": 8849667,
+    "cached_input_tokens": 8469696,
+    "cache_read_tokens": 8469696,
+    "cache_write_tokens": 0,
+    "output_tokens": 103260,
+    "reasoning_tokens": 11515,
+    "total_tokens": 8952927
+  },
+  "cost": {
+    "estimated_usd": 3.18842436,
+    "reported_usd": 3.188424359999999,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 25,
+    "loc": 5557,
+    "dependencies": 10,
+    "largest_file": {
+      "path": "backend/ops_read.go",
+      "loc": 745
+    }
+  }
 }

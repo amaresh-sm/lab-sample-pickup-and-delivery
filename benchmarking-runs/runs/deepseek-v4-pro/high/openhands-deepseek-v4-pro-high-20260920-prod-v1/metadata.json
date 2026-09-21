@@ -20,5 +20,31 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-deepseek-v4-pro-high-20260920-prod-v1",
   "archive_path": "benchmarking-runs/runs/deepseek-v4-pro/high/openhands-deepseek-v4-pro-high-20260920-prod-v1",
-  "archived_at": "2026-09-21T20:20:48.669819+00:00"
+  "archived_at": "2026-09-21T20:20:48.669819+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 865,
+    "input_tokens": 29554349,
+    "cached_input_tokens": 24965120,
+    "cache_read_tokens": 24965120,
+    "cache_write_tokens": 0,
+    "output_tokens": 539041,
+    "reasoning_tokens": 301152,
+    "total_tokens": 30093390
+  },
+  "cost": {
+    "estimated_usd": 4.64542496,
+    "reported_usd": 14.824373620000014,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 32,
+    "loc": 8221,
+    "dependencies": 28,
+    "largest_file": {
+      "path": "backend/handlers/handlers.go",
+      "loc": 3303
+    }
+  }
 }

@@ -29,8 +29,8 @@
     "source": "gateway",
     "requests": 326,
     "input_tokens": 22229156,
-    "cached_input_tokens": 0,
-    "cache_read_tokens": 0,
+    "cached_input_tokens": 21114313,
+    "cache_read_tokens": 21114313,
     "cache_write_tokens": 0,
     "output_tokens": 209392,
     "reasoning_tokens": 26403,
@@ -51,7 +51,7 @@
       "source": "openhands"
     },
     "custom_estimation": {
-      "amount_usd": 69.828348,
+      "amount_usd": 12.8197029,
       "currency": "USD",
       "status": "estimated",
       "source": "custom_pricing_table",
@@ -68,6 +68,14 @@
         "cache_read_usd_per_million": 0.3,
         "cache_write_usd_per_million": null,
         "note": "~Claude Sonnet public tier"
+      },
+      "cache_backfill": {
+        "status": "applied",
+        "ratio": 0.94984772,
+        "ratio_source": "global_median_fallback",
+        "previous_cached_input_tokens": 0,
+        "previous_cache_read_tokens": 0,
+        "updated_at": "2026-09-21T20:46:23.853933Z"
       }
     }
   },
@@ -110,5 +118,13 @@
   },
   "archive_source": "logs/openhands/telemetry.json",
   "run_id": "openhands-1789963426",
-  "reasoning": "medium"
+  "reasoning": "medium",
+  "cache_backfill": {
+    "status": "applied",
+    "ratio": 0.94984772,
+    "ratio_source": "global_median_fallback",
+    "previous_cached_input_tokens": 0,
+    "previous_cache_read_tokens": 0,
+    "updated_at": "2026-09-21T20:46:23.853933Z"
+  }
 }

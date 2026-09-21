@@ -12,5 +12,21 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/repaired/openhands-glm-5.2-high-20260919-v2",
   "archive_path": "benchmarking-runs/runs/glm-5.2/high/openhands-glm-5.2-high-20260919-v2",
-  "archived_at": "2026-09-21T20:20:45.132505+00:00"
+  "archived_at": "2026-09-21T20:20:45.132505+00:00",
+  "usage": {},
+  "cost": {
+    "estimated_usd": null,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 23,
+    "loc": 5301,
+    "dependencies": 17,
+    "largest_file": {
+      "path": "internal/app/handlers_workflow.go",
+      "loc": 844
+    }
+  }
 }

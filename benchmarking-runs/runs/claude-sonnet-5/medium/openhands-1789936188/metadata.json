@@ -20,5 +20,39 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-1789936188",
   "archive_path": "benchmarking-runs/runs/claude-sonnet-5/medium/openhands-1789936188",
-  "archived_at": "2026-09-21T20:20:39.550587+00:00"
+  "archived_at": "2026-09-21T20:20:39.550587+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 374,
+    "input_tokens": 29591042,
+    "cached_input_tokens": 28106983,
+    "cache_read_tokens": 28106983,
+    "cache_write_tokens": 0,
+    "output_tokens": 235935,
+    "reasoning_tokens": 31896,
+    "total_tokens": 29826977
+  },
+  "cost": {
+    "estimated_usd": 16.4232969,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "cache_backfill": {
+    "status": "applied",
+    "ratio": 0.94984772,
+    "ratio_source": "global_median_fallback",
+    "previous_cached_input_tokens": 0,
+    "previous_cache_read_tokens": 0,
+    "updated_at": "2026-09-21T20:46:23.853933Z"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 45,
+    "loc": 6341,
+    "dependencies": 19,
+    "largest_file": {
+      "path": "backend/internal/api/handlers_read.go",
+      "loc": 869
+    }
+  }
 }

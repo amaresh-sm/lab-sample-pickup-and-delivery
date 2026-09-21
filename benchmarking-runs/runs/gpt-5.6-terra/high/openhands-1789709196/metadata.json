@@ -20,5 +20,39 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-1789709196",
   "archive_path": "benchmarking-runs/runs/gpt-5.6-terra/high/openhands-1789709196",
-  "archived_at": "2026-09-21T20:20:45.641660+00:00"
+  "archived_at": "2026-09-21T20:20:45.641660+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 61,
+    "input_tokens": 2793080,
+    "cached_input_tokens": 2653000,
+    "cache_read_tokens": 2653000,
+    "cache_write_tokens": 0,
+    "output_tokens": 37629,
+    "reasoning_tokens": 0,
+    "total_tokens": 2830709
+  },
+  "cost": {
+    "estimated_usd": 0.883015,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "cache_backfill": {
+    "status": "applied",
+    "ratio": 0.94984772,
+    "ratio_source": "global_median_fallback",
+    "previous_cached_input_tokens": 0,
+    "previous_cache_read_tokens": 0,
+    "updated_at": "2026-09-21T20:50:02.672645Z"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 6,
+    "loc": 1539,
+    "dependencies": 0,
+    "largest_file": {
+      "path": "cmd/lab/main.go",
+      "loc": 1483
+    }
+  }
 }

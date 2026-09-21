@@ -20,5 +20,39 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-grok-4.6-medium-20260920-dev-v1",
   "archive_path": "benchmarking-runs/runs/grok-4.6/medium/openhands-grok-4.6-medium-20260920-dev-v1",
-  "archived_at": "2026-09-21T20:20:37.384733+00:00"
+  "archived_at": "2026-09-21T20:20:37.384733+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 770,
+    "input_tokens": 56160748,
+    "cached_input_tokens": 53344158,
+    "cache_read_tokens": 53344158,
+    "cache_write_tokens": 0,
+    "output_tokens": 1110839,
+    "reasoning_tokens": 0,
+    "total_tokens": 57271587
+  },
+  "cost": {
+    "estimated_usd": 38.970293,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "cache_backfill": {
+    "status": "applied",
+    "ratio": 0.94984772,
+    "ratio_source": "global_median_fallback",
+    "previous_cached_input_tokens": 0,
+    "previous_cache_read_tokens": 0,
+    "updated_at": "2026-09-21T20:50:02.672645Z"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 16,
+    "loc": 6584,
+    "dependencies": 24,
+    "largest_file": {
+      "path": "backend/handlers_ops.go",
+      "loc": 1966
+    }
+  }
 }

@@ -20,5 +20,39 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-gpt-5.6-luna-high",
   "archive_path": "benchmarking-runs/runs/gpt-5.6-luna/high/openhands-gpt-5.6-luna-high",
-  "archived_at": "2026-09-21T20:20:45.137157+00:00"
+  "archived_at": "2026-09-21T20:20:45.137157+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 58,
+    "input_tokens": 3794425,
+    "cached_input_tokens": 3604703,
+    "cache_read_tokens": 3604703,
+    "cache_write_tokens": 0,
+    "output_tokens": 41480,
+    "reasoning_tokens": 0,
+    "total_tokens": 3835905
+  },
+  "cost": {
+    "estimated_usd": 1.102540375,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "cache_backfill": {
+    "status": "applied",
+    "ratio": 0.95,
+    "ratio_source": "model_median",
+    "previous_cached_input_tokens": 0,
+    "previous_cache_read_tokens": 0,
+    "updated_at": "2026-09-21T20:46:23.853933Z"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 11,
+    "loc": 1659,
+    "dependencies": 5,
+    "largest_file": {
+      "path": "backend/handlers.go",
+      "loc": 377
+    }
+  }
 }

@@ -20,5 +20,31 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-1789817282",
   "archive_path": "benchmarking-runs/runs/minimax-m3/high/openhands-1789817282",
-  "archived_at": "2026-09-21T20:20:49.400368+00:00"
+  "archived_at": "2026-09-21T20:20:49.400368+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 234,
+    "input_tokens": 8559001,
+    "cached_input_tokens": 8096640,
+    "cache_read_tokens": 8096640,
+    "cache_write_tokens": 0,
+    "output_tokens": 102927,
+    "reasoning_tokens": 2282,
+    "total_tokens": 8661928
+  },
+  "cost": {
+    "estimated_usd": 1.4960382,
+    "reported_usd": 0.7480191000000003,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 16,
+    "loc": 5630,
+    "dependencies": 19,
+    "largest_file": {
+      "path": "internal/api/work_handlers.go",
+      "loc": 1391
+    }
+  }
 }

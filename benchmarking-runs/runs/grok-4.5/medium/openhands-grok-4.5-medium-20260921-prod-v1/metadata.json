@@ -20,5 +20,31 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-grok-4.5-medium-20260921-prod-v1",
   "archive_path": "benchmarking-runs/runs/grok-4.5/medium/openhands-grok-4.5-medium-20260921-prod-v1",
-  "archived_at": "2026-09-21T20:20:40.351696+00:00"
+  "archived_at": "2026-09-21T20:20:40.351696+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 233,
+    "input_tokens": 13462521,
+    "cached_input_tokens": 12317568,
+    "cache_read_tokens": 12317568,
+    "cache_write_tokens": 0,
+    "output_tokens": 217671,
+    "reasoning_tokens": 13309,
+    "total_tokens": 13680192
+  },
+  "cost": {
+    "estimated_usd": 7.2912024,
+    "reported_usd": 7.291202399999999,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 34,
+    "loc": 8371,
+    "dependencies": 23,
+    "largest_file": {
+      "path": "frontend/src/App.tsx",
+      "loc": 1547
+    }
+  }
 }

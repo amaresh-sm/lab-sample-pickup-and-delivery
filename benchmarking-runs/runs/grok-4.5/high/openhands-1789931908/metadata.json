@@ -20,5 +20,31 @@
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-1789931908",
   "archive_path": "benchmarking-runs/runs/grok-4.5/high/openhands-1789931908",
-  "archived_at": "2026-09-21T20:20:37.199516+00:00"
+  "archived_at": "2026-09-21T20:20:37.199516+00:00",
+  "usage": {
+    "source": "gateway",
+    "requests": 162,
+    "input_tokens": 10563763,
+    "cached_input_tokens": 9729920,
+    "cache_read_tokens": 9729920,
+    "cache_write_tokens": 0,
+    "output_tokens": 161832,
+    "reasoning_tokens": 6999,
+    "total_tokens": 10725595
+  },
+  "cost": {
+    "estimated_usd": 5.557654,
+    "reported_usd": 5.5576539999999985,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 2104,
+    "loc": 1231919,
+    "dependencies": 70,
+    "largest_file": {
+      "path": ".gopath/pkg/mod/golang.org/x/text@v0.21.0/date/tables.go",
+      "loc": 75291
+    }
+  }
 }

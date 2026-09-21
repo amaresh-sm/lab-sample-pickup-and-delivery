@@ -33,5 +33,67 @@
   "archive_source": "telemetry.json",
   "run_id": "openhands-grok-4.6-high-20260920-dev-v2",
   "model": "grok-4.6",
-  "reasoning": "high"
+  "reasoning": "high",
+  "usage": {
+    "source": "archived_gateway_responses",
+    "requests": 728,
+    "input_tokens": 53275431,
+    "cached_input_tokens": 50603546,
+    "cache_read_tokens": 50603546,
+    "cache_write_tokens": 0,
+    "output_tokens": 974192,
+    "reasoning_tokens": 0,
+    "total_tokens": 54249623
+  },
+  "tools": {
+    "total": 2390,
+    "source": "archived_gateway_responses"
+  },
+  "timing": {
+    "duration_ms": 10202445,
+    "llm_requests": {
+      "count": 728,
+      "source": "archived_gateway_responses"
+    }
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "archived_gateway_responses",
+      "responses_with_cost": 0
+    },
+    "custom_estimation": {
+      "amount_usd": 36.490695,
+      "currency": "USD",
+      "status": "estimated",
+      "source": "custom_pricing_table",
+      "model": "openai/grok-4.6",
+      "normalized_model": "grok-4.6",
+      "requests": 728,
+      "requests_with_usage": 728,
+      "requests_missing_usage": 0,
+      "usage_source": "archived_gateway_responses",
+      "pricing": {
+        "input_usd_per_million": 2.0,
+        "output_usd_per_million": 6.0,
+        "cache_read_usd_per_million": 0.5,
+        "cache_write_usd_per_million": null,
+        "note": "xAI API pricing; long context >= 200K tokens",
+        "long_context_threshold_tokens": 200000,
+        "long_context": {
+          "input_usd_per_million": 4.0,
+          "output_usd_per_million": 12.0,
+          "cache_read_usd_per_million": 1.0
+        }
+      }
+    }
+  },
+  "legacy_telemetry_normalization": {
+    "status": "applied",
+    "usage_source": "archived_gateway_responses",
+    "cache_read_source": "model_median_backfill",
+    "cache_read_ratio": 0.9498477155398415
+  }
 }

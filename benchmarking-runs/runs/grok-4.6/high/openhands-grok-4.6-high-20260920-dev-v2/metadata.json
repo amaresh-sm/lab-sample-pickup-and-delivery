@@ -15,11 +15,37 @@
   "finished_at": "2026-09-20T18:19:37.486614+00:00",
   "duration_seconds": 10202.445,
   "container_cleaned": false,
-  "error": "manually killed after 3+ hours — condensation loop on compile error; no max_iterations cap",
+  "error": "manually killed after 3+ hours \u2014 condensation loop on compile error; no max_iterations cap",
   "score": 0.682358727,
   "hard_pass": false,
   "score_source": "scores.json",
   "source_run_path": "benchmarking-candidates/openhands-grok-4.6-high-20260920-dev-v2",
   "archive_path": "benchmarking-runs/runs/grok-4.6/high/openhands-grok-4.6-high-20260920-dev-v2",
-  "archived_at": "2026-09-21T20:20:31.803644+00:00"
+  "archived_at": "2026-09-21T20:20:31.803644+00:00",
+  "usage": {
+    "source": "archived_gateway_responses",
+    "requests": 728,
+    "input_tokens": 53275431,
+    "cached_input_tokens": 50603546,
+    "cache_read_tokens": 50603546,
+    "cache_write_tokens": 0,
+    "output_tokens": 974192,
+    "reasoning_tokens": 0,
+    "total_tokens": 54249623
+  },
+  "cost": {
+    "estimated_usd": 36.490695,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 15,
+    "loc": 5774,
+    "dependencies": 14,
+    "largest_file": {
+      "path": "backend/handlers_work.go",
+      "loc": 1151
+    }
+  }
 }
