@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T22:19:24.031478",
+  "generated_at": "2026-09-22T01:43:47.303068",
   "verifier_commit": "post-hardening-6-lifecycle-tests",
   "scoring_weights": {
     "api-contract-artifact": 0.02,
@@ -9,7 +9,7 @@
     "ui-contract-audit": 0.01,
     "reliability": 0.32
   },
-  "total_candidates": 66,
+  "total_candidates": 64,
   "candidates": [
     {
       "run_id": "openhands-grok-4.6-medium",
@@ -116,7 +116,7 @@
           "awarded": 0.2561764706
         }
       },
-      "duration_s": null,
+      "duration_s": 10202.445,
       "changed_files": null
     },
     {
@@ -170,7 +170,7 @@
           "awarded": 0.2331862745
         }
       },
-      "duration_s": null,
+      "duration_s": 6237.196,
       "changed_files": null
     },
     {
@@ -224,7 +224,7 @@
           "awarded": 0.2022058824
         }
       },
-      "duration_s": null,
+      "duration_s": 2125.712,
       "changed_files": null
     },
     {
@@ -278,7 +278,7 @@
           "awarded": 0.1958823529
         }
       },
-      "duration_s": null,
+      "duration_s": 1933.954,
       "changed_files": null
     },
     {
@@ -332,7 +332,7 @@
           "awarded": 0.1839705882
         }
       },
-      "duration_s": null,
+      "duration_s": 8072.073,
       "changed_files": null
     },
     {
@@ -386,7 +386,7 @@
           "awarded": 0.1231372549
         }
       },
-      "duration_s": null,
+      "duration_s": 4494.812,
       "changed_files": null
     },
     {
@@ -440,7 +440,7 @@
           "awarded": 0.1135784314
         }
       },
-      "duration_s": null,
+      "duration_s": 2273.861,
       "changed_files": null
     },
     {
@@ -494,7 +494,7 @@
           "awarded": 0.1469281046
         }
       },
-      "duration_s": null,
+      "duration_s": 10361.23,
       "changed_files": null
     },
     {
@@ -548,7 +548,7 @@
           "awarded": 0.135
         }
       },
-      "duration_s": null,
+      "duration_s": 978.558,
       "changed_files": null
     },
     {
@@ -602,7 +602,7 @@
           "awarded": 0.1158333333
         }
       },
-      "duration_s": null,
+      "duration_s": 2828.734,
       "changed_files": null
     },
     {
@@ -656,7 +656,7 @@
           "awarded": 0.0893137255
         }
       },
-      "duration_s": null,
+      "duration_s": 2989.199,
       "changed_files": null
     },
     {
@@ -710,7 +710,7 @@
           "awarded": 0.1012254902
         }
       },
-      "duration_s": null,
+      "duration_s": 875.949,
       "changed_files": null
     },
     {
@@ -764,7 +764,7 @@
           "awarded": 0.1527941176
         }
       },
-      "duration_s": null,
+      "duration_s": 2714.578,
       "changed_files": null
     },
     {
@@ -818,7 +818,7 @@
           "awarded": 0.1067156863
         }
       },
-      "duration_s": null,
+      "duration_s": 11448.351,
       "changed_files": null
     },
     {
@@ -872,7 +872,7 @@
           "awarded": 0.1140686275
         }
       },
-      "duration_s": null,
+      "duration_s": 5504.195,
       "changed_files": null
     },
     {
@@ -926,7 +926,7 @@
           "awarded": 0.1238235294
         }
       },
-      "duration_s": null,
+      "duration_s": 1944.715,
       "changed_files": null
     },
     {
@@ -980,7 +980,7 @@
           "awarded": 0.1040686275
         }
       },
-      "duration_s": null,
+      "duration_s": 3555.592,
       "changed_files": null
     },
     {
@@ -1034,7 +1034,7 @@
           "awarded": 0.1164705882
         }
       },
-      "duration_s": null,
+      "duration_s": 4132.436,
       "changed_files": null
     },
     {
@@ -1088,7 +1088,7 @@
           "awarded": 0.1112254902
         }
       },
-      "duration_s": null,
+      "duration_s": 3473.647,
       "changed_files": null
     },
     {
@@ -1142,7 +1142,7 @@
           "awarded": 0.0774019608
         }
       },
-      "duration_s": null,
+      "duration_s": 2350.875,
       "changed_files": null
     },
     {
@@ -1196,7 +1196,7 @@
           "awarded": 0.0829901961
         }
       },
-      "duration_s": null,
+      "duration_s": 1611.117,
       "changed_files": null
     },
     {
@@ -1250,7 +1250,7 @@
           "awarded": 0.1062254902
         }
       },
-      "duration_s": null,
+      "duration_s": 4916.153,
       "changed_files": null
     },
     {
@@ -1304,7 +1304,7 @@
           "awarded": 0.0908333333
         }
       },
-      "duration_s": null,
+      "duration_s": 694.53,
       "changed_files": null
     },
     {
@@ -1358,7 +1358,7 @@
           "awarded": 0.0482352941
         }
       },
-      "duration_s": null,
+      "duration_s": 1605.658,
       "changed_files": null
     },
     {
@@ -1412,7 +1412,7 @@
           "awarded": 0.0839705882
         }
       },
-      "duration_s": null,
+      "duration_s": 12278.427,
       "changed_files": null
     },
     {
@@ -1466,7 +1466,7 @@
           "awarded": 0.0660784314
         }
       },
-      "duration_s": null,
+      "duration_s": 2583.088,
       "changed_files": null
     },
     {
@@ -1520,7 +1520,7 @@
           "awarded": 0.045
         }
       },
-      "duration_s": null,
+      "duration_s": 594.593,
       "changed_files": null
     },
     {
@@ -1574,61 +1574,7 @@
           "awarded": 0.0458333333
         }
       },
-      "duration_s": null,
-      "changed_files": null
-    },
-    {
-      "run_id": "openhands-gpt-5.6-sol-high-20260919-v1",
-      "run_path": "benchmarking-candidates/openhands-gpt-5.6-sol-high-20260919-v1",
-      "model": "gpt-5.6-sol",
-      "reasoning": "high",
-      "score": 0.2693885762,
-      "hard_pass": false,
-      "criteria": {
-        "api-contract-artifact": {
-          "status": "pass",
-          "score": 1.0,
-          "weight": 0.02,
-          "blocked_policy": "zero",
-          "awarded": 0.02
-        },
-        "runtime-contract": {
-          "status": "partial",
-          "score": 0.5517,
-          "weight": 0.06,
-          "blocked_policy": "zero",
-          "awarded": 0.033102
-        },
-        "backend-behavior": {
-          "status": "partial",
-          "score": 0.3256410256,
-          "weight": 0.47,
-          "blocked_policy": "zero",
-          "awarded": 0.1530512821
-        },
-        "ui-behavior": {
-          "status": "blocked",
-          "score": 0.0,
-          "weight": 0.12,
-          "blocked_policy": "zero",
-          "awarded": 0.0
-        },
-        "ui-contract-audit": {
-          "status": "blocked",
-          "score": 0.0,
-          "weight": 0.01,
-          "blocked_policy": "zero",
-          "awarded": 0.0
-        },
-        "reliability": {
-          "status": "partial",
-          "score": 0.1976102941,
-          "weight": 0.32,
-          "blocked_policy": "zero",
-          "awarded": 0.0632352941
-        }
-      },
-      "duration_s": null,
+      "duration_s": 409.727,
       "changed_files": null
     },
     {
@@ -1682,7 +1628,7 @@
           "awarded": 0.0344117647
         }
       },
-      "duration_s": null,
+      "duration_s": 3250.814,
       "changed_files": null
     },
     {
@@ -1736,7 +1682,7 @@
           "awarded": 0.0394117647
         }
       },
-      "duration_s": null,
+      "duration_s": 4575.96,
       "changed_files": null
     },
     {
@@ -1844,7 +1790,7 @@
           "awarded": 0.0745588235
         }
       },
-      "duration_s": null,
+      "duration_s": 596.056,
       "changed_files": null
     },
     {
@@ -1898,7 +1844,7 @@
           "awarded": 0.025
         }
       },
-      "duration_s": null,
+      "duration_s": 1058.31,
       "changed_files": null
     },
     {
@@ -1952,7 +1898,7 @@
           "awarded": 0.0607352941
         }
       },
-      "duration_s": null,
+      "duration_s": 315.786,
       "changed_files": null
     },
     {
@@ -2006,7 +1952,7 @@
           "awarded": 0.0685784314
         }
       },
-      "duration_s": null,
+      "duration_s": 638.642,
       "changed_files": null
     },
     {
@@ -2060,7 +2006,7 @@
           "awarded": 0.0325
         }
       },
-      "duration_s": null,
+      "duration_s": 408.916,
       "changed_files": null
     },
     {
@@ -2114,7 +2060,7 @@
           "awarded": 0.015
         }
       },
-      "duration_s": null,
+      "duration_s": 645.219,
       "changed_files": null
     },
     {
@@ -2168,7 +2114,7 @@
           "awarded": 0.0344117647
         }
       },
-      "duration_s": null,
+      "duration_s": 2236.052,
       "changed_files": null
     },
     {
@@ -2222,7 +2168,7 @@
           "awarded": 0.005
         }
       },
-      "duration_s": null,
+      "duration_s": 6424.969,
       "changed_files": null
     },
     {
@@ -2276,7 +2222,7 @@
           "awarded": 0.0626470588
         }
       },
-      "duration_s": null,
+      "duration_s": 178.028,
       "changed_files": null
     },
     {
@@ -2330,7 +2276,7 @@
           "awarded": 0.015
         }
       },
-      "duration_s": null,
+      "duration_s": 1329.882,
       "changed_files": null
     },
     {
@@ -2384,7 +2330,7 @@
           "awarded": 0.0125
         }
       },
-      "duration_s": null,
+      "duration_s": 2511.179,
       "changed_files": null
     },
     {
@@ -2438,7 +2384,7 @@
           "awarded": 0.005
         }
       },
-      "duration_s": null,
+      "duration_s": 1752.842,
       "changed_files": null
     },
     {
@@ -2492,7 +2438,7 @@
           "awarded": 0.005
         }
       },
-      "duration_s": null,
+      "duration_s": 2684.666,
       "changed_files": null
     },
     {
@@ -2546,7 +2492,7 @@
           "awarded": 0.0225
         }
       },
-      "duration_s": null,
+      "duration_s": 1804.875,
       "changed_files": null
     },
     {
@@ -2600,7 +2546,7 @@
           "awarded": 0.0025
         }
       },
-      "duration_s": null,
+      "duration_s": 1182.47,
       "changed_files": null
     },
     {
@@ -2654,7 +2600,7 @@
           "awarded": 0.0169117647
         }
       },
-      "duration_s": null,
+      "duration_s": 215.02,
       "changed_files": null
     },
     {
@@ -2708,7 +2654,7 @@
           "awarded": 0.005
         }
       },
-      "duration_s": null,
+      "duration_s": 9024.813,
       "changed_files": null
     },
     {
@@ -2762,7 +2708,7 @@
           "awarded": 0.0
         }
       },
-      "duration_s": null,
+      "duration_s": 1568.888,
       "changed_files": null
     },
     {
@@ -2816,7 +2762,7 @@
           "awarded": 0.02
         }
       },
-      "duration_s": null,
+      "duration_s": 4648.465,
       "changed_files": null
     },
     {
@@ -2870,7 +2816,7 @@
           "awarded": 0.0025
         }
       },
-      "duration_s": null,
+      "duration_s": 1786.019,
       "changed_files": null
     },
     {
@@ -2978,7 +2924,7 @@
           "awarded": 0.01
         }
       },
-      "duration_s": null,
+      "duration_s": 1554.05,
       "changed_files": null
     },
     {
@@ -3032,7 +2978,7 @@
           "awarded": 0.0
         }
       },
-      "duration_s": null,
+      "duration_s": 2868.561,
       "changed_files": null
     },
     {
@@ -3086,7 +3032,7 @@
           "awarded": 0.01
         }
       },
-      "duration_s": null,
+      "duration_s": 1994.173,
       "changed_files": null
     },
     {
@@ -3140,7 +3086,7 @@
           "awarded": 0.0
         }
       },
-      "duration_s": null,
+      "duration_s": 1310.562,
       "changed_files": null
     },
     {
@@ -3194,7 +3140,7 @@
           "awarded": 0.0175
         }
       },
-      "duration_s": null,
+      "duration_s": 3173.975,
       "changed_files": null
     },
     {
@@ -3248,7 +3194,7 @@
           "awarded": 0.0
         }
       },
-      "duration_s": null,
+      "duration_s": 155.389,
       "changed_files": null
     },
     {
@@ -3302,7 +3248,7 @@
           "awarded": 0.01
         }
       },
-      "duration_s": null,
+      "duration_s": 5094.985,
       "changed_files": null
     },
     {
@@ -3356,61 +3302,7 @@
           "awarded": 0.0
         }
       },
-      "duration_s": null,
-      "changed_files": null
-    },
-    {
-      "run_id": "openhands-minimax-m3-high-20260919-v2",
-      "run_path": "benchmarking-candidates/openhands-minimax-m3-high-20260919-v2",
-      "model": "minimax-m3",
-      "reasoning": "high",
-      "score": 0.0589807692,
-      "hard_pass": false,
-      "criteria": {
-        "api-contract-artifact": {
-          "status": "fail",
-          "score": 0.0,
-          "weight": 0.02,
-          "blocked_policy": "zero",
-          "awarded": 0.0
-        },
-        "runtime-contract": {
-          "status": "partial",
-          "score": 0.5,
-          "weight": 0.06,
-          "blocked_policy": "zero",
-          "awarded": 0.03
-        },
-        "backend-behavior": {
-          "status": "partial",
-          "score": 0.0403846154,
-          "weight": 0.47,
-          "blocked_policy": "zero",
-          "awarded": 0.0189807692
-        },
-        "ui-behavior": {
-          "status": "fail",
-          "score": 0.0,
-          "weight": 0.12,
-          "blocked_policy": "zero",
-          "awarded": 0.0
-        },
-        "ui-contract-audit": {
-          "status": "pass",
-          "score": 1.0,
-          "weight": 0.01,
-          "blocked_policy": "zero",
-          "awarded": 0.01
-        },
-        "reliability": {
-          "status": "fail",
-          "score": 0.0,
-          "weight": 0.32,
-          "blocked_policy": "zero",
-          "awarded": 0.0
-        }
-      },
-      "duration_s": null,
+      "duration_s": 218.701,
       "changed_files": null
     },
     {
@@ -3464,7 +3356,7 @@
           "awarded": 0.0
         }
       },
-      "duration_s": null,
+      "duration_s": 221.063,
       "changed_files": null
     },
     {
@@ -3518,7 +3410,7 @@
           "awarded": 0.0
         }
       },
-      "duration_s": null,
+      "duration_s": 1021.681,
       "changed_files": null
     },
     {
@@ -3572,7 +3464,7 @@
           "awarded": 0.0
         }
       },
-      "duration_s": null,
+      "duration_s": 2390.692,
       "changed_files": null
     }
   ]
