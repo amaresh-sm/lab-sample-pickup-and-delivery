@@ -26,6 +26,18 @@ def integer(value: Any) -> str:
     return "unavailable" if not isinstance(value, (int, float)) else f"{int(value):,}"
 
 
+def compact_integer(value: Any) -> str:
+    """Format token counts using the compact K/M/B style used in benchmark tables."""
+    if not isinstance(value, (int, float)):
+        return "unavailable"
+    amount = float(value)
+    absolute = abs(amount)
+    for threshold, suffix in ((1_000_000_000, "B"), (1_000_000, "M"), (1_000, "K")):
+        if absolute >= threshold:
+            return f"{amount / threshold:.1f}{suffix}"
+    return f"{int(amount):,}"
+
+
 def money(value: Any) -> str:
     return "unavailable" if not isinstance(value, (int, float)) else f"${value:.2f}"
 
@@ -52,7 +64,7 @@ def token_breakdown(usage: dict[str, Any]) -> str:
     keys = ("input_tokens", "output_tokens", "reasoning_tokens", "cache_read_tokens")
     approximate = set(usage.get("approximate_fields", []))
     return "/".join(
-        ("≈" if key in approximate else "") + integer(usage.get(key))
+        ("≈" if key in approximate else "") + compact_integer(usage.get(key))
         for key in keys
     )
 
