@@ -1,0 +1,34 @@
+{
+  "task_id": "lab-sample-pickup-and-delivery",
+  "run_id": "openhands-1792160430",
+  "provider": "openhands",
+  "model": "gemini-4-argon",
+  "reasoning": "medium",
+  "image": "astra-candidate-generation:latest",
+  "started_at": "2026-10-16T14:23:22.960390+00:00",
+  "status": "completed",
+  "mounts": [
+    "candidate workspace:rw"
+  ],
+  "openhands_gateway_source_digest": "be9b11b412c1bb437a1babc1b07ed3100cb24518045ab1f89a1064d919c8c747",
+  "exit_code": 0,
+  "finished_at": "2026-10-16T16:04:32.159978+00:00",
+  "duration_seconds": 6069.177,
+  "container_cleaned": true,
+  "usage": {},
+  "cost": {
+    "estimated_usd": null,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "core_metrics": {
+    "status": "available",
+    "files": 25,
+    "loc": 13162,
+    "dependencies": 25,
+    "largest_file": {
+      "path": "backend/internal/api/handlers_workflow.go",
+      "loc": 2163
+    }
+  }
+}

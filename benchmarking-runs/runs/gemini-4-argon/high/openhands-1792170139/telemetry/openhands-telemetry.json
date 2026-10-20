@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "tokens": {
+    "input": null,
+    "output": null,
+    "cached_input": null,
+    "total": null,
+    "source": "unavailable"
+  },
+  "tool_calls": {
+    "total": null,
+    "by_type": {
+      "read": null,
+      "shell": null,
+      "edit": null,
+      "write": null,
+      "other": null
+    },
+    "source": "unavailable"
+  },
+  "solution_size": {
+    "workspace_source_files": 19,
+    "workspace_source_lines": 11065,
+    "workspace_test_files": 0,
+    "workspace_test_lines": 0,
+    "agent_changed_files": 28,
+    "agent_changed_source_files": 19,
+    "agent_changed_source_lines": 11065
+  },
+  "duration_seconds": 6508.833,
+  "started_at": "2026-10-16T17:02:37.774334+00:00",
+  "finished_at": "2026-10-16T18:51:06.635035+00:00"
+}

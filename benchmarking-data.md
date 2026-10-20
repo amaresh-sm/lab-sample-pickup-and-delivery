@@ -1,22 +1,40 @@
-# Benchmarking Data - Lab Sample Pickup and Delivery
+# Benchmarking Data
+
+Generated only from `benchmarking-runs` metadata, telemetry, and score artifacts. Token is normalized input + output; cached input is already included in input. Estimated cost is the archived custom estimate calculated from normalized input, output, cache-read, and cache-write token usage. `unavailable` means the original archived run retained no evidence for that metric and has not been inferred. Core file metrics exclude generated/dependency/cache output, lockfiles, logs, database dumps/migrations, and contracts.
 
 | Run-name (unique Id) | Model Name | Reasoning | score | Token (input/output/reasoning/cache-read) | tool calls | Iteration steps | Est cost | Reported cost | Duration | Total Files | Loc | deps | largest file |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| openhands-1792162256 | claude-fable-5-1 | high | 0.8569 | unavailable/unavailable/unavailable/unavailable | unavailable | unavailable | unavailable | unavailable | 5959.4s | 280 | 319,888 | 17 | .pytools/playwright/driver/package/lib/utilsBundle.js (86078 LOC) |
+| openhands-1792175416 | claude-fable-5-1 | medium | 0.8212 | unavailable/unavailable/unavailable/unavailable | unavailable | unavailable | unavailable | unavailable | 5375.0s | 55 | 13,054 | 17 | backend/internal/core/views.go (1148 LOC) |
+| openhands-1792170137 | gemini-4-argon | high | 0.8019 | unavailable/unavailable/unavailable/unavailable | unavailable | unavailable | unavailable | unavailable | 7211.0s | 17 | 11,049 | 16 | backend/handlers_requests_work.go (2389 LOC) |
+| openhands-1792160430 | gemini-4-argon | medium | 0.7800 | unavailable/unavailable/unavailable/unavailable | unavailable | unavailable | unavailable | unavailable | 6069.2s | 25 | 13,162 | 25 | backend/internal/api/handlers_workflow.go (2163 LOC) |
+| openhands-1792170141 | claude-fable-5-1 | high | 0.7782 | unavailable/unavailable/unavailable/unavailable | unavailable | unavailable | unavailable | unavailable | 6062.2s | 40 | 12,730 | 17 | backend/internal/app/dispatch.go (1564 LOC) |
+| openhands-1792170139 | gemini-4-argon | high | 0.7442 | unavailable/unavailable/unavailable/unavailable | unavailable | unavailable | unavailable | unavailable | 6508.8s | 19 | 11,065 | 16 | backend/internal/handlers_workflow.go (2339 LOC) |
+| openhands-1790164164 | gpt-6-astra | high | 0.7281 | 12.6M/136.9K/20.2K/12.1M | 140 | 144 | unavailable | unavailable | 3557.2s | 23 | 3,789 | 20 | backend/planner.go (583 LOC) |
+| openhands-1792175415 | claude-fable-5-1 | medium | 0.7259 | unavailable/unavailable/unavailable/unavailable | unavailable | unavailable | unavailable | unavailable | 4859.5s | 41 | 11,203 | 16 | backend/internal/app/replan.go (1116 LOC) |
 | openhands-grok-4.6-medium | grok-4.6 | medium | 0.6976 | ≈6.7M/≈133.1K/unavailable/0 | 95 | 99 | ≈$14.26 | unavailable | ≈3561.4s | 29 | 7,698 | 23 | backend/ops.go (1428 LOC) |
+| openhands-1792133165 | gemini-4-argon | medium | 0.6960 | 25.1M/387.0K/0/22.6M | 306 | 322 | unavailable | unavailable | 8070.9s | 16 | 11,325 | 17 | backend/handlers_sample.go (2371 LOC) |
 | openhands-grok-4.6-high-20260920-dev-v2 | grok-4.6 | high | 0.6824 | 53.3M/974.2K/0/50.6M | 2,390 | 728 | $36.49 | unavailable | 10202.4s | 15 | 5,774 | 14 | backend/handlers_work.go (1151 LOC) |
 | openhands-1789971385 | claude-opus-5 | medium | 0.6546 | 35.2M/446.4K/40.1K/33.4M | 417 | 430 | $110.11 | unavailable | 6235.2s | 60 | 15,744 | 18 | backend/internal/app/handlers_journey.go (1112 LOC) |
+| openhands-1789978264 | claude-opus-5 | high | 0.6219 | unavailable/unavailable/unavailable/unavailable | unavailable | unavailable | unavailable | unavailable | 8761.3s | unavailable | unavailable | unavailable | — |
+| openhands-1789981935 | claude-opus-5 | high | 0.5983 | unavailable/unavailable/unavailable/unavailable | unavailable | unavailable | unavailable | unavailable | 8394.4s | unavailable | unavailable | unavailable | — |
 | openhands-grok-4.5-medium-20260916-v2 | grok-4.5 | medium | 0.5750 | 10.9M/108.8K/2.0K/10.5M | 90 | 90 | $8.99 | unavailable | 2123.4s | 35 | 14,075 | 27 | scripts/write_service_read.py (1528 LOC) |
+| openhands-1789986547 | claude-sonnet-5 | high | 0.5547 | unavailable/unavailable/unavailable/unavailable | unavailable | unavailable | unavailable | unavailable | 4812.3s | unavailable | unavailable | unavailable | — |
 | openhands-grok-4.5-high-20260916-v3 | grok-4.5 | high | 0.5252 | 10.0M/116.3K/3.0K/9.7M | 91 | 75 | $4.78 | $4.78 | 1931.2s | 25 | 7,577 | 25 | backend/internal/service/samples.go (1152 LOC) |
 | openhands-1789967852 | claude-opus-5 | high | 0.5249 | 41.9M/535.8K/154.6K/39.8M | 562 | 567 | $131.31 | unavailable | 8069.6s | 35 | 11,916 | 6 | backend/internal/core/replan.go (1051 LOC) |
+| openhands-1789979817 | claude-opus-5 | medium | 0.5110 | unavailable/unavailable/unavailable/unavailable | unavailable | unavailable | unavailable | unavailable | 5821.3s | unavailable | unavailable | unavailable | — |
 | openhands-kimi-k3-high-20260920-prod-v3 | kimi-k3 | high | 0.4872 | 25.1M/316.2K/77.5K/23.2M | 622 | 623 | $17.41 | $17.41 | 4493.0s | 32 | 10,154 | 11 | server/handlers_dispatch.go (1281 LOC) |
 | openhands-glm-5.2-high-20260917-v2 | glm-5.2 | high | 0.4824 | 39.9M/132.1K/431/39.3M | 256 | 286 | $11.64 | $10.76 | 2270.8s | 51 | 7,897 | 24 | backend/internal/api/handlers_request.go (731 LOC) |
+| openhands-1789989312 | claude-sonnet-5 | high | 0.4802 | unavailable/unavailable/unavailable/unavailable | unavailable | unavailable | unavailable | unavailable | 4127.3s | unavailable | unavailable | unavailable | — |
 | openhands-kimi-k3-high-20260919-v1 | kimi-k3 | high | 0.4775 | 28.9M/400.0K/111.0K/27.6M | 724 | 677 | $18.21 | $18.21 | 10357.9s | 33 | 10,226 | 12 | backend/ops_dispatch.go (1376 LOC) |
 | openhands-gpt-5.6-sol-medium-20260919-queue-v1 | gpt-5.6-sol | medium | 0.4724 | 2.6M/57.9K/4.0K/2.4M | 80 | 60 | $1.09 | unavailable | 977.0s | 15 | 2,134 | 18 | backend/ops.go (390 LOC) |
 | openhands-1789739130 | gpt-5.6-sol | high | 0.4720 | 8.7M/117.7K/16.0K/8.1M | 254 | 201 | $2.97 | unavailable | 2827.0s | 19 | 2,869 | 19 | backend/handlers_workflow.go (670 LOC) |
+| openhands-1789984206 | claude-opus-5 | medium | 0.4450 | unavailable/unavailable/unavailable/unavailable | unavailable | unavailable | unavailable | unavailable | 5312.2s | unavailable | unavailable | unavailable | — |
 | openhands-1789963426 | claude-sonnet-5 | medium | 0.4322 | 22.2M/209.4K/26.4K/21.1M | 317 | 326 | $12.82 | unavailable | 2986.2s | 57 | 6,828 | 22 | backend/internal/server/handlers_sample_lifecycle.go (332 LOC) |
 | openhands-gpt-5.6-sol-medium-20260919-v2 | gpt-5.6-sol | medium | 0.4239 | 2.6M/53.9K/3.8K/2.4M | 75 | 60 | $1.05 | unavailable | 873.1s | 9 | 1,945 | 17 | backend/main.go (1867 LOC) |
 | openhands-1789931908 | grok-4.5 | high | 0.4095 | 10.6M/161.8K/7.0K/9.7M | 155 | 162 | $5.56 | $5.56 | 2711.5s | 23 | 7,221 | 28 | backend/internal/service/ops.go (1184 LOC) |
 | openhands-grok-4.6-medium-20260920-dev-v1 | grok-4.6 | medium | 0.3970 | 56.2M/1.1M/0/53.3M | 2,660 | 771 | $38.97 | unavailable | 11445.0s | 16 | 6,584 | 24 | backend/handlers_ops.go (1966 LOC) |
+| openhands-grok-4.6-high-20260921-prod-v1 | grok-4.6 | high | 0.3834 | unavailable/unavailable/unavailable/unavailable | unavailable | unavailable | unavailable | unavailable | 11623.4s | unavailable | unavailable | unavailable | — |
 | openhands-kimi-k3-high-20260919-v2 | kimi-k3 | high | 0.3829 | 23.2M/299.2K/75.6K/22.5M | 515 | 518 | $13.38 | $13.38 | 5500.1s | 32 | 9,563 | 18 | server/dispatch.go (989 LOC) |
 | openhands-gpt-5.6-sol-high-20260920-prod-v2 | gpt-5.6-sol | high | 0.3745 | 7.0M/107.2K/15.7K/6.5M | 193 | 156 | $2.52 | unavailable | 1942.9s | 14 | 3,382 | 17 | backend/actions.go (840 LOC) |
 | openhands-1789936188 | claude-sonnet-5 | medium | 0.3735 | 29.6M/235.9K/31.9K/28.1M | 363 | 374 | $16.42 | unavailable | 3552.6s | 45 | 6,341 | 19 | backend/internal/api/handlers_read.go (869 LOC) |
@@ -26,6 +44,7 @@
 | openhands-grok-4.5-medium-20260916-retry | grok-4.5 | medium | 0.3393 | 6.9M/99.3K/2.5K/6.6M | 89 | 89 | $6.52 | unavailable | 1608.7s | 21 | 6,275 | 23 | backend/internal/handlers/ops.go (1049 LOC) |
 | openhands-1789940522 | claude-sonnet-5 | medium | 0.3348 | 38.4M/311.3K/41.4K/36.5M | 481 | 496 | $21.39 | unavailable | 4912.2s | 40 | 7,610 | 19 | backend/cmd/server/handlers_journey.go (742 LOC) |
 | openhands-glm-5.2-high-20260920-prod-v1 | glm-5.2 | high | 0.3303 | 8.8M/103.3K/11.5K/8.5M | 250 | 260 | $3.19 | $3.19 | 692.7s | 25 | 5,557 | 10 | backend/ops_read.go (745 LOC) |
+| openhands-grok-4.6-high-20260921-prod-v2 | grok-4.6 | high | 0.3217 | unavailable/unavailable/unavailable/unavailable | unavailable | unavailable | unavailable | unavailable | 12332.4s | unavailable | unavailable | unavailable | — |
 | openhands-1789943763 | gpt-5.6-sol | high | 0.3140 | 8.0M/99.1K/10.8K/7.7M | 138 | 113 | $2.30 | unavailable | 1601.4s | 17 | 3,670 | 11 | backend/read.go (642 LOC) |
 | openhands-grok-4.6-medium-20260920-dev-queue-v1 | grok-4.6 | medium | 0.3109 | 70.3M/1.1M/0/66.8M | 4,532 | 1,080 | $46.83 | unavailable | 12275.8s | 25 | 6,283 | 23 | backend/journeys.go (850 LOC) |
 | openhands-grok-4.5-high-20260919-v1 | grok-4.5 | high | 0.2792 | 10.5M/165.1K/8.8K/9.5M | 188 | 161 | $5.85 | $5.85 | 2579.6s | 41 | 7,778 | 27 | backend/internal/service/network.go (999 LOC) |

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-22T01:43:47.303068",
+  "generated_at": "2026-10-16T20:20:28.476130+00:00",
   "verifier_commit": "post-hardening-6-lifecycle-tests",
   "scoring_weights": {
     "api-contract-artifact": 0.02,
@@ -9,7 +9,7 @@
     "ui-contract-audit": 0.01,
     "reliability": 0.32
   },
-  "total_candidates": 64,
+  "total_candidates": 81,
   "candidates": [
     {
       "run_id": "openhands-grok-4.6-medium",
@@ -174,6 +174,114 @@
       "changed_files": null
     },
     {
+      "run_id": "openhands-1789978264",
+      "run_path": "benchmarking-candidates/openhands-1789978264",
+      "model": "claude-opus-5",
+      "reasoning": "high",
+      "score": 0.6219,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.73,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.3431
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.59,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1888
+        }
+      },
+      "duration_s": 8761.279,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789981935",
+      "run_path": "benchmarking-candidates/openhands-1789981935",
+      "model": "claude-opus-5",
+      "reasoning": "high",
+      "score": 0.5983,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.69,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.3243
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.575,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.184
+        }
+      },
+      "duration_s": 8394.415,
+      "changed_files": null
+    },
+    {
       "run_id": "openhands-grok-4.5-medium-20260916-v2",
       "run_path": "benchmarking-candidates/openhands-grok-4.5-medium-20260916-v2",
       "model": "grok-4.5",
@@ -225,6 +333,60 @@
         }
       },
       "duration_s": 2125.712,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789986547",
+      "run_path": "benchmarking-candidates/openhands-1789986547",
+      "model": "claude-sonnet-5",
+      "reasoning": "high",
+      "score": 0.5547,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.65,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.3055
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.5,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.31,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0992
+        }
+      },
+      "duration_s": 4812.333,
       "changed_files": null
     },
     {
@@ -336,6 +498,60 @@
       "changed_files": null
     },
     {
+      "run_id": "openhands-1789979817",
+      "run_path": "benchmarking-candidates/openhands-1789979817",
+      "model": "claude-opus-5",
+      "reasoning": "medium",
+      "score": 0.51101,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.59,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.2773
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.4491,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.14371
+        }
+      },
+      "duration_s": 5821.318,
+      "changed_files": null
+    },
+    {
       "run_id": "openhands-kimi-k3-high-20260920-prod-v3",
       "run_path": "benchmarking-candidates/openhands-kimi-k3-high-20260920-prod-v3",
       "model": "kimi-k3",
@@ -441,6 +657,60 @@
         }
       },
       "duration_s": 2273.861,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789989312",
+      "run_path": "benchmarking-candidates/openhands-1789989312",
+      "model": "claude-sonnet-5",
+      "reasoning": "high",
+      "score": 0.48015,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.9,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.054
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.545,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.25615
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.5,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.3125,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.1
+        }
+      },
+      "duration_s": 4127.268,
       "changed_files": null
     },
     {
@@ -603,6 +873,60 @@
         }
       },
       "duration_s": 2828.734,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1789984206",
+      "run_path": "benchmarking-candidates/openhands-1789984206",
+      "model": "claude-opus-5",
+      "reasoning": "medium",
+      "score": 0.445,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.5,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.235
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.375,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.12
+        }
+      },
+      "duration_s": 5312.224,
       "changed_files": null
     },
     {
@@ -819,6 +1143,60 @@
         }
       },
       "duration_s": 11448.351,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-grok-4.6-high-20260921-prod-v1",
+      "run_path": "benchmarking-candidates/openhands-grok-4.6-high-20260921-prod-v1",
+      "model": "grok-4.6",
+      "reasoning": "high",
+      "score": 0.38342,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.71,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.0426
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.406,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.19082
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.375,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.12
+        }
+      },
+      "duration_s": 11623.412,
       "changed_files": null
     },
     {
@@ -1305,6 +1683,60 @@
         }
       },
       "duration_s": 694.53,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-grok-4.6-high-20260921-prod-v2",
+      "run_path": "benchmarking-candidates/openhands-grok-4.6-high-20260921-prod-v2",
+      "model": "grok-4.6",
+      "reasoning": "high",
+      "score": 0.3217,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.6,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.036
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.35,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.1645
+        },
+        "ui-behavior": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.285,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.0912
+        }
+      },
+      "duration_s": 12332.415,
       "changed_files": null
     },
     {
@@ -3465,6 +3897,480 @@
         }
       },
       "duration_s": 2390.692,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1790164164",
+      "run_path": "benchmarking-runs/runs/gpt-6-astra/high/openhands-1790164164",
+      "model": "gpt-6-astra",
+      "reasoning": "high",
+      "score": 0.7281415913,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.6977564103,
+          "weight": 0.47,
+          "awarded": 0.3279455128
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.6875,
+          "weight": 0.12,
+          "awarded": 0.0825
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.7115502451,
+          "weight": 0.32,
+          "awarded": 0.2276960784
+        }
+      },
+      "duration_s": 3559.253,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1792133165",
+      "run_path": "benchmarking-runs/runs/gemini-4-argon/medium/openhands-1792133165",
+      "model": "gemini-4-argon",
+      "reasoning": "medium",
+      "score": 0.695953997,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.7147435897,
+          "weight": 0.47,
+          "awarded": 0.3359294872
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.34375,
+          "weight": 0.12,
+          "awarded": 0.04125
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.7149203431,
+          "weight": 0.32,
+          "awarded": 0.2287745098
+        }
+      },
+      "duration_s": 8079.813,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1792160430",
+      "run_path": "benchmarking-runs/runs/gemini-4-argon/medium/openhands-1792160430",
+      "model": "gemini-4-argon",
+      "reasoning": "medium",
+      "score": 0.7799696169,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.9302,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.055812
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.7141025641,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.3356282051
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.9375,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.1125
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.7688419118,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.2460294118
+        }
+      },
+      "duration_s": 6069.177,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1792162256",
+      "run_path": "benchmarking-runs/runs/claude-fable-5-1/high/openhands-1792162256",
+      "model": "claude-fable-5-1",
+      "reasoning": "high",
+      "score": 0.8568944193,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.833974359,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.3919679487
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.84375,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.10125
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.9177389706,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.2936764706
+        }
+      },
+      "duration_s": 5959.366,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1792170137",
+      "run_path": "benchmarking-runs/runs/gemini-4-argon/high/openhands-1792170137",
+      "model": "gemini-4-argon",
+      "reasoning": "high",
+      "score": 0.8018817873,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.7144230769,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.3357788462
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.90625,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.10875
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.8354779412,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.2673529412
+        }
+      },
+      "duration_s": 7210.967,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1792170139",
+      "run_path": "benchmarking-runs/runs/gemini-4-argon/high/openhands-1792170139",
+      "model": "gemini-4-argon",
+      "reasoning": "high",
+      "score": 0.7442049412,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.02
+        },
+        "runtime-contract": {
+          "status": "partial",
+          "score": 0.9767,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.058602
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.725,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.34075
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.9375,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.1125
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.6323529412,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.2023529412
+        }
+      },
+      "duration_s": 6508.833,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1792170141",
+      "run_path": "benchmarking-runs/runs/claude-fable-5-1/high/openhands-1792170141",
+      "model": "claude-fable-5-1",
+      "reasoning": "high",
+      "score": 0.7782230392,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.8125,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.381875
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.59375,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.07125
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.7971813725,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.2550980392
+        }
+      },
+      "duration_s": 6062.157,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1792175415",
+      "run_path": "benchmarking-runs/runs/claude-fable-5-1/medium/openhands-1792175415",
+      "model": "claude-fable-5-1",
+      "reasoning": "medium",
+      "score": 0.7258930995,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.7092948718,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.3333685897
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.78125,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.09375
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.7149203431,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.2287745098
+        }
+      },
+      "duration_s": 4859.494,
+      "changed_files": null
+    },
+    {
+      "run_id": "openhands-1792175416",
+      "run_path": "benchmarking-runs/runs/claude-fable-5-1/medium/openhands-1792175416",
+      "model": "claude-fable-5-1",
+      "reasoning": "medium",
+      "score": 0.8212006033,
+      "hard_pass": false,
+      "criteria": {
+        "api-contract-artifact": {
+          "status": "fail",
+          "score": 0.0,
+          "weight": 0.02,
+          "blocked_policy": "zero",
+          "awarded": 0.0
+        },
+        "runtime-contract": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.06,
+          "blocked_policy": "zero",
+          "awarded": 0.06
+        },
+        "backend-behavior": {
+          "status": "partial",
+          "score": 0.8179487179,
+          "weight": 0.47,
+          "blocked_policy": "zero",
+          "awarded": 0.3844358974
+        },
+        "ui-behavior": {
+          "status": "partial",
+          "score": 0.75,
+          "weight": 0.12,
+          "blocked_policy": "zero",
+          "awarded": 0.09
+        },
+        "ui-contract-audit": {
+          "status": "pass",
+          "score": 1.0,
+          "weight": 0.01,
+          "blocked_policy": "zero",
+          "awarded": 0.01
+        },
+        "reliability": {
+          "status": "partial",
+          "score": 0.8648897059,
+          "weight": 0.32,
+          "blocked_policy": "zero",
+          "awarded": 0.2767647059
+        }
+      },
+      "duration_s": 5374.988,
       "changed_files": null
     }
   ]

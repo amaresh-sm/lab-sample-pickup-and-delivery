@@ -363,11 +363,19 @@ def run(args: argparse.Namespace) -> int:
     metadata["container_cleaned"] = not container_started or subprocess.run(
         ["docker", "container", "inspect", container_name], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False
     ).returncode != 0
-    (run_dir / "metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
     telemetry = collect_telemetry(workspace, workspace_before, logs / "stdout.log")
     telemetry["duration_seconds"] = metadata["duration_seconds"]
     telemetry["started_at"] = metadata["started_at"]
     telemetry["finished_at"] = metadata["finished_at"]
+    if (
+        args.provider == "openhands"
+        and metadata["status"] == "completed"
+        and telemetry.get("solution_size", {}).get("agent_changed_files") == 0
+    ):
+        metadata["status"] = "incomplete"
+        metadata["exit_code"] = 2
+        metadata["error"] = "OpenHands exited successfully without changing the candidate workspace"
+    (run_dir / "metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
     (run_dir / "telemetry.json").write_text(json.dumps(telemetry, indent=2) + "\n")
     print(run_dir)
     return 0 if metadata["status"] == "completed" else 1

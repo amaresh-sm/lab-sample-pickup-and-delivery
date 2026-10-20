@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "harness": {
+    "name": "hackerrank-openhands-gateway",
+    "version": "0.1.4"
+  },
+  "run": {
+    "status": "completed",
+    "exit_code": 0,
+    "error": null
+  },
+  "model": {
+    "name": "openai/gemini-4-argon",
+    "reasoning": "medium",
+    "provider": "hackerrank-gateway"
+  },
+  "timing": {
+    "started_at": "2026-10-16T06:49:08.717293Z",
+    "completed_at": "2026-10-16T09:03:39.629720Z",
+    "duration_ms": 8070912,
+    "llm_requests": {
+      "count": 322,
+      "with_latency": 322,
+      "successful": 322,
+      "failed": 0,
+      "total_latency_ms": 7599267.367,
+      "average_latency_ms": 23600.209,
+      "min_latency_ms": 4112.493,
+      "max_latency_ms": 364410.258
+    }
+  },
+  "usage": {
+    "source": "gateway",
+    "requests": 322,
+    "input_tokens": 25136396,
+    "cached_input_tokens": 22642383,
+    "cache_read_tokens": 22642383,
+    "cache_write_tokens": 0,
+    "output_tokens": 387045,
+    "reasoning_tokens": 0,
+    "total_tokens": 25655565
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "gateway",
+      "responses_with_cost": 0
+    },
+    "openhands": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "openhands"
+    },
+    "custom_estimation": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "custom_pricing_table",
+      "pricing_version": 1,
+      "model": "openai/gemini-4-argon",
+      "normalized_model": "gemini-4-argon",
+      "requests": 322,
+      "requests_with_usage": 0,
+      "requests_missing_usage": 0,
+      "reason": "model_not_in_pricing_master_list"
+    }
+  },
+  "workspace": {
+    "type": "workspace_metrics",
+    "status": "available",
+    "files": {
+      "added": 24,
+      "modified": 1,
+      "deleted": 0,
+      "renamed": 0,
+      "total_changed": 25
+    },
+    "lines": {
+      "added": 26205,
+      "deleted": 1,
+      "changed": 26206
+    },
+    "renames": []
+  },
+  "tools": {
+    "total": 306,
+    "successful": 290,
+    "failed": 16,
+    "cancelled": 0,
+    "rejected": 0,
+    "unknown": 0,
+    "by_tool": {
+      "terminal": 226,
+      "file_editor": 79,
+      "finish": 1
+    }
+  },
+  "trace": {
+    "events_path": "events.jsonl",
+    "event_count": 639,
+    "invalid_event_count": 0,
+    "integrity_sha256": "209b2b7de7da53cf51bb191302fc9041e92c84ca5191c2a659ea7c9b5ecd5cb7"
+  }
+}

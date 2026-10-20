@@ -1,0 +1,42 @@
+{
+  "task_id": "lab-sample-pickup-and-delivery",
+  "run_id": "openhands-grok-4.6-high-20260921-prod-v1",
+  "provider": "openhands",
+  "model": "grok-4.6",
+  "reasoning": "high",
+  "image": "astra-candidate-generation:latest",
+  "started_at": "2026-09-21T07:14:22.381047+00:00",
+  "status": "failed",
+  "mounts": [
+    "candidate workspace:rw"
+  ],
+  "openhands_gateway_source_digest": "30a97c1ababe79f0334f64b6529ffd7e1ebb6b0378a7f901ebfbcf89fd4278d5",
+  "exit_code": 1,
+  "finished_at": "2026-09-21T10:28:05.793241+00:00",
+  "duration_seconds": 11623.412,
+  "container_cleaned": true,
+  "score": 0.38342,
+  "hard_pass": false,
+  "score_source": "scores.json",
+  "source_run_path": "benchmarking-candidates/openhands-grok-4.6-high-20260921-prod-v1",
+  "archive_path": "benchmarking-runs/runs/grok-4.6/high/openhands-grok-4.6-high-20260921-prod-v1",
+  "archived_at": "2026-09-22T09:00:00.000000+00:00",
+  "usage": {},
+  "cost": {
+    "estimated_usd": null,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "cache_backfill": {
+    "status": "applied",
+    "ratio": 0.94984772,
+    "ratio_source": "global_median_fallback",
+    "previous_cached_input_tokens": 0,
+    "previous_cache_read_tokens": 0,
+    "updated_at": "2026-09-22T09:05:00.000000Z"
+  },
+  "core_metrics": {
+    "status": "unavailable",
+    "reason": "candidate_workspace_not_present"
+  }
+}

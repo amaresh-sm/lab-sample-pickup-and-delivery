@@ -1,0 +1,4 @@
+run_id=openhands-grok-4.6-high-20260921-prod-v1
+score=0.38342
+hard_pass=false
+score_source=scores.json

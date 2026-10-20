@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "harness": {
+    "name": "hackerrank-openhands-gateway",
+    "version": "0.1.1"
+  },
+  "run": {
+    "status": "completed",
+    "exit_code": 0,
+    "error": null
+  },
+  "model": {
+    "name": "openai/gpt-6-astra",
+    "reasoning": "high",
+    "provider": "hackerrank-gateway"
+  },
+  "timing": {
+    "started_at": "2026-09-23T11:49:25.477915Z",
+    "completed_at": "2026-09-23T12:48:42.670704Z",
+    "duration_ms": 3557192,
+    "llm_requests": {
+      "count": 144,
+      "with_latency": 144,
+      "successful": 144,
+      "failed": 0,
+      "total_latency_ms": 3051005.154,
+      "average_latency_ms": 21187.536,
+      "min_latency_ms": 3744.142,
+      "max_latency_ms": 154383.495
+    }
+  },
+  "usage": {
+    "source": "gateway",
+    "requests": 144,
+    "input_tokens": 12551454,
+    "cached_input_tokens": 12551022,
+    "cache_read_tokens": 12125057,
+    "cache_write_tokens": 425965,
+    "output_tokens": 136864,
+    "reasoning_tokens": 20227,
+    "total_tokens": 12688318
+  },
+  "cost": {
+    "gateway": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "gateway",
+      "responses_with_cost": 0
+    },
+    "openhands": {
+      "amount_usd": 24.297139500000004,
+      "currency": "USD",
+      "status": "reported",
+      "source": "openhands"
+    },
+    "custom_estimation": {
+      "amount_usd": null,
+      "currency": "USD",
+      "status": "unavailable",
+      "source": "custom_pricing_table",
+      "pricing_version": 1,
+      "model": "openai/gpt-6-astra",
+      "normalized_model": "gpt-6-astra",
+      "requests": 144,
+      "requests_with_usage": 0,
+      "requests_missing_usage": 0,
+      "reason": "model_not_in_pricing_master_list"
+    }
+  },
+  "workspace": {
+    "type": "workspace_metrics",
+    "status": "available",
+    "files": {
+      "added": 35,
+      "modified": 1,
+      "deleted": 0,
+      "renamed": 0,
+      "total_changed": 36
+    },
+    "lines": {
+      "added": 18128,
+      "deleted": 3,
+      "changed": 18131
+    },
+    "renames": []
+  },
+  "tools": {
+    "total": 140,
+    "successful": 134,
+    "failed": 6,
+    "cancelled": 0,
+    "rejected": 0,
+    "unknown": 0,
+    "by_tool": {
+      "terminal": 135,
+      "think": 1,
+      "file_editor": 3,
+      "finish": 1
+    }
+  },
+  "trace": {
+    "events_path": "events.jsonl",
+    "event_count": 290,
+    "invalid_event_count": 0,
+    "integrity_sha256": "6c229ca2c6005a92a953973cf3963e47e9db294e1f3e8d0f04e40d57c72218d3"
+  }
+}

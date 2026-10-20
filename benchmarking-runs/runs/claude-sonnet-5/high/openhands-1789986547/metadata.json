@@ -1,0 +1,42 @@
+{
+  "task_id": "lab-sample-pickup-and-delivery",
+  "run_id": "openhands-1789986547",
+  "provider": "openhands",
+  "model": "claude-sonnet-5",
+  "reasoning": "high",
+  "image": "astra-candidate-generation:latest",
+  "started_at": "2026-09-21T16:02:14.381924+00:00",
+  "status": "completed",
+  "mounts": [
+    "candidate workspace:rw"
+  ],
+  "openhands_gateway_source_digest": "562f1cdc77d6b01231c3bf7f2d2308aa68ed21cbd8fe90f57319df60f045656b",
+  "exit_code": 0,
+  "finished_at": "2026-09-21T17:22:26.714831+00:00",
+  "duration_seconds": 4812.333,
+  "container_cleaned": true,
+  "score": 0.5547,
+  "hard_pass": false,
+  "score_source": "scores.json",
+  "source_run_path": "benchmarking-candidates/openhands-1789986547",
+  "archive_path": "benchmarking-runs/runs/claude-sonnet-5/high/openhands-1789986547",
+  "archived_at": "2026-09-22T09:00:00.000000+00:00",
+  "usage": {},
+  "cost": {
+    "estimated_usd": null,
+    "reported_usd": null,
+    "currency": "USD"
+  },
+  "cache_backfill": {
+    "status": "applied",
+    "ratio": 0.94984772,
+    "ratio_source": "global_median_fallback",
+    "previous_cached_input_tokens": 0,
+    "previous_cache_read_tokens": 0,
+    "updated_at": "2026-09-22T09:05:00.000000Z"
+  },
+  "core_metrics": {
+    "status": "unavailable",
+    "reason": "candidate_workspace_not_present"
+  }
+}
