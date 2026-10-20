@@ -74,3 +74,4 @@ node_modules/
 !/benchmarking-runs/runs/*/*/*/logs/events.sanitized.json
 !/benchmarking-runs/runs/*/*/*/logs/openhands-gateway_responses.jsonl
 !/benchmarking-runs/runs/*/*/*/logs/hidden-scorer.log
+/benchmarking-runs/runs/*/*/*/trajectory-workspace-copy/
