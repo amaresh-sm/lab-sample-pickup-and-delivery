@@ -53,3 +53,24 @@ verifier/__pycache__/
 !/verifier/proof-of-work/**/reports/backend/reward.json
 /verifier/proof-of-work/**/criteria.json
 /verifier/proof-of-work/**/assertion.txt
+
+# Dependency and browser caches never belong in the repository.
+node_modules/
+.pytools/
+.pw-browsers/
+
+# Archived benchmark runs keep only metadata, telemetry, score, trajectory and
+# sanitized logs. Candidate workspaces and raw run output stay in the ignored
+# benchmarking-candidates directory.
+/benchmarking-runs/runs/*/*/*/candidate/
+/benchmarking-runs/runs/*/*/*/reports/
+/benchmarking-runs/runs/*/*/*/verification.json
+/benchmarking-runs/runs/*/*/*/telemetry.json
+/benchmarking-runs/runs/*/*/*/score/*
+!/benchmarking-runs/runs/*/*/*/score/hidden.score.json
+/benchmarking-runs/runs/*/*/*/trajectory/*
+!/benchmarking-runs/runs/*/*/*/trajectory/openhands-trajectory.json
+/benchmarking-runs/runs/*/*/*/logs/*
+!/benchmarking-runs/runs/*/*/*/logs/events.sanitized.json
+!/benchmarking-runs/runs/*/*/*/logs/openhands-gateway_responses.jsonl
+!/benchmarking-runs/runs/*/*/*/logs/hidden-scorer.log
